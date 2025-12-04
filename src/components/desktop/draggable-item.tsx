@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, useMotionValue } from "motion/react";
 import { useDesktopGrid, GridPosition } from "./desktop-grid";
+import { cn } from "@/lib/utils";
 
 interface DraggableItemProps {
   id: string;
@@ -200,9 +201,11 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
         cursor: "grabbing",
       }}
       onDoubleClick={onDoubleClick}
-      className={`cursor-grab select-none ${
-        isDragging ? "z-50" : "z-10"
-      } ${className ?? ""}`}
+      className={cn(
+        "cursor-grab select-none rounded-xl",
+        isDragging ? "z-50" : "z-10",
+        className,
+      )}
     >
       <div className="w-full h-full flex items-center justify-center">
         {children}

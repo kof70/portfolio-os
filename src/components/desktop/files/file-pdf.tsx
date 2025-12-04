@@ -15,7 +15,6 @@ const Icons = {
       viewBox="0 0 32 32"
       {...props}
     >
-      <title>file_type_pdf2</title>
       <path
         d="M24.1,2.072h0l5.564,5.8V29.928H8.879V30H29.735V7.945L24.1,2.072"
         style={{ fill: "#909090" }}
@@ -72,6 +71,7 @@ const Icons = {
 const FilePDF: React.FC<FilePDFProps> = ({ className, name = "Folder" }) => {
   return (
     <div
+      title={name}
       className={`flex cursor-pointer flex-col items-center justify-center gap-1 w-full h-full rounded-xl hover:bg-white/20 hover:border-[0.5px] border-white/10 transition-colors ease-in-out duration-150 select-none ${className ?? ""}`}
     >
       <Icons.pdf className="size-16" />

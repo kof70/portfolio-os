@@ -3,9 +3,75 @@ import React from "react";
 import { Dock, DockIcon } from "../ui/dock";
 import { CustomTooltip } from "../shared/custom-tooltip";
 import { CircleIcon } from "lucide-react";
+import { useWindows } from "./viewer";
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
+// Icônes pour les fenêtres
+const WindowIcons: Record<string, React.ReactNode> = {
+  projects: (
+    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+      <svg
+        className="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+        />
+      </svg>
+    </div>
+  ),
+  about: (
+    <div className="w-full h-full bg-gradient-to-br from-green-500 to-teal-600 rounded-xl flex items-center justify-center">
+      <svg
+        className="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        />
+      </svg>
+    </div>
+  ),
+  contact: (
+    <div className="w-full h-full bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+      <svg
+        className="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
+      </svg>
+    </div>
+  ),
+};
+
 export function CustomDock() {
+  const { windows, focusWindow, restoreWindow } = useWindows();
+
+  const handleWindowClick = (windowId: string, isMinimized: boolean) => {
+    if (isMinimized) {
+      restoreWindow(windowId);
+    } else {
+      focusWindow(windowId);
+    }
+  };
+
   return (
     <div className="relative">
       <Dock
@@ -70,6 +136,49 @@ export function CustomDock() {
             <SocialIcons.whatsapp className="size-full" />
           </CustomTooltip>
         </DockIcon>
+
+        {/* Fenêtres ouvertes */}
+        {windows.length > 0 && (
+          <>
+            {/* Separator */}
+            <div className="w-px h-10 bg-white/20 mx-1" />
+
+            {windows.map((window) => (
+              <DockIcon key={window.id}>
+                <CustomTooltip label={window.title}>
+                  <button
+                    onClick={() =>
+                      handleWindowClick(window.id, window.isMinimized)
+                    }
+                    className="relative w-full h-full"
+                  >
+                    {WindowIcons[window.id] || (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-500 to-gray-700 rounded-xl flex items-center justify-center">
+                        <svg
+                          className="w-6 h-6 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 6h16M4 12h16M4 18h16"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    {/* Indicateur de fenêtre ouverte */}
+                    <div
+                      className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${window.isMinimized ? "bg-white/40" : "bg-white"}`}
+                    />
+                  </button>
+                </CustomTooltip>
+              </DockIcon>
+            ))}
+          </>
+        )}
       </Dock>
     </div>
   );
@@ -136,7 +245,7 @@ const SkillIcons = {
           y2="160.5"
         >
           <stop stopColor="white" />
-          <stop offset="1" stopColor="white" stop-opacity="0" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           gradientUnits="userSpaceOnUse"
@@ -147,7 +256,7 @@ const SkillIcons = {
           y2="106.875"
         >
           <stop stopColor="white" />
-          <stop offset="1" stopColor="white" stop-opacity="0" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
