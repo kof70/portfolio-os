@@ -8,7 +8,7 @@ interface BottomBarProps {
 
 export const BottomBar: React.FC<BottomBarProps> = () => {
   return (
-    <footer className="flex flex-col items-center p-3 w-full">
+    <footer className="flex flex-col fixed z-50  bottom-2 items-center">
       <CustomDock />
     </footer>
   );

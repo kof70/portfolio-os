@@ -110,7 +110,8 @@ const DockIcon = ({
   ...props
 }: DockIconProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const padding = Math.max(6, size * 0.2);
+  // Réduction du padding pour répondre au prompt "le padding est trop"
+  const padding = Math.max(2, size * 0.1);
   const defaultMouseX = useMotionValue(Infinity);
 
   const distanceCalc = useTransform(mouseX ?? defaultMouseX, (val: number) => {
