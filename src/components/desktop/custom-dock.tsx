@@ -1,64 +1,99 @@
 "use client";
 import React from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Dock, DockIcon } from "../ui/dock";
 import { CustomTooltip } from "../shared/custom-tooltip";
 import { CircleIcon } from "lucide-react";
 import { useWindows } from "./viewer";
+
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
-// Icônes pour les fenêtres
-const WindowIcons: Record<string, React.ReactNode> = {
-  projects: (
-    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-      <svg
-        className="w-6 h-6 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-        />
-      </svg>
-    </div>
+/**
+ * WindowIcons: Map of window IDs to icon components.
+ */
+const WindowIcons: Record<string, (props: IconProps) => React.JSX.Element> = {
+  projects: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="#ffff"
+      {...props}
+    >
+      <path
+        d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z"
+        fill="gray"
+      />
+      <path
+        d="M20 6.23751C19.9992 5.94016 19.9949 5.76263 19.9746 5.60842C19.7974 4.26222 18.7381 3.2029 17.3919 3.02567C17.1969 3 16.9647 3 16.5003 3H9.98828C10.1042 3.10392 10.2347 3.23445 10.45 3.44975L11.0003 4C11.8161 4.81578 12.2239 5.22367 12.7124 5.49543C12.9807 5.64471 13.2653 5.7626 13.5606 5.84678C14.0982 6 14.675 6 15.8287 6H16.2024C17.9814 6 19.1593 6 20 6.23751Z"
+        fill="#1C274C"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.25 10C12.25 9.58579 12.5858 9.25 13 9.25H18C18.4142 9.25 18.75 9.58579 18.75 10C18.75 10.4142 18.4142 10.75 18 10.75H13C12.5858 10.75 12.25 10.4142 12.25 10Z"
+        fill="#1C274C"
+      />
+    </svg>
   ),
-  about: (
-    <div className="w-full h-full bg-gradient-to-br from-green-500 to-teal-600 rounded-xl flex items-center justify-center">
-      <svg
-        className="w-6 h-6 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-        />
-      </svg>
-    </div>
+  about: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="#ffff"
+      {...props}
+    >
+      <path
+        d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z"
+        fill="gray"
+      />
+      <path
+        d="M20 6.23751C19.9992 5.94016 19.9949 5.76263 19.9746 5.60842C19.7974 4.26222 18.7381 3.2029 17.3919 3.02567C17.1969 3 16.9647 3 16.5003 3H9.98828C10.1042 3.10392 10.2347 3.23445 10.45 3.44975L11.0003 4C11.8161 4.81578 12.2239 5.22367 12.7124 5.49543C12.9807 5.64471 13.2653 5.7626 13.5606 5.84678C14.0982 6 14.675 6 15.8287 6H16.2024C17.9814 6 19.1593 6 20 6.23751Z"
+        fill="#1C274C"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.25 10C12.25 9.58579 12.5858 9.25 13 9.25H18C18.4142 9.25 18.75 9.58579 18.75 10C18.75 10.4142 18.4142 10.75 18 10.75H13C12.5858 10.75 12.25 10.4142 12.25 10Z"
+        fill="#1C274C"
+      />
+    </svg>
   ),
-  contact: (
-    <div className="w-full h-full bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-      <svg
-        className="w-6 h-6 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
-    </div>
+  contact: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="#ffff"
+      {...props}
+    >
+      <path
+        d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z"
+        fill="gray"
+      />
+      <path
+        d="M20 6.23751C19.9992 5.94016 19.9949 5.76263 19.9746 5.60842C19.7974 4.26222 18.7381 3.2029 17.3919 3.02567C17.1969 3 16.9647 3 16.5003 3H9.98828C10.1042 3.10392 10.2347 3.23445 10.45 3.44975L11.0003 4C11.8161 4.81578 12.2239 5.22367 12.7124 5.49543C12.9807 5.64471 13.2653 5.7626 13.5606 5.84678C14.0982 6 14.675 6 15.8287 6H16.2024C17.9814 6 19.1593 6 20 6.23751Z"
+        fill="#1C274C"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.25 10C12.25 9.58579 12.5858 9.25 13 9.25H18C18.4142 9.25 18.75 9.58579 18.75 10C18.75 10.4142 18.4142 10.75 18 10.75H13C12.5858 10.75 12.25 10.4142 12.25 10Z"
+        fill="#1C274C"
+      />
+    </svg>
   ),
+};
+
+// Pop animation config - smooth and fluid
+const popTransition = {
+  type: "spring" as const,
+  stiffness: 350,
+  damping: 25,
+  mass: 0.8,
+};
+
+const exitTransition = {
+  duration: 0.2,
+  ease: [0.4, 0, 1, 1] as const,
 };
 
 export function CustomDock() {
@@ -75,7 +110,7 @@ export function CustomDock() {
   return (
     <div className="relative">
       <Dock
-        className="bg-black/20 backdrop-blur-xs rounded-3xl border-[0.5px] border-white/10 "
+        className="bg-black/20 backdrop-blur-xs rounded-3xl border-[0.5px] border-white/10"
         iconSize={60}
         iconMagnification={80}
         iconDistance={60}
@@ -85,6 +120,7 @@ export function CustomDock() {
             <CircleIcon className="size-10 text-white" />
           </CustomTooltip>
         </DockIcon>
+
         {/* Skills / Technologies */}
         <DockIcon>
           <CustomTooltip label="TypeScript">
@@ -117,7 +153,65 @@ export function CustomDock() {
           </CustomTooltip>
         </DockIcon>
 
-        {/* Separator */}
+        {/* Animated Window Icons */}
+        <AnimatePresence mode="sync">
+          {windows.map((window) => (
+            <DockIcon key={window.id}>
+              <CustomTooltip label={window.title}>
+                <motion.div
+                  key={window.id}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{
+                    scale: 1,
+                    opacity: 1,
+                    transition: popTransition,
+                  }}
+                  exit={{
+                    scale: 0,
+                    opacity: 0,
+                    transition: exitTransition,
+                  }}
+                  style={{
+                    originX: 0.5,
+                    originY: 0.5,
+                    willChange: "transform, opacity",
+                  }}
+                >
+                  <button
+                    onClick={() =>
+                      handleWindowClick(window.id, window.isMinimized)
+                    }
+                    className="relative w-full h-full flex items-center hover:scale-125 transition-all duration-300 ease-in-out justify-center"
+                  >
+                    {WindowIcons[window.id] &&
+                      WindowIcons[window.id]({
+                        className: "w-12 h-12 ",
+                      })}
+
+                    {/* Indicator dot */}
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{
+                        delay: 0.1,
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 20,
+                      }}
+                      className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
+                        window.isMinimized
+                          ? "bg-white/40"
+                          : "bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)]"
+                      }`}
+                    />
+                  </button>
+                </motion.div>
+              </CustomTooltip>
+            </DockIcon>
+          ))}
+        </AnimatePresence>
+
+        {/* Separator before social icons */}
         <div className="w-px h-10 bg-white/20 mx-1" />
 
         {/* Social / Contact Apps */}
@@ -136,49 +230,6 @@ export function CustomDock() {
             <SocialIcons.whatsapp className="size-full" />
           </CustomTooltip>
         </DockIcon>
-
-        {/* Fenêtres ouvertes */}
-        {windows.length > 0 && (
-          <>
-            {/* Separator */}
-            <div className="w-px h-10 bg-white/20 mx-1" />
-
-            {windows.map((window) => (
-              <DockIcon key={window.id}>
-                <CustomTooltip label={window.title}>
-                  <button
-                    onClick={() =>
-                      handleWindowClick(window.id, window.isMinimized)
-                    }
-                    className="relative w-full h-full"
-                  >
-                    {WindowIcons[window.id] || (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-500 to-gray-700 rounded-xl flex items-center justify-center">
-                        <svg
-                          className="w-6 h-6 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 6h16M4 12h16M4 18h16"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                    {/* Indicateur de fenêtre ouverte */}
-                    <div
-                      className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${window.isMinimized ? "bg-white/40" : "bg-white"}`}
-                    />
-                  </button>
-                </CustomTooltip>
-              </DockIcon>
-            ))}
-          </>
-        )}
       </Dock>
     </div>
   );
@@ -366,7 +417,7 @@ const SkillIcons = {
 // Social Icons
 const SocialIcons = {
   github: (props: IconProps) => (
-    <div className="bg-black rounded-full ">
+    <div className="bg-black rounded-full">
       <svg {...props} viewBox="0 0 1024 1024">
         <path
           fillRule="evenodd"

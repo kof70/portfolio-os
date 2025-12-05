@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence } from "motion/react";
 import { useWindows } from "./window-context";
 import { Window } from "./window";
 
@@ -14,15 +13,13 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ className }) => {
 
   return (
     <div
-      className={`fixed inset-0 pointer-events-none z-[100] ${className ?? ""}`}
+      className={`fixed inset-0 pointer-events-none z-100 ${className ?? ""}`}
     >
-      <AnimatePresence mode="popLayout">
-        {windows.map((window) => (
-          <div key={window.id} className="pointer-events-auto">
-            <Window window={window} />
-          </div>
-        ))}
-      </AnimatePresence>
+      {windows.map((window) => (
+        <div key={window.id} className="pointer-events-auto">
+          <Window window={window} />
+        </div>
+      ))}
     </div>
   );
 };

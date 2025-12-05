@@ -2,12 +2,18 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import {
+  useWindowViewport,
+  WindowViewportProvider,
+} from "../use-window-viewport";
 
 interface ContactViewProps {
   className?: string;
 }
 
-export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
+const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
+  const { isXs, isSmUp, isMdUp } = useWindowViewport();
+
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -18,7 +24,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -89,23 +95,47 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
   ];
 
   return (
-    <div className={cn("h-full bg-neutral-900/50 p-6 overflow-auto", className)}>
+    <div
+      className={cn(
+        "h-full bg-neutral-900/50 overflow-auto",
+        isSmUp ? "p-6" : "p-4",
+        className,
+      )}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-white text-3xl font-bold mb-3">
+        <div className={cn("mb-8", isMdUp ? "text-center" : "text-left")}>
+          <h1
+            className={cn(
+              "text-white font-bold mb-3",
+              isSmUp ? "text-3xl" : "text-2xl",
+            )}
+          >
             Contactez-moi
           </h1>
-          <p className="text-white/60 max-w-md mx-auto">
+          <p
+            className={cn(
+              "text-white/60",
+              isXs ? "text-xs" : "text-sm",
+              isMdUp && "max-w-md mx-auto",
+            )}
+          >
             Vous avez un projet en tête ? N&apos;hésitez pas à me contacter pour
             en discuter !
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div
+          className={cn("grid gap-8", isMdUp ? "grid-cols-2" : "grid-cols-1")}
+        >
           {/* Contact Links */}
           <div>
-            <h2 className="text-white text-xl font-semibold mb-4 flex items-center gap-2">
+            <h2
+              className={cn(
+                "text-white font-semibold mb-4 flex items-center gap-2",
+                isSmUp ? "text-xl" : "text-lg",
+              )}
+            >
               <span className="text-2xl">🔗</span> Retrouvez-moi sur
             </h2>
             <div className="space-y-3">
@@ -116,21 +146,29 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "flex items-center gap-4 p-4 bg-white/5 rounded-xl",
+                    "flex items-center gap-4 bg-white/5 rounded-xl",
                     "border border-white/10 hover:border-white/20",
                     "transition-all duration-300 group",
-                    link.color
+                    isXs ? "p-3" : "p-4",
+                    link.color,
                   )}
                 >
                   <div className="text-white/60 group-hover:scale-110 transition-transform">
                     {link.icon}
                   </div>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <p className="text-white font-medium">{link.label}</p>
-                    <p className="text-white/50 text-sm">{link.value}</p>
+                    <p
+                      className={cn(
+                        "text-white/50 truncate",
+                        isXs ? "text-xs" : "text-sm",
+                      )}
+                    >
+                      {link.value}
+                    </p>
                   </div>
                   <svg
-                    className="w-5 h-5 ml-auto text-white/30 group-hover:text-white/60 group-hover:translate-x-1 transition-all"
+                    className="w-5 h-5 ml-auto text-white/30 group-hover:text-white/60 group-hover:translate-x-1 transition-all shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -149,7 +187,12 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
 
           {/* Contact Form */}
           <div>
-            <h2 className="text-white text-xl font-semibold mb-4 flex items-center gap-2">
+            <h2
+              className={cn(
+                "text-white font-semibold mb-4 flex items-center gap-2",
+                isSmUp ? "text-xl" : "text-lg",
+              )}
+            >
               <span className="text-2xl">✉️</span> Envoyez-moi un message
             </h2>
 
@@ -177,48 +220,70 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-white/70 text-sm mb-1.5"
-                  >
-                    Nom
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
-                    placeholder="Votre nom"
-                  />
-                </div>
+                <div
+                  className={cn(
+                    "grid gap-4",
+                    isSmUp ? "grid-cols-2" : "grid-cols-1",
+                  )}
+                >
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className={cn(
+                        "block text-white/70 mb-1.5",
+                        isXs ? "text-xs" : "text-sm",
+                      )}
+                    >
+                      Nom
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className={cn(
+                        "w-full bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors",
+                        isXs ? "px-3 py-2 text-sm" : "px-4 py-3",
+                      )}
+                      placeholder="Votre nom"
+                    />
+                  </div>
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-white/70 text-sm mb-1.5"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
-                    placeholder="votre@email.com"
-                  />
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className={cn(
+                        "block text-white/70 mb-1.5",
+                        isXs ? "text-xs" : "text-sm",
+                      )}
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className={cn(
+                        "w-full bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors",
+                        isXs ? "px-3 py-2 text-sm" : "px-4 py-3",
+                      )}
+                      placeholder="votre@email.com"
+                    />
+                  </div>
                 </div>
 
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-white/70 text-sm mb-1.5"
+                    className={cn(
+                      "block text-white/70 mb-1.5",
+                      isXs ? "text-xs" : "text-sm",
+                    )}
                   >
                     Sujet
                   </label>
@@ -229,7 +294,10 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
+                    className={cn(
+                      "w-full bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors",
+                      isXs ? "px-3 py-2 text-sm" : "px-4 py-3",
+                    )}
                     placeholder="Sujet de votre message"
                   />
                 </div>
@@ -237,7 +305,10 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-white/70 text-sm mb-1.5"
+                    className={cn(
+                      "block text-white/70 mb-1.5",
+                      isXs ? "text-xs" : "text-sm",
+                    )}
                   >
                     Message
                   </label>
@@ -247,8 +318,11 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={4}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors resize-none"
+                    rows={isXs ? 3 : 4}
+                    className={cn(
+                      "w-full bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors resize-none",
+                      isXs ? "px-3 py-2 text-sm" : "px-4 py-3",
+                    )}
                     placeholder="Votre message..."
                   />
                 </div>
@@ -257,10 +331,11 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
                   type="submit"
                   disabled={isSubmitting}
                   className={cn(
-                    "w-full py-3 rounded-xl font-medium transition-all",
+                    "w-full rounded-xl font-medium transition-all",
                     "bg-white text-black hover:bg-white/90",
                     "disabled:opacity-50 disabled:cursor-not-allowed",
-                    "flex items-center justify-center gap-2"
+                    "flex items-center justify-center gap-2",
+                    isXs ? "py-2.5 text-sm" : "py-3",
                   )}
                 >
                   {isSubmitting ? (
@@ -311,6 +386,14 @@ export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
         </div>
       </div>
     </div>
+  );
+};
+
+export const ContactView: React.FC<ContactViewProps> = ({ className }) => {
+  return (
+    <WindowViewportProvider>
+      <ContactViewContent className={className} />
+    </WindowViewportProvider>
   );
 };
 
