@@ -3,11 +3,10 @@ import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Dock, DockIcon } from "../ui/dock";
 import { CustomTooltip } from "../shared/custom-tooltip";
-import { CircleIcon } from "lucide-react";
+import { Icons, type IconProps } from "@/components/icons";
 import { useWindows } from "./viewer";
 import Image from "next/image";
-
-export type IconProps = React.HTMLAttributes<SVGElement>;
+import { popTransition } from "@/lib/animations";
 
 /**
  * WindowIcons: Map of window IDs to icon components.
@@ -42,14 +41,6 @@ const WindowIcons: Record<string, (props: IconProps) => React.JSX.Element> = {
   ),
 };
 
-// Pop animation config - smooth and fluid
-const popTransition = {
-  type: "spring" as const,
-  stiffness: 350,
-  damping: 25,
-  mass: 0.8,
-};
-
 const exitTransition = {
   duration: 0.2,
   ease: [0.4, 0, 1, 1] as const,
@@ -76,7 +67,7 @@ export function CustomDock() {
       >
         <DockIcon>
           <CustomTooltip label="Launcher">
-            <CircleIcon className="size-10 text-white" />
+            <Icons.circle className="size-10 text-white" />
           </CustomTooltip>
         </DockIcon>
 

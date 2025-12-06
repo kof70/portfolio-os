@@ -9,7 +9,7 @@ interface ContactFileProps {
 
 export const ContactFile: React.FC<ContactFileProps> = ({
   className,
-  name = "Project",
+  name = "Contact",
 }) => {
   return (
     <div

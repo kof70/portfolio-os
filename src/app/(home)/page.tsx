@@ -1,19 +1,17 @@
 "use client";
-
-import { Folder } from "@/components/desktop/folder";
+import { AboutBento } from "@/components/bento";
 import { DesktopGrid } from "@/components/desktop/desktop-grid";
 import { DraggableItem } from "@/components/desktop/draggable-item";
-import { AboutBento } from "@/components/bento";
+import { AboutFile } from "@/components/desktop/files/about-file";
+import { ContactFile } from "@/components/desktop/files/contact-file";
 import FilePDF from "@/components/desktop/files/file-pdf";
+import { ProjectFile } from "@/components/desktop/files/project-file";
 import {
-  useWindows,
-  ProjectsView,
   AboutView,
   ContactView,
+  ProjectsView,
+  useWindows,
 } from "@/components/desktop/viewer";
-import { ProjectFile } from "@/components/desktop/files/project-file";
-import { ContactFile } from "@/components/desktop/files/contact-file";
-import { AboutFile } from "@/components/desktop/files/about-file";
 
 export default function Home() {
   const { openWindow } = useWindows();

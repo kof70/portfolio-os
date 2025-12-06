@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { BentoCard } from "./bento-grid";
-import { FolderClosed } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 interface NoteCardProps {
   title?: string;
@@ -16,7 +16,7 @@ export const NoteCard: React.FC<NoteCardProps> = ({
   title = "À propos",
   content,
   className,
-  icon,
+  icon = <Icons.folderClosed className="size-5 text-white" />,
 }) => {
   return (
     <BentoCard
@@ -27,7 +27,7 @@ export const NoteCard: React.FC<NoteCardProps> = ({
     >
       {/* Header */}
       <div className="flex px-4 py-2 items-center bg-amber-300 gap-2 mb-3">
-        <FolderClosed className="size-5 text-white" />
+        {icon}
         <h3 className="text-white font-semibold text-lg">{title}</h3>
       </div>
 
@@ -37,17 +37,6 @@ export const NoteCard: React.FC<NoteCardProps> = ({
           {content}
         </p>
       </div>
-
-      {/* Decorative lines - style note */}
-      {/*<div className="absolute bottom-0 left-0 right-0 h-1/2 pointer-events-none overflow-hidden opacity-10">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="border-b border-white/30"
-            style={{ marginTop: "24px" }}
-          />
-        ))}
-      </div>*/}
     </BentoCard>
   );
 };

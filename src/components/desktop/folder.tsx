@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IconProps } from "./custom-dock";
+import { type IconProps } from "@/components/icons";
 
 interface FolderProps {
   className?: string;
