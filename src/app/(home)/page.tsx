@@ -11,6 +11,9 @@ import {
   AboutView,
   ContactView,
 } from "@/components/desktop/viewer";
+import { ProjectFile } from "@/components/desktop/files/project-file";
+import { ContactFile } from "@/components/desktop/files/contact-file";
+import { AboutFile } from "@/components/desktop/files/about-file";
 
 export default function Home() {
   const { openWindow } = useWindows();
@@ -65,7 +68,7 @@ export default function Home() {
             initialPosition={{ row: 0, col: 0 }}
             onDoubleClick={handleOpenProjects}
           >
-            <Folder name="Projets" />
+            <ProjectFile name="Projets" />
           </DraggableItem>
 
           {/* Dossier À propos */}
@@ -74,7 +77,7 @@ export default function Home() {
             initialPosition={{ row: 1, col: 0 }}
             onDoubleClick={handleOpenAbout}
           >
-            <Folder name="À propos" />
+            <AboutFile name="À propos" />
           </DraggableItem>
 
           {/* Dossier Contact */}
@@ -83,7 +86,7 @@ export default function Home() {
             initialPosition={{ row: 2, col: 0 }}
             onDoubleClick={handleOpenContact}
           >
-            <Folder name="Contact" />
+            <ContactFile name="Contact" />
           </DraggableItem>
 
           {/* Fichier CV */}
