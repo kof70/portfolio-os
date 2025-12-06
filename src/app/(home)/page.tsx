@@ -56,7 +56,7 @@ export default function Home() {
   };
 
   return (
-    <main className="w-full h-full relative flex">
+    <main className="w-full h-full relative flex overflow-hidden">
       {/* Desktop Grid - Gauche */}
       <div className="flex-2 h-full">
         <DesktopGrid rows={6} cols={6} cellSize={110} gap={12} padding={16}>
