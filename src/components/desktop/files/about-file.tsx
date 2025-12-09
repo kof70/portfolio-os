@@ -13,7 +13,7 @@ export const AboutFile: React.FC<AboutFileProps> = ({
 }) => {
   return (
     <div
-      className={`flex cursor-pointer flex-col items-center justify-center gap-1 w-full h-full rounded-xl hover:bg-white/20 hover:border-[0.5px] border-white/10 transition-colors ease-in-out duration-150 select-none ${className ?? ""}`}
+      className={`flex cursor-pointer flex-col items-center justify-center gap-1 w-full h-full rounded-xl ${className ?? ""}`}
     >
       <Image
         draggable={"false"}

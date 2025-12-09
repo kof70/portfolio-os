@@ -11,6 +11,8 @@ interface DraggableItemProps {
   children: React.ReactNode;
   className?: string;
   onDoubleClick?: () => void;
+  onClick?: () => void;
+  isSelected?: boolean;
 }
 
 // Vérifie si deux rectangles se chevauchent
@@ -50,6 +52,8 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   children,
   className,
   onDoubleClick,
+  onClick,
+  isSelected,
 }) => {
   const {
     cellSize,
@@ -201,9 +205,11 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
         cursor: "grabbing",
       }}
       onDoubleClick={onDoubleClick}
+      onClick={onClick}
       className={cn(
-        "cursor-grab select-none rounded-xl",
+        "cursor-grab select-none rounded-xl hover:bg-white/20 hover:border-[0.5px] border-white/10 transition-colors ease-in-out duration-150",
         isDragging ? "z-50" : "z-10",
+        isSelected ? "hover:bg-white/30 bg-white/20 border-[0.5px]" : "",
         className,
       )}
     >

@@ -41,14 +41,14 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
           <div
             className={cn(
               "relative rounded-full overflow-hidden border-2 border-white/20 shrink-0",
-              isSmUp ? "w-32 h-32" : "w-24 h-24",
+              isSmUp ? "size-44" : "size-36",
             )}
           >
             <Image
               src={personalInfo.avatar}
               alt={personalInfo.name}
               fill
-              className="object-cover"
+              className="object-cover object-top"
               priority
             />
           </div>

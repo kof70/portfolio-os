@@ -55,7 +55,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
   // Get icon component from Icons object
   const getIcon = (iconName: string) => {
     const IconComponent = Icons[iconName as keyof typeof Icons];
-    return IconComponent ? <IconComponent className="w-6 h-6" /> : null;
+    return IconComponent ? <IconComponent className="size-8 shrink-0" /> : null;
   };
 
   return (
@@ -90,7 +90,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
         </div>
 
         <div
-          className={cn("grid gap-8", isMdUp ? "grid-cols-2" : "grid-cols-1")}
+          className={cn("grid gap-8", isMdUp ? "grid-cols-1" : "grid-cols-1")}
         >
           {/* Contact Links */}
           <div>
@@ -99,7 +99,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
               emoji="🔗"
               size={isSmUp ? "md" : "sm"}
             />
-            <div className="space-y-3">
+            <div className="space-y-3 grid grid-cols-2 gap-4">
               {contactLinks.map((link) => (
                 <a
                   key={link.id}
@@ -107,7 +107,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "flex items-center gap-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20",
+                    "flex items-center gap-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 h-20",
                     "transition-all duration-300 group",
                     isXs ? "p-3" : "p-4",
                     link.hoverColor,
@@ -134,7 +134,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
           </div>
 
           {/* Contact Form */}
-          <div>
+          {/*<div>
             <SectionHeader
               title="Envoyez-moi un message"
               emoji="✉️"
@@ -226,7 +226,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
                 </button>
               </form>
             )}
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>

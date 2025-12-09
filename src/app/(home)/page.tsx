@@ -12,9 +12,12 @@ import {
   ProjectsView,
   useWindows,
 } from "@/components/desktop/viewer";
+import { personalInfo } from "@/lib/data";
+import { useState } from "react";
 
 export default function Home() {
   const { openWindow } = useWindows();
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
   const handleOpenProjects = () => {
     openWindow({
@@ -27,6 +30,7 @@ export default function Home() {
       isMinimized: false,
       isMaximized: false,
     });
+    setSelectedFile(null);
   };
 
   const handleOpenAbout = () => {
@@ -40,6 +44,7 @@ export default function Home() {
       isMinimized: false,
       isMaximized: false,
     });
+    setSelectedFile(null);
   };
 
   const handleOpenContact = () => {
@@ -53,6 +58,16 @@ export default function Home() {
       isMinimized: false,
       isMaximized: false,
     });
+    setSelectedFile(null);
+  };
+
+  const handleOpenCV = () => {
+    const link = document.createElement("a");
+    link.href = "/assets/cv.pdf";
+    link.download = "Tchandikou_Uja_Shalom.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -65,6 +80,8 @@ export default function Home() {
             id="folder-projects"
             initialPosition={{ row: 0, col: 0 }}
             onDoubleClick={handleOpenProjects}
+            onClick={() => setSelectedFile("projects")}
+            isSelected={selectedFile === "projects"}
           >
             <ProjectFile name="Projets" />
           </DraggableItem>
@@ -74,6 +91,8 @@ export default function Home() {
             id="folder-about"
             initialPosition={{ row: 1, col: 0 }}
             onDoubleClick={handleOpenAbout}
+            onClick={() => setSelectedFile("about")}
+            isSelected={selectedFile === "about"}
           >
             <AboutFile name="À propos" />
           </DraggableItem>
@@ -83,12 +102,20 @@ export default function Home() {
             id="folder-contact"
             initialPosition={{ row: 2, col: 0 }}
             onDoubleClick={handleOpenContact}
+            onClick={() => setSelectedFile("contact")}
+            isSelected={selectedFile === "contact"}
           >
             <ContactFile name="Contact" />
           </DraggableItem>
 
           {/* Fichier CV */}
-          <DraggableItem id="file-cv" initialPosition={{ row: 3, col: 0 }}>
+          <DraggableItem
+            id="file-cv"
+            initialPosition={{ row: 3, col: 0 }}
+            onClick={() => setSelectedFile("cv")}
+            isSelected={selectedFile === "cv"}
+            onDoubleClick={handleOpenCV}
+          >
             <FilePDF name="Mon CV" />
           </DraggableItem>
         </DesktopGrid>
@@ -97,10 +124,10 @@ export default function Home() {
       {/* Bento Grid - Droite */}
       <div className="h-full flex items-center justify-center">
         <AboutBento
-          photoSrc="/assets/p2.jpeg"
+          photoSrc="/assets/p1.jpeg"
           name="Tchandikou U. Shalom"
-          title="Développeur Full Stack"
-          description="Passionné par le développement web et les nouvelles technologies. Je crée des applications modernes et performantes avec une attention particulière à l'expérience utilisateur et au design. Toujours en quête d'apprentissage et d'innovation."
+          title={personalInfo.title}
+          description={personalInfo.bioShort}
         />
       </div>
     </main>

@@ -22,29 +22,34 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
     <>
       {/* Invisible hover trigger zone at the bottom */}
       <div
-        className="fixed bottom-0 left-0 right-0 h-4 z-[199]"
+        className="fixed bottom-0 left-0 right-0 h-4 z-199"
         onMouseEnter={() => setIsHovered(true)}
       />
 
       {/* Dock container */}
-      <motion.footer
-        initial={{ y: 0 }}
-        animate={{
-          y: shouldHide ? 100 : 0,
-          opacity: shouldHide ? 0 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 30,
-          mass: 0.8,
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className="flex flex-col fixed z-[200] left-0 right-0 bottom-2 items-center"
-      >
-        <CustomDock />
-      </motion.footer>
+      <div className="w-full flex justify-center items-center fixed z-200 left-0 right-0 bottom-2">
+        <motion.footer
+          initial={{ y: 0 }}
+          animate={{
+            y: shouldHide ? 100 : 0,
+            opacity: shouldHide ? 0 : 1,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            mass: 0.8,
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{
+            width: "auto",
+          }}
+          className=" rounded-3xl supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-sm mx-auto "
+        >
+          <CustomDock />
+        </motion.footer>
+      </div>
     </>
   );
 };

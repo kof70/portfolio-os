@@ -371,7 +371,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     <div
       ref={windowRef}
       className={cn(
-        "bg-neutral-900/95 backdrop-blur-xl overflow-hidden",
+        "bg-black/20 backdrop-blur-2xl overflow-hidden",
         "border border-white/10 shadow-2xl shadow-black/50",
         "flex flex-col",
         windowState.isMaximized && !isMaximizeAnimating ? "" : "rounded-xl",
@@ -418,7 +418,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
           <button
             onClick={handleClose}
             className={cn(
-              "w-3 h-3 rounded-full bg-[#ff5f57]",
+              "size-4 rounded-full bg-[#ff5f57]",
               "flex items-center justify-center",
               "transition-all duration-150 ease-out",
               "hover:bg-[#ff4444] hover:scale-110",
@@ -441,7 +441,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
           <button
             onClick={handleMinimize}
             className={cn(
-              "w-3 h-3 rounded-full bg-[#febc2e]",
+              "size-4  rounded-full bg-[#febc2e]",
               "flex items-center justify-center",
               "transition-all duration-150 ease-out",
               "hover:bg-[#f5a623] hover:scale-110",
@@ -464,7 +464,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
           <button
             onClick={handleMaximize}
             className={cn(
-              "w-3 h-3 rounded-full bg-[#28c840]",
+              "size-4  rounded-full bg-[#28c840]",
               "flex items-center justify-center",
               "transition-all duration-150 ease-out",
               "hover:bg-[#1db934] hover:scale-110",

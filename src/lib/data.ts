@@ -51,6 +51,7 @@ export interface PersonalInfo {
   location: string;
   avatar: string;
   bio: string;
+  bioShort: string;
   available: boolean;
 }
 
@@ -60,10 +61,12 @@ export interface PersonalInfo {
 
 export const personalInfo: PersonalInfo = {
   name: "Tchandikou U. Shalom",
-  title: "Développeur Full Stack",
-  location: "📍 Localisation",
-  avatar: "/assets/p2.jpeg",
+  title: "Développeur Frontend | React | Next.js",
+  location: "📍 Localisation: Togo ",
+  avatar: "/assets/p1.jpeg",
   bio: "Passionné par le développement web et les nouvelles technologies, je crée des applications modernes et performantes avec une attention particulière à l'expérience utilisateur et au design. Toujours en quête d'apprentissage et d'innovation, j'aime relever de nouveaux défis et transformer des idées en produits concrets.",
+  bioShort:
+    "Développeur Frontend passionné par la création d'applications web modernes et performantes.",
   available: true,
 };
 
@@ -102,33 +105,35 @@ export const projects: Project[] = [
 export const experiences: Experience[] = [
   {
     id: "1",
-    title: "Développeur Full Stack",
-    company: "Entreprise XYZ",
-    period: "2022 - Présent",
+    title: "Développeur Frontend",
+    company: "Connect Studio",
+    period: "Juin 2025 - Novembre 2025",
     description:
-      "Développement d'applications web modernes avec React, Next.js et Node.js.",
+      "Développement d'applications web modernes avec React, Next.js et intégration d'API RESTful.",
   },
   {
     id: "2",
-    title: "Développeur Front-end",
-    company: "Startup ABC",
-    period: "2020 - 2022",
-    description: "Création d'interfaces utilisateur réactives et accessibles.",
+    title: "Développeur Frontend",
+    company: "Legombo",
+    period: "juin 2024 - Novembre 2024",
+    description:
+      "Création d'interfaces utilisateur réactives et integration API.",
   },
 ];
 
 export const education: Education[] = [
   {
     id: "1",
-    degree: "Master en Informatique",
-    school: "Université XYZ",
-    period: "2018 - 2020",
+    degree: "Licence en Informatique (Architecture Logiciel)",
+    school:
+      "Ecole Supérieure de Gestion, d'Informatique et des Sciences (ESGIS)",
+    period: "2022 - 2025",
   },
   {
     id: "2",
-    degree: "Licence en Informatique",
-    school: "Université ABC",
-    period: "2015 - 2018",
+    degree: "Baccalauréat Serie D",
+    school: "Lycée Moderne BAD d'ayamé (Côte d'Ivoire)",
+    period: "2021 - 2022",
   },
 ];
 
@@ -146,32 +151,32 @@ export const contactLinks: ContactLink[] = [
     id: "github",
     icon: "github",
     label: "GitHub",
-    value: "github.com/username",
-    href: "https://github.com",
+    value: "github.com/CianusDev",
+    href: "https://github.com/CianusDev",
     hoverColor: "hover:text-white",
   },
   {
     id: "email",
     icon: "email",
     label: "Email",
-    value: "contact@example.com",
-    href: "mailto:contact@example.com",
+    value: "ujashalomtchandikou@gmail.com",
+    href: "mailto:ujashalomtchandikou@gmail.com",
     hoverColor: "hover:text-red-400",
   },
   {
     id: "linkedin",
     icon: "linkedin",
     label: "LinkedIn",
-    value: "linkedin.com/in/username",
-    href: "https://linkedin.com",
+    value: "linkedin.com/in/uja-shalom-tchandikou-680021303",
+    href: "https://linkedin.com/in/uja-shalom-tchandikou-680021303",
     hoverColor: "hover:text-blue-400",
   },
   {
     id: "whatsapp",
     icon: "whatsapp",
     label: "WhatsApp",
-    value: "+33 6 XX XX XX XX",
-    href: "https://wa.me/33600000000",
+    value: "+228 79 64 83 98",
+    href: "https://wa.me/+22879648398",
     hoverColor: "hover:text-green-400",
   },
 ];

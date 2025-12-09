@@ -21,7 +21,7 @@ export const NoteCard: React.FC<NoteCardProps> = ({
   return (
     <BentoCard
       colSpan={4}
-      rowSpan={2}
+      rowSpan={1}
       variant="solid"
       className={cn("flex flex-col p-0", className)}
     >

@@ -1,5 +1,9 @@
 {
   "name": "my-portfolio",
+  "author": {
+    "name": "cianusdev",
+    "email": "ujashalomtchandikou@gmail.com"
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -33,7 +33,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           src={src}
           alt={alt}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover  transition-transform duration-500 group-hover:scale-105"
           priority
         />
 
