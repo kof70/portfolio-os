@@ -73,32 +73,33 @@ export const personalInfo: PersonalInfo = {
 export const projects: Project[] = [
   {
     id: "1",
-    title: "Portfolio Desktop",
+    title: "Portfolio OS",
     description:
       "Un portfolio interactif style macOS avec drag & drop, fenêtres et dock animé.",
-    image: "/assets/bg-3.jpg",
+    image: "/assets/portfolio.png",
     tags: ["Next.js", "TypeScript", "Tailwind", "Framer Motion"],
-    githubUrl: "https://github.com",
+    // githubUrl: "https://github.com",
     liveUrl: "https://example.com",
   },
   {
     id: "2",
-    title: "E-Commerce App",
+    title: "MetroCard",
     description:
-      "Application e-commerce complète avec panier, paiement et gestion des commandes.",
-    image: "/assets/bg-1.jpg",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
-    githubUrl: "https://github.com",
+      "Un landing page pour une application de gestion de compte bancaire fictive.",
+    image: "/assets/metro-card.png",
+    tags: ["Next.JS", "Tailwind", "TypeScript"],
+    // githubUrl: "https://github.com",
+    liveUrl: "https://metro-card-test.vercel.app",
   },
   {
     id: "3",
-    title: "Chat Application",
+    title: "Builder de site web",
     description:
-      "Application de chat en temps réel avec WebSockets et authentification.",
-    image: "/assets/macos-bg.jpg",
-    tags: ["React", "Socket.io", "Express", "JWT"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+      "Un constructeur de site web par glisser-déposer avec prévisualisation en temps réel.",
+    image: "/assets/builder.png",
+    tags: ["React", "TypeScript", "Tailwind", "Framer Motion"],
+    // githubUrl: "https://github.com",
+    liveUrl: "https://cianus-v2-delta.vercel.app",
   },
 ];
 

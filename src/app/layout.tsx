@@ -54,7 +54,7 @@ export default function RootLayout({
       >
         <WindowProvider>
           <AppWrapper>
-            <div className="w-full h-full bg-[url('/assets/bg-3.jpg')] bg-cover absolute top-0 left-0 -z-10"></div>
+            <div className="w-full h-full bg-[url('/assets/bg-3.jpg')] bg-cover absolute top-0 left-0"></div>
             <TopBar />
             <main className="h-full w-full">{children}</main>
             <BottomBar />

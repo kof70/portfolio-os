@@ -39,9 +39,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20" />
+          <div className="w-full h-full bg-linear-to-br from-purple-500/20 to-blue-500/20" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute  bg-linear-to-t from-black/60 to-transparent" />
       </div>
 
       {/* Content */}

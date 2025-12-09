@@ -7,6 +7,8 @@ import { Icons, type IconProps } from "@/components/icons";
 import { useWindows } from "./viewer";
 import Image from "next/image";
 import { popTransition } from "@/lib/animations";
+import Link from "next/link";
+import { contactLinks } from "@/lib/data";
 
 /**
  * WindowIcons: Map of window IDs to icon components.
@@ -73,39 +75,81 @@ export function CustomDock() {
 
         {/* Skills / Technologies */}
         <DockIcon>
-          <CustomTooltip label="API Integration">
-            <SkillIcons.APIintergration className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://cianus.dev/api-docs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="Integration API">
+              <SkillIcons.APIintergration className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="TypeScript">
-            <SkillIcons.typescript className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://www.typescriptlang.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="TypeScript">
+              <SkillIcons.typescript className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="React">
-            <SkillIcons.react className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://react.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="React">
+              <SkillIcons.react className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="Next.js">
-            <SkillIcons.nextjs className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://nextjs.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="Next.js">
+              <SkillIcons.nextjs className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="Tailwind CSS">
-            <SkillIcons.tailwind className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://tailwindcss.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="Tailwind CSS">
+              <SkillIcons.tailwind className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="Node.js">
-            <SkillIcons.nodejs className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://nodejs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="Node.js">
+              <SkillIcons.nodejs className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="Git">
-            <SkillIcons.git className="size-full" />
-          </CustomTooltip>
+          <Link
+            href="https://git-scm.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="Git">
+              <SkillIcons.git className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         {/* Animated Window Icons */}
         <AnimatePresence mode="wait">
@@ -168,24 +212,48 @@ export function CustomDock() {
         <div className="w-px h-10 bg-white/20 mx-1" />
         {/* Social / Contact Apps */}
         <DockIcon>
-          <CustomTooltip label="GitHub">
-            <SocialIcons.github className="size-full" />
-          </CustomTooltip>
+          <Link
+            href={contactLinks.find((f) => f.id === "github")?.href || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="GitHub">
+              <SocialIcons.github className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="Gmail">
-            <SocialIcons.gmail className="size-full" />
-          </CustomTooltip>
+          <Link
+            href={contactLinks.find((f) => f.id === "email")?.href || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="Gmail">
+              <SocialIcons.gmail className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="LinkedIn">
-            <SocialIcons.linkedin className="size-full" />
-          </CustomTooltip>
+          <Link
+            href={contactLinks.find((f) => f.id === "linkedin")?.href || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="LinkedIn">
+              <SocialIcons.linkedin className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
         <DockIcon>
-          <CustomTooltip label="WhatsApp">
-            <SocialIcons.whatsapp className="size-full" />
-          </CustomTooltip>
+          <Link
+            href={contactLinks.find((f) => f.id === "whatsapp")?.href || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CustomTooltip label="WhatsApp">
+              <SocialIcons.whatsapp className="size-full" />
+            </CustomTooltip>
+          </Link>
         </DockIcon>
       </Dock>
     </div>

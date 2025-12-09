@@ -124,7 +124,7 @@ export default function Home() {
       {/* Bento Grid - Droite */}
       <div className="h-full flex items-center justify-center">
         <AboutBento
-          photoSrc="/assets/p1.jpeg"
+          photoSrc="/assets/p4-1.png"
           name="Tchandikou U. Shalom"
           title={personalInfo.title}
           description={personalInfo.bioShort}

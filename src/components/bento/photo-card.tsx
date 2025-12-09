@@ -23,7 +23,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
   return (
     <BentoCard
       colSpan={4}
-      rowSpan={2}
+      rowSpan={3}
       variant="glass"
       className={cn("p-0 overflow-hidden group", className)}
     >
@@ -33,7 +33,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           src={src}
           alt={alt}
           fill
-          className="object-cover  transition-transform duration-500 group-hover:scale-105"
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
           priority
         />
 
