@@ -9,6 +9,8 @@ import Image from "next/image";
 import { popTransition } from "@/lib/animations";
 import Link from "next/link";
 import { contactLinks } from "@/lib/data";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 /**
  * WindowIcons: Map of window IDs to icon components.
@@ -50,6 +52,7 @@ const exitTransition = {
 
 export function CustomDock() {
   const { windows, focusWindow, restoreWindow } = useWindows();
+  const { isMobile } = useIsMobile();
 
   const handleWindowClick = (windowId: string, isMinimized: boolean) => {
     if (isMinimized) {
@@ -60,23 +63,23 @@ export function CustomDock() {
   };
 
   return (
-    <div className="  ">
+    <div className="w-full">
       <Dock
-        className="bg-black/20  rounded-3xl border-[0.5px] border-white/10"
-        iconSize={60}
-        iconMagnification={80}
-        iconDistance={60}
+        className="bg-black/20 rounded-3xl border-[0.5px] border-white/10"
+        iconSize={isMobile ? 75 : 60}
+        iconMagnification={78}
+        iconDistance={isMobile ? 80 : 60}
       >
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <CustomTooltip label="Launcher">
             <Icons.circle className="size-10 text-white" />
           </CustomTooltip>
         </DockIcon>
 
         {/* Skills / Technologies */}
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
-            href="https://cianus.dev/api-docs"
+            href="https://www.postman.com/api-platform/api-integration"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -85,7 +88,7 @@ export function CustomDock() {
             </CustomTooltip>
           </Link>
         </DockIcon>
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
             href="https://www.typescriptlang.org/"
             target="_blank"
@@ -96,7 +99,7 @@ export function CustomDock() {
             </CustomTooltip>
           </Link>
         </DockIcon>
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
             href="https://react.dev/"
             target="_blank"
@@ -107,7 +110,7 @@ export function CustomDock() {
             </CustomTooltip>
           </Link>
         </DockIcon>
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
             href="https://nextjs.org/"
             target="_blank"
@@ -118,7 +121,7 @@ export function CustomDock() {
             </CustomTooltip>
           </Link>
         </DockIcon>
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
             href="https://tailwindcss.com/"
             target="_blank"
@@ -129,7 +132,7 @@ export function CustomDock() {
             </CustomTooltip>
           </Link>
         </DockIcon>
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
             href="https://nodejs.org"
             target="_blank"
@@ -140,7 +143,7 @@ export function CustomDock() {
             </CustomTooltip>
           </Link>
         </DockIcon>
-        <DockIcon>
+        <DockIcon hidden={isMobile}>
           <Link
             href="https://git-scm.com/"
             target="_blank"
@@ -154,7 +157,7 @@ export function CustomDock() {
         {/* Animated Window Icons */}
         <AnimatePresence mode="wait">
           {windows.map((window) => (
-            <DockIcon key={window.id} className="mx-2">
+            <DockIcon key={window.id} hidden={isMobile} className="mx-2">
               <CustomTooltip label={window.title}>
                 <motion.div
                   key={window.id}
@@ -209,7 +212,7 @@ export function CustomDock() {
           ))}
         </AnimatePresence>
         {/* Separator before social icons */}
-        <div className="w-px h-10 bg-white/20 mx-1" />
+        <div hidden={isMobile} className="w-px h-10 bg-white/20 mx-1" />
         {/* Social / Contact Apps */}
         <DockIcon>
           <Link
@@ -218,7 +221,11 @@ export function CustomDock() {
             rel="noopener noreferrer"
           >
             <CustomTooltip label="GitHub">
-              <SocialIcons.github className="size-full" />
+              {isMobile ? (
+                <SocialIcons.githubMobile className="size-full" />
+              ) : (
+                <SocialIcons.github className="size-full" />
+              )}
             </CustomTooltip>
           </Link>
         </DockIcon>
@@ -229,7 +236,11 @@ export function CustomDock() {
             rel="noopener noreferrer"
           >
             <CustomTooltip label="Gmail">
-              <SocialIcons.gmail className="size-full" />
+              {isMobile ? (
+                <SocialIcons.gmailMobile className="size-full" />
+              ) : (
+                <SocialIcons.gmail className="size-full" />
+              )}
             </CustomTooltip>
           </Link>
         </DockIcon>
@@ -240,7 +251,11 @@ export function CustomDock() {
             rel="noopener noreferrer"
           >
             <CustomTooltip label="LinkedIn">
-              <SocialIcons.linkedin className="size-full" />
+              {isMobile ? (
+                <SocialIcons.linkedinMobile className="size-full" />
+              ) : (
+                <SocialIcons.linkedin className="size-full" />
+              )}
             </CustomTooltip>
           </Link>
         </DockIcon>
@@ -251,7 +266,11 @@ export function CustomDock() {
             rel="noopener noreferrer"
           >
             <CustomTooltip label="WhatsApp">
-              <SocialIcons.whatsapp className="size-full" />
+              {isMobile ? (
+                <SocialIcons.whatsappMobile className="size-full" />
+              ) : (
+                <SocialIcons.whatsapp className="size-full" />
+              )}
             </CustomTooltip>
           </Link>
         </DockIcon>
@@ -503,6 +522,18 @@ const SocialIcons = {
       </svg>
     </div>
   ),
+  githubMobile: (props: IconProps) => {
+    return (
+      <Image
+        draggable={"false"}
+        src="/icons/github-m.png"
+        alt="Github Icon"
+        width={90}
+        height={90}
+        className={cn("size-24", props.className)}
+      />
+    );
+  },
   gmail: (props: IconProps) => (
     <div className="rounded-xl">
       <svg {...props} viewBox="0 49.4 512 399.42">
@@ -534,8 +565,20 @@ const SocialIcons = {
       </svg>
     </div>
   ),
+  gmailMobile: (props: IconProps) => {
+    return (
+      <Image
+        draggable={"false"}
+        src="/icons/gmail-m.png"
+        alt="Gmail Icon"
+        width={90}
+        height={90}
+        className={cn("size-24", props.className)}
+      />
+    );
+  },
   linkedin: (props: IconProps) => (
-    <div className="rounded-sm overflow-hidden size-[90%]">
+    <div className="rounded-md overflow-hidden size-[90%]">
       <svg {...props} preserveAspectRatio="xMidYMid" viewBox="0 0 256 256">
         <path d="M0 0h250v250H0z" fill="#ffff" />
         <path
@@ -545,6 +588,18 @@ const SocialIcons = {
       </svg>
     </div>
   ),
+  linkedinMobile: (props: IconProps) => {
+    return (
+      <Image
+        draggable={"false"}
+        src="/icons/linkedin-m.png"
+        alt="Whatsapp Icon"
+        width={90}
+        height={90}
+        className={cn("size-24", props.className)}
+      />
+    );
+  },
   whatsapp: (props: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -598,4 +653,16 @@ const SocialIcons = {
       />
     </svg>
   ),
+  whatsappMobile: (props: IconProps) => {
+    return (
+      <Image
+        draggable={"false"}
+        src="/icons/whatsapp-m.png"
+        alt="Whatsapp Icon"
+        width={90}
+        height={90}
+        className={cn("size-24", props.className)}
+      />
+    );
+  },
 };

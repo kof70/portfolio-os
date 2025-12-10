@@ -39,7 +39,6 @@ export const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
   //   }
   //   setShowFullscreenPrompt(false);
   // }, []);
-
   const handleSplashComplete = React.useCallback(() => {
     setShowSplash(false);
     // Show fullscreen prompt after splash

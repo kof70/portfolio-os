@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
 import { Icons } from "@/components/icons";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 interface TopBarProps {
   className?: string;
 }
@@ -23,6 +25,7 @@ function formatDateTime(date: Date) {
 
 export const TopBar: React.FC<TopBarProps> = () => {
   const [dateTime, setDateTime] = React.useState<Date>(new Date());
+  const { isMobile } = useIsMobile();
 
   React.useEffect(() => {
     // Use requestAnimationFrame for better performance than setInterval
@@ -50,7 +53,14 @@ export const TopBar: React.FC<TopBarProps> = () => {
   );
 
   return (
-    <nav className="h-9 bg-black/40 backdrop-blur-xs w-full flex justify-between items-center px-3">
+    <nav
+      className={cn(
+        "h-9 bg-black/40 backdrop-blur-xs w-full flex justify-between items-center px-3",
+        {
+          "bg-transparent backdrop-blur-none absolute": isMobile,
+        },
+      )}
+    >
       <div className="flex items-center gap-2">
         <button className="flex items-center gap-2 hover:bg-secondary/20 p-2 rounded-full transition-all ease-in-out duration-150">
           <div className="bg-white h-2 rounded-full w-8" />

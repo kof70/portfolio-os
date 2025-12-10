@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { BentoCard } from "./bento-grid";
 import { Icons } from "@/components/icons";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface NoteCardProps {
   title?: string;
@@ -18,12 +19,13 @@ export const NoteCard: React.FC<NoteCardProps> = ({
   className,
   icon = <Icons.folderClosed className="size-5 text-white" />,
 }) => {
+  const { isMobile } = useIsMobile();
   return (
     <BentoCard
-      colSpan={4}
-      rowSpan={1}
+      colSpan={isMobile ? 1 : 4}
+      rowSpan={isMobile ? 2 : 1}
       variant="solid"
-      className={cn("flex flex-col p-0", className)}
+      className={cn("flex flex-col p-0 max-md:hidden", className)}
     >
       {/* Header */}
       <div className="flex px-4 py-2 items-center bg-amber-300 gap-2 mb-3">

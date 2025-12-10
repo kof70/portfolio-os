@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { BentoCard } from "./bento-grid";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface PhotoCardProps {
   src: string;
@@ -20,10 +21,11 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
   title,
   className,
 }) => {
+  const { isMobile } = useIsMobile();
   return (
     <BentoCard
-      colSpan={4}
-      rowSpan={3}
+      colSpan={isMobile ? 2 : 4}
+      rowSpan={isMobile ? 3 : 3}
       variant="glass"
       className={cn("p-0 overflow-hidden group", className)}
     >

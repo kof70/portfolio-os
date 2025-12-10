@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import { createContext, useContext, useState, useCallback } from "react";
 
@@ -78,7 +77,7 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
                   isFocused: true,
                   zIndex: highestZIndex + 1,
                 }
-              : { ...w, isFocused: false }
+              : { ...w, isFocused: false },
           );
         }
 
@@ -89,16 +88,13 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
           zIndex: highestZIndex + 1,
         };
 
-        return [
-          ...prev.map((w) => ({ ...w, isFocused: false })),
-          newWindow,
-        ];
+        return [...prev.map((w) => ({ ...w, isFocused: false })), newWindow];
       });
 
       setHighestZIndex((prev) => prev + 1);
       setActiveWindowId(windowData.id);
     },
-    [highestZIndex]
+    [highestZIndex],
   );
 
   // Fermer une fenêtre
@@ -111,8 +107,8 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
   const minimizeWindow = useCallback((id: string) => {
     setWindows((prev) =>
       prev.map((w) =>
-        w.id === id ? { ...w, isMinimized: true, isFocused: false } : w
-      )
+        w.id === id ? { ...w, isMinimized: true, isFocused: false } : w,
+      ),
     );
     setActiveWindowId((prev) => (prev === id ? null : prev));
   }, []);
@@ -120,7 +116,7 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
   // Maximiser une fenêtre
   const maximizeWindow = useCallback((id: string) => {
     setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isMaximized: true } : w))
+      prev.map((w) => (w.id === id ? { ...w, isMaximized: true } : w)),
     );
   }, []);
 
@@ -137,13 +133,13 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
                 isFocused: true,
                 zIndex: highestZIndex + 1,
               }
-            : { ...w, isFocused: false }
-        )
+            : { ...w, isFocused: false },
+        ),
       );
       setHighestZIndex((prev) => prev + 1);
       setActiveWindowId(id);
     },
-    [highestZIndex]
+    [highestZIndex],
   );
 
   // Focus sur une fenêtre
@@ -153,23 +149,23 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
         prev.map((w) =>
           w.id === id
             ? { ...w, isFocused: true, zIndex: highestZIndex + 1 }
-            : { ...w, isFocused: false }
-        )
+            : { ...w, isFocused: false },
+        ),
       );
       setHighestZIndex((prev) => prev + 1);
       setActiveWindowId(id);
     },
-    [highestZIndex]
+    [highestZIndex],
   );
 
   // Mettre à jour la position d'une fenêtre
   const updateWindowPosition = useCallback(
     (id: string, position: WindowPosition) => {
       setWindows((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, position } : w))
+        prev.map((w) => (w.id === id ? { ...w, position } : w)),
       );
     },
-    []
+    [],
   );
 
   // Mettre à jour la taille d'une fenêtre
@@ -182,7 +178,7 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     (id: string) => {
       return windows.find((w) => w.id === id);
     },
-    [windows]
+    [windows],
   );
 
   // Vérifier si une fenêtre est ouverte
@@ -190,7 +186,7 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     (id: string) => {
       return windows.some((w) => w.id === id);
     },
-    [windows]
+    [windows],
   );
 
   const contextValue: WindowContextType = {

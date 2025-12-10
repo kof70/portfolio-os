@@ -5,6 +5,7 @@ import { WindowManager, WindowProvider } from "@/components/desktop/viewer";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Background from "@/components/shared/background";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -54,7 +55,7 @@ export default function RootLayout({
       >
         <WindowProvider>
           <AppWrapper>
-            <div className="w-full h-full bg-[url('/assets/bg-3.jpg')] bg-cover absolute top-0 left-0"></div>
+            <Background />
             <TopBar />
             <main className="h-full w-full">{children}</main>
             <BottomBar />

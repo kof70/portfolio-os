@@ -3,6 +3,8 @@ import * as React from "react";
 import { motion } from "motion/react";
 import { CustomDock } from "./custom-dock";
 import { useWindows } from "./viewer";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface BottomBarProps {
   className?: string;
@@ -10,6 +12,7 @@ interface BottomBarProps {
 
 export const BottomBar: React.FC<BottomBarProps> = () => {
   const { windows } = useWindows();
+  const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = React.useState(false);
 
   // Check if any window is open and not minimized
@@ -45,7 +48,10 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
           style={{
             width: "auto",
           }}
-          className=" rounded-3xl supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-sm mx-auto "
+          className={cn(" mx-auto", {
+            "rounded-3xl supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-sm":
+              isMobile,
+          })}
         >
           <CustomDock />
         </motion.footer>

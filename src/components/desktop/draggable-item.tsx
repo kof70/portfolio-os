@@ -81,6 +81,11 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   // Enregistrer l'item au montage
   React.useEffect(() => {
     registerItem(id, initialPosition);
+    console.log(`Item ${id} registered at position`, initialPosition);
+    const success = updateItemPosition(id, initialPosition);
+    if (success) {
+      setPosition(initialPosition);
+    }
     return () => {
       unregisterItem(id);
     };
@@ -167,6 +172,7 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
       }
     }
 
+    console.log("Drag ended. New position:", position);
     // Réinitialiser les valeurs de drag
     x.set(0);
     y.set(0);
