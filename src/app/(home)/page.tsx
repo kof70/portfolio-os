@@ -80,13 +80,13 @@ export default function Home() {
           rows={isMobile ? 3 : 6}
           cols={isMobile ? 3 : 6}
           cellSize={isMobile ? 90 : 110}
-          gap={8}
+          gap={isMobile ? 2 : 8}
           padding={isMobile ? 8 : 16}
         >
           {/* Dossier Projets */}
           <DraggableItem
             id="folder-projects"
-            initialPosition={{ row: isMobile ? 2 : 0, col: 0 }}
+            initialPosition={{ row: 0, col: 0 }}
             onDoubleClick={handleOpenProjects}
             onClick={() => setSelectedFile("projects")}
             isSelected={selectedFile === "projects"}
@@ -97,7 +97,7 @@ export default function Home() {
           {/* Dossier À propos */}
           <DraggableItem
             id="folder-about"
-            initialPosition={{ row: isMobile ? 2 : 1, col: isMobile ? 1 : 0 }}
+            initialPosition={{ row: isMobile ? 0 : 1, col: isMobile ? 1 : 0 }}
             onDoubleClick={handleOpenAbout}
             onClick={() => setSelectedFile("about")}
             isSelected={selectedFile === "about"}
@@ -108,7 +108,7 @@ export default function Home() {
           {/* Dossier Contact */}
           <DraggableItem
             id="folder-contact"
-            initialPosition={{ row: isMobile ? 2 : 2, col: isMobile ? 2 : 0 }}
+            initialPosition={{ row: isMobile ? 0 : 2, col: isMobile ? 2 : 0 }}
             onDoubleClick={handleOpenContact}
             onClick={() => setSelectedFile("contact")}
             isSelected={selectedFile === "contact"}
@@ -119,7 +119,7 @@ export default function Home() {
           {/* Fichier CV */}
           <DraggableItem
             id="file-cv"
-            initialPosition={{ row: isMobile ? 2 : 3, col: isMobile ? 3 : 0 }}
+            initialPosition={{ row: isMobile ? 0 : 3, col: isMobile ? 3 : 0 }}
             onClick={() => setSelectedFile("cv")}
             isSelected={selectedFile === "cv"}
             onDoubleClick={handleOpenCV}

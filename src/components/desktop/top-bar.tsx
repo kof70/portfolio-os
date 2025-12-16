@@ -72,10 +72,7 @@ export const TopBar: React.FC<TopBarProps> = () => {
           <span className="text-xs font-semibold">75%</span>
           <Icons.batteryHalf className="size-5 text-muted" />
         </button>
-        <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150">
-          <Icons.wifi className="size-5 text-muted" />
-        </button>
-        <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150">
+        <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150 max-md:hidden">
           <Icons.search className="size-5 text-muted" />
         </button>
         <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150">
