@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BentoGridProps {
   children: React.ReactNode;
@@ -12,11 +13,17 @@ export const BentoGrid: React.FC<BentoGridProps> = ({
   children,
   className,
 }) => {
+  const { isMobile } = useIsMobile();
+
   return (
     <div
       className={cn(
-        "grid grid-cols-4 gap-4 p-4 h-full w-full max-w-md mx-auto",
-        "auto-rows-[120px]",
+        "grid gap-3 p-4 h-full w-full mx-auto",
+        // Sur mobile: grille 2 colonnes compacte
+        // Sur desktop: grille 4 colonnes avec plus d'espace
+        isMobile
+          ? "grid-cols-2 max-w-[300px] auto-rows-[100px]"
+          : "grid-cols-4 max-w-md auto-rows-[120px]",
         className,
       )}
     >
@@ -72,7 +79,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
         colSpanClasses[colSpan],
         rowSpanClasses[rowSpan],
         variantClasses[variant],
-        onClick && "cursor-pointer hover:scale-[1.02]",
+        onClick && "cursor-pointer hover:scale-[1.02] active:scale-[0.98]",
         className,
       )}
     >

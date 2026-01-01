@@ -1,11 +1,12 @@
 import { AppWrapper } from "@/components/app-wrapper";
 import { BottomBar } from "@/components/desktop/bottom-bar";
+import { ContextMenuProvider } from "@/components/desktop/context-menu";
 import { TopBar } from "@/components/desktop/top-bar";
 import { WindowManager, WindowProvider } from "@/components/desktop/viewer";
+import { DesktopStorageProvider } from "@/hooks/use-desktop-storage-context";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Background from "@/components/shared/background";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -53,15 +54,18 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased relative h-full flex flex-col items-center bg-black overflow-hidden`}
       >
-        <WindowProvider>
-          <AppWrapper>
-            <Background />
-            <TopBar />
-            <main className="h-full w-full">{children}</main>
-            <BottomBar />
-            <WindowManager />
-          </AppWrapper>
-        </WindowProvider>
+        <DesktopStorageProvider>
+          <ContextMenuProvider>
+            <WindowProvider>
+              <AppWrapper>
+                <TopBar />
+                <main className="h-full w-full">{children}</main>
+                <BottomBar />
+                <WindowManager />
+              </AppWrapper>
+            </WindowProvider>
+          </ContextMenuProvider>
+        </DesktopStorageProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, useMotionValue } from "motion/react";
 import { useDesktopGrid, GridPosition } from "./desktop-grid";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface DraggableItemProps {
   id: string;
@@ -12,6 +13,8 @@ interface DraggableItemProps {
   className?: string;
   onDoubleClick?: () => void;
   onClick?: () => void;
+  onContextMenu?: (e: React.MouseEvent | React.TouchEvent) => void;
+  onPositionChange?: (id: string, position: GridPosition) => void;
   isSelected?: boolean;
 }
 
@@ -53,6 +56,8 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   className,
   onDoubleClick,
   onClick,
+  onContextMenu,
+  onPositionChange,
   isSelected,
 }) => {
   const {
@@ -70,26 +75,51 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
     setHoveredCell,
   } = useDesktopGrid();
 
+  const { isMobile } = useIsMobile();
+
   const [position, setPosition] = React.useState<GridPosition>(initialPosition);
   const [isDragging, setIsDragging] = React.useState(false);
   const itemRef = React.useRef<HTMLDivElement>(null);
+  const initialPositionRef = React.useRef<GridPosition>(initialPosition);
+
+  // Long press state pour mobile
+  const longPressTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+  const isLongPressRef = React.useRef(false);
+  const touchStartPosRef = React.useRef<{ x: number; y: number } | null>(null);
 
   // Motion values pour le drag libre
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // Constantes pour le long press
+  const LONG_PRESS_DURATION = 500; // ms
+  const MOVE_THRESHOLD = 10; // pixels
+
+  // Mettre à jour la position si initialPosition change (ex: depuis le storage)
+  React.useEffect(() => {
+    if (
+      initialPosition.row !== initialPositionRef.current.row ||
+      initialPosition.col !== initialPositionRef.current.col
+    ) {
+      initialPositionRef.current = initialPosition;
+      setPosition(initialPosition);
+    }
+  }, [initialPosition]);
+
   // Enregistrer l'item au montage
   React.useEffect(() => {
-    registerItem(id, initialPosition);
-    console.log(`Item ${id} registered at position`, initialPosition);
-    const success = updateItemPosition(id, initialPosition);
+    registerItem(id, position);
+    const success = updateItemPosition(id, position);
     if (success) {
-      setPosition(initialPosition);
+      setPosition(position);
     }
     return () => {
       unregisterItem(id);
     };
-  }, [id, initialPosition, registerItem, unregisterItem]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, registerItem, unregisterItem]);
 
   // Calculer les coordonnées de la position actuelle
   const coords = getCoordsFromPosition(position);
@@ -149,7 +179,89 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
     return bestCell;
   };
 
+  // Nettoyer le timer de long press
+  const clearLongPressTimer = React.useCallback(() => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  }, []);
+
+  // Gestionnaire de début de touch (pour long press)
+  const handleTouchStart = React.useCallback(
+    (e: React.TouchEvent) => {
+      if (!isMobile) return;
+
+      const touch = e.touches[0];
+      touchStartPosRef.current = { x: touch.clientX, y: touch.clientY };
+      isLongPressRef.current = false;
+
+      // Démarrer le timer de long press
+      longPressTimerRef.current = setTimeout(() => {
+        isLongPressRef.current = true;
+
+        // Vibration tactile si disponible
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+          navigator.vibrate(50);
+        }
+
+        // Déclencher le menu contextuel
+        if (onContextMenu && touchStartPosRef.current) {
+          const syntheticEvent = {
+            preventDefault: () => {},
+            stopPropagation: () => {},
+            clientX: touchStartPosRef.current.x,
+            clientY: touchStartPosRef.current.y,
+          } as unknown as React.TouchEvent;
+
+          onContextMenu(syntheticEvent);
+        }
+      }, LONG_PRESS_DURATION);
+    },
+    [isMobile, onContextMenu],
+  );
+
+  // Gestionnaire de mouvement touch
+  const handleTouchMove = React.useCallback(
+    (e: React.TouchEvent) => {
+      if (!touchStartPosRef.current) return;
+
+      const touch = e.touches[0];
+      const deltaX = Math.abs(touch.clientX - touchStartPosRef.current.x);
+      const deltaY = Math.abs(touch.clientY - touchStartPosRef.current.y);
+
+      // Si le mouvement dépasse le seuil, annuler le long press
+      if (deltaX > MOVE_THRESHOLD || deltaY > MOVE_THRESHOLD) {
+        clearLongPressTimer();
+      }
+    },
+    [clearLongPressTimer],
+  );
+
+  // Gestionnaire de fin de touch
+  const handleTouchEnd = React.useCallback(() => {
+    clearLongPressTimer();
+
+    // Si c'était un long press, ne pas déclencher le click
+    if (isLongPressRef.current) {
+      isLongPressRef.current = false;
+      return;
+    }
+
+    touchStartPosRef.current = null;
+  }, [clearLongPressTimer]);
+
+  // Nettoyer le timer au démontage
+  React.useEffect(() => {
+    return () => {
+      clearLongPressTimer();
+    };
+  }, [clearLongPressTimer]);
+
   const handleDragStart = () => {
+    // Ne pas permettre le drag pendant un long press
+    if (isLongPressRef.current) return;
+
     setIsDragging(true);
     setDraggingItem(id);
   };
@@ -169,19 +281,39 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
       const success = updateItemPosition(id, newPosition);
       if (success) {
         setPosition(newPosition);
+        // Notifier le parent du changement de position
+        onPositionChange?.(id, newPosition);
       }
     }
 
-    console.log("Drag ended. New position:", position);
     // Réinitialiser les valeurs de drag
     x.set(0);
     y.set(0);
   };
 
+  const handleContextMenuInternal = (e: React.MouseEvent) => {
+    if (onContextMenu) {
+      onContextMenu(e);
+    }
+  };
+
+  const handleClick = React.useCallback(() => {
+    // Ne pas déclencher le click si c'était un long press
+    if (isLongPressRef.current) return;
+    onClick?.();
+  }, [onClick]);
+
+  const handleDoubleClick = React.useCallback(() => {
+    // Ne pas déclencher le double click si c'était un long press
+    if (isLongPressRef.current) return;
+    onDoubleClick?.();
+  }, [onDoubleClick]);
+
   return (
     <motion.div
       ref={itemRef}
-      drag
+      data-draggable-item={id}
+      drag={!isMobile} // Désactiver le drag natif sur mobile (on utilise tap)
       dragMomentum={false}
       dragElastic={0}
       onDragStart={handleDragStart}
@@ -210,10 +342,18 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
         zIndex: 100,
         cursor: "grabbing",
       }}
-      onDoubleClick={onDoubleClick}
-      onClick={onClick}
+      whileTap={isMobile ? { scale: 0.95 } : undefined}
+      onDoubleClick={handleDoubleClick}
+      onClick={handleClick}
+      onContextMenu={handleContextMenuInternal}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       className={cn(
-        "cursor-grab select-none rounded-xl hover:bg-white/20 hover:border-[0.5px] border-white/10 transition-colors ease-in-out duration-150",
+        "select-none rounded-xl transition-colors ease-in-out duration-150",
+        !isMobile && "cursor-grab hover:bg-white/20",
+        isMobile && "active:bg-white/20",
+        "hover:border-[0.5px] border-white/10",
         isDragging ? "z-50" : "z-10",
         isSelected ? "hover:bg-white/30 bg-white/20 border-[0.5px]" : "",
         className,

@@ -3,14 +3,26 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
-const Background: React.FC = () => {
+interface BackgroundProps {
+  wallpaper?: string;
+  wallpaperMobile?: string;
+}
+
+const Background: React.FC<BackgroundProps> = ({
+  wallpaper = "/assets/bg-3.jpg",
+  wallpaperMobile = "/assets/bg-mobile.jpg",
+}) => {
   const { isMobile } = useIsMobile();
+  const currentWallpaper = isMobile ? wallpaperMobile : wallpaper;
+
   return (
     <div
-      className={cn("w-full h-full  bg-cover absolute top-0 left-0", {
-        "bg-[url('/assets/bg-mobile.jpg')]": isMobile,
-        "bg-[url('/assets/bg-3.jpg')]": !isMobile,
-      })}
+      className={cn(
+        "w-full h-full bg-cover bg-center bg-no-repeat absolute top-0 left-0 transition-all duration-500",
+      )}
+      style={{
+        backgroundImage: `url('${currentWallpaper}')`,
+      }}
     />
   );
 };

@@ -22,10 +22,11 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
   className,
 }) => {
   const { isMobile } = useIsMobile();
+
   return (
     <BentoCard
       colSpan={isMobile ? 2 : 4}
-      rowSpan={isMobile ? 3 : 3}
+      rowSpan={isMobile ? 2 : 3}
       variant="glass"
       className={cn("p-0 overflow-hidden group", className)}
     >
@@ -37,21 +38,41 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           fill
           className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
           priority
+          sizes={
+            isMobile ? "(max-width: 768px) 50vw" : "(max-width: 1200px) 33vw"
+          }
         />
 
         {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
         {/* Info overlay */}
         {(name || title) && (
-          <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div
+            className={cn(
+              "absolute bottom-0 left-0 right-0",
+              isMobile ? "p-2" : "p-4",
+            )}
+          >
             {name && (
-              <h2 className="text-white text-xl font-bold tracking-tight">
+              <h2
+                className={cn(
+                  "text-white font-bold tracking-tight",
+                  isMobile ? "text-base" : "text-xl",
+                )}
+              >
                 {name}
               </h2>
             )}
             {title && (
-              <p className="text-white/80 text-sm font-medium mt-1">{title}</p>
+              <p
+                className={cn(
+                  "text-white/80 font-medium mt-0.5",
+                  isMobile ? "text-xs line-clamp-1" : "text-sm mt-1",
+                )}
+              >
+                {title}
+              </p>
             )}
           </div>
         )}

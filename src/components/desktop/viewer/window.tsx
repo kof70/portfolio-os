@@ -3,6 +3,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useWindows, WindowState } from "./window-context";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ChevronLeft } from "lucide-react";
 
 interface WindowProps {
   window: WindowState;
@@ -18,6 +20,8 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     updateWindowPosition,
     updateWindowSize,
   } = useWindows();
+
+  const { isMobile } = useIsMobile();
 
   const windowRef = React.useRef<HTMLDivElement>(null);
   const isDraggingRef = React.useRef(false);
@@ -87,7 +91,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     }
   }, [windowState.position, windowState.size, isMaximizeAnimating]);
 
-  const handleClose = (e: React.MouseEvent) => {
+  const handleClose = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     setAnimationState("closing");
     setTimeout(() => {
@@ -95,7 +99,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     }, 200);
   };
 
-  const handleMinimize = (e: React.MouseEvent) => {
+  const handleMinimize = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     setAnimationState("minimizing");
     setTimeout(() => {
@@ -103,8 +107,12 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     }, 250);
   };
 
-  const handleMaximize = (e: React.MouseEvent) => {
+  const handleMaximize = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
+
+    // Sur mobile, ne pas permettre le toggle maximize
+    if (isMobile) return;
+
     setIsMaximizeAnimating(true);
 
     if (windowState.isMaximized) {
@@ -153,73 +161,80 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
   };
 
   const handleDragStart = (e: React.MouseEvent) => {
-    if (e.button !== 0) return;
+    // Désactiver le drag sur mobile
+    if (isMobile) return;
+
     e.preventDefault();
+    handleFocus();
 
+    // If maximized, restore to normal size first and adjust position
     if (windowState.isMaximized) {
-      // Unmaximize while dragging
-      const restoredWidth = savedState?.size.width || 800;
-      const restoredHeight = savedState?.size.height || 600;
-      const newX = Math.max(0, e.clientX - restoredWidth / 2);
-      const newY = Math.max(28, e.clientY - 20);
+      const restoredWidth = savedState?.size.width || windowState.size.width;
+      const restoredHeight = savedState?.size.height || windowState.size.height;
+      const newX = e.clientX - restoredWidth / 2;
+      const newY = e.clientY - 24;
 
-      setIsMaximizeAnimating(true);
-      setCurrentSize({ width: restoredWidth, height: restoredHeight });
-      setCurrentPos({ x: newX, y: newY });
+      setCurrentSize({
+        width: restoredWidth,
+        height: restoredHeight,
+      });
+      setCurrentPos({
+        x: Math.max(0, newX),
+        y: Math.max(28, newY),
+      });
 
-      dragOffsetRef.current = { x: restoredWidth / 2, y: 20 };
+      updateWindowSize(windowState.id, {
+        width: restoredWidth,
+        height: restoredHeight,
+      });
+      updateWindowPosition(windowState.id, {
+        x: Math.max(0, newX),
+        y: Math.max(28, newY),
+      });
+      restoreWindow(windowState.id);
 
-      setTimeout(() => {
-        restoreWindow(windowState.id);
-        updateWindowSize(windowState.id, {
-          width: restoredWidth,
-          height: restoredHeight,
-        });
-        updateWindowPosition(windowState.id, { x: newX, y: newY });
-        setIsMaximizeAnimating(false);
-        isDraggingRef.current = true;
-        setIsDragging(true);
-      }, 200);
+      dragOffsetRef.current = {
+        x: restoredWidth / 2,
+        y: 24,
+      };
     } else {
       dragOffsetRef.current = {
         x: e.clientX - currentPos.x,
         y: e.clientY - currentPos.y,
       };
-      isDraggingRef.current = true;
-      setIsDragging(true);
     }
 
-    focusWindow(windowState.id);
+    isDraggingRef.current = true;
+    setIsDragging(true);
   };
 
   const handleResizeStart = (direction: string) => (e: React.MouseEvent) => {
-    if (e.button !== 0 || windowState.isMaximized) return;
+    // Désactiver le resize sur mobile
+    if (isMobile) return;
+
     e.preventDefault();
     e.stopPropagation();
+    handleFocus();
     isResizingRef.current = true;
     resizeDirectionRef.current = direction;
     setIsResizing(true);
-    focusWindow(windowState.id);
   };
 
-  // Mouse event handlers
-  React.useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+  // Mouse move handler for both drag and resize
+  const handleMouseMove = React.useCallback(
+    (e: MouseEvent) => {
       if (isDraggingRef.current) {
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-        animationFrameRef.current = requestAnimationFrame(() => {
-          const newX = e.clientX - dragOffsetRef.current.x;
-          const newY = Math.max(28, e.clientY - dragOffsetRef.current.y);
-          setCurrentPos({ x: newX, y: newY });
-        });
+        const newX = e.clientX - dragOffsetRef.current.x;
+        const newY = e.clientY - dragOffsetRef.current.y;
+        setCurrentPos({ x: newX, y: Math.max(0, newY) });
+        return;
       }
 
       if (isResizingRef.current && resizeDirectionRef.current) {
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
         }
+
         animationFrameRef.current = requestAnimationFrame(() => {
           const direction = resizeDirectionRef.current!;
           const minW = windowState.minSize?.width || 300;
@@ -230,24 +245,31 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
           let newX = currentPos.x;
           let newY = currentPos.y;
 
+          // Handle width changes (east/west)
           if (direction.includes("e")) {
-            newW = Math.max(minW, e.clientX - currentPos.x);
+            const delta = e.clientX - (currentPos.x + currentSize.width);
+            newW = Math.max(minW, currentSize.width + delta);
           }
           if (direction.includes("w")) {
             const delta = currentPos.x - e.clientX;
-            if (currentSize.width + delta >= minW) {
-              newW = currentSize.width + delta;
+            const possibleW = currentSize.width + delta;
+            if (possibleW >= minW) {
+              newW = possibleW;
               newX = e.clientX;
             }
           }
+
+          // Handle height changes (north/south)
           if (direction.includes("s")) {
-            newH = Math.max(minH, e.clientY - currentPos.y);
+            const delta = e.clientY - (currentPos.y + currentSize.height);
+            newH = Math.max(minH, currentSize.height + delta);
           }
           if (direction.includes("n")) {
             const delta = currentPos.y - e.clientY;
-            if (currentSize.height + delta >= minH && e.clientY >= 28) {
-              newH = currentSize.height + delta;
-              newY = e.clientY;
+            const possibleH = currentSize.height + delta;
+            if (possibleH >= minH) {
+              newH = possibleH;
+              newY = Math.max(0, e.clientY);
             }
           }
 
@@ -255,28 +277,34 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
           setCurrentPos({ x: newX, y: newY });
         });
       }
-    };
+    },
+    [currentPos, currentSize, windowState.minSize],
+  );
 
-    const handleMouseUp = () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
+  const handleMouseUp = React.useCallback(() => {
+    if (isDraggingRef.current) {
+      updateWindowPosition(windowState.id, currentPos);
+    }
+    if (isResizingRef.current) {
+      updateWindowSize(windowState.id, currentSize);
+      updateWindowPosition(windowState.id, currentPos);
+    }
 
-      if (isDraggingRef.current) {
-        updateWindowPosition(windowState.id, currentPos);
-        isDraggingRef.current = false;
-        setIsDragging(false);
-      }
-      if (isResizingRef.current) {
-        updateWindowSize(windowState.id, currentSize);
-        updateWindowPosition(windowState.id, currentPos);
-        isResizingRef.current = false;
-        resizeDirectionRef.current = null;
-        setIsResizing(false);
-      }
-    };
+    isDraggingRef.current = false;
+    isResizingRef.current = false;
+    resizeDirectionRef.current = null;
+    setIsDragging(false);
+    setIsResizing(false);
+  }, [
+    windowState.id,
+    currentPos,
+    currentSize,
+    updateWindowPosition,
+    updateWindowSize,
+  ]);
 
+  // Mouse event listeners
+  React.useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
     return () => {
@@ -286,14 +314,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [
-    windowState.id,
-    windowState.minSize,
-    currentPos,
-    currentSize,
-    updateWindowPosition,
-    updateWindowSize,
-  ]);
+  }, [handleMouseMove, handleMouseUp]);
 
   // Don't render if minimized
   if (windowState.isMinimized) {
@@ -305,60 +326,84 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     switch (animationState) {
       case "entering":
         return {
-          transform: "scale(0.5)",
+          transform: isMobile ? "translateY(100%)" : "scale(0.5)",
           opacity: 0,
           transition: "none",
         };
 
       case "closing":
         return {
-          transform: "scale(0.85)",
+          transform: isMobile ? "translateY(100%)" : "scale(0.85)",
           opacity: 0,
-          transition:
-            "transform 0.2s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out",
+          transition: isMobile
+            ? "transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out"
+            : "transform 0.2s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out",
         };
 
       case "minimizing":
         return {
-          transform: "scale(0.5) translateY(50px)",
+          transform: isMobile
+            ? "translateY(100%)"
+            : "scale(0.5) translateY(50px)",
           opacity: 0,
-          transition:
-            "transform 0.25s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out",
+          transition: isMobile
+            ? "transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out"
+            : "transform 0.25s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out",
         };
 
       case "visible":
       default:
         return {
-          transform: "scale(1)",
+          transform: isMobile ? "translateY(0)" : "scale(1)",
           opacity: 1,
           transition:
             isDragging || isResizing
               ? "none"
-              : "transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.25s ease-out",
+              : isMobile
+                ? "transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.25s ease-out"
+                : "transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.25s ease-out",
         };
     }
   };
 
-  // Window positioning styles
-  const positionStyles: React.CSSProperties =
-    windowState.isMaximized && !isMaximizeAnimating
-      ? {
-          position: "fixed",
-          left: 0,
-          top: 28,
-          width: "100%",
-          height: "calc(100vh - 108px)",
-          zIndex: windowState.zIndex,
-          borderRadius: 0,
-        }
-      : {
-          position: "fixed",
-          left: currentPos.x,
-          top: currentPos.y,
-          width: currentSize.width,
-          height: currentSize.height,
-          zIndex: windowState.zIndex,
-        };
+  // Window positioning styles - fullscreen sur mobile
+  const getPositionStyles = (): React.CSSProperties => {
+    if (isMobile) {
+      // Fullscreen sur mobile
+      return {
+        position: "fixed",
+        left: 0,
+        top: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: windowState.zIndex,
+        borderRadius: 0,
+      };
+    }
+
+    if (windowState.isMaximized && !isMaximizeAnimating) {
+      return {
+        position: "fixed",
+        left: 0,
+        top: 28,
+        width: "100%",
+        height: "calc(100vh - 108px)",
+        zIndex: windowState.zIndex,
+        borderRadius: 0,
+      };
+    }
+
+    return {
+      position: "fixed",
+      left: currentPos.x,
+      top: currentPos.y,
+      width: currentSize.width,
+      height: currentSize.height,
+      zIndex: windowState.zIndex,
+    };
+  };
+
+  const positionStyles = getPositionStyles();
 
   // Maximize/restore animation transition
   const layoutTransition = isMaximizeAnimating
@@ -374,7 +419,10 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
         "bg-black/20 backdrop-blur-2xl overflow-hidden",
         "border border-white/10 shadow-2xl shadow-black/50",
         "flex flex-col",
-        windowState.isMaximized && !isMaximizeAnimating ? "" : "rounded-xl",
+        // Pas de border radius sur mobile ou en maximisé
+        isMobile || (windowState.isMaximized && !isMaximizeAnimating)
+          ? ""
+          : "rounded-xl",
         windowState.isFocused
           ? "ring-1 ring-white/20 shadow-2xl"
           : "ring-0 opacity-95 shadow-xl",
@@ -387,7 +435,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
         transition: [layoutTransition, animationStyles.transition]
           .filter(Boolean)
           .join(", "),
-        transformOrigin: "center center",
+        transformOrigin: isMobile ? "bottom center" : "center center",
         willChange:
           isDragging ||
           isResizing ||
@@ -397,122 +445,160 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
             : "auto",
       }}
       onMouseDown={handleFocus}
+      onTouchStart={handleFocus}
     >
-      {/* Title Bar */}
-      <div
-        className={cn(
-          "h-12 flex items-center px-4 gap-3 shrink-0",
-          "bg-neutral-800/90 border-b border-white/5",
-          "select-none",
-          !windowState.isMaximized && !isDragging && "cursor-grab",
-          isDragging && "cursor-grabbing",
-        )}
-        onMouseDown={handleDragStart}
-        onDoubleClick={handleMaximize}
-      >
-        {/* Traffic Light Buttons */}
+      {/* Title Bar - différent sur mobile */}
+      {isMobile ? (
+        // Mobile Title Bar - Style iOS
         <div
-          className="flex items-center gap-2 group/buttons"
-          onMouseDown={(e) => e.stopPropagation()}
+          className={cn(
+            "h-14 flex items-center px-4 shrink-0",
+            "bg-neutral-900/95 border-b border-white/10",
+            "select-none",
+          )}
         >
+          {/* Bouton retour */}
           <button
             onClick={handleClose}
-            className={cn(
-              "size-4 rounded-full bg-[#ff5f57]",
-              "flex items-center justify-center",
-              "transition-all duration-150 ease-out",
-              "hover:bg-[#ff4444] hover:scale-110",
-              "active:scale-95 active:bg-[#cc4040]",
-              "group-hover/buttons:shadow-sm",
-            )}
-            aria-label="Close"
+            onTouchEnd={handleClose}
+            className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors -ml-2 px-2 py-1"
           >
-            <svg
-              className="w-2 h-2 text-black/0 group-hover/buttons:text-black/60 transition-colors"
-              viewBox="0 0 12 12"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M3 3l6 6M9 3l-6 6" />
-            </svg>
+            <ChevronLeft className="size-6" />
+            <span className="text-base">Retour</span>
           </button>
 
-          <button
-            onClick={handleMinimize}
-            className={cn(
-              "size-4  rounded-full bg-[#febc2e]",
-              "flex items-center justify-center",
-              "transition-all duration-150 ease-out",
-              "hover:bg-[#f5a623] hover:scale-110",
-              "active:scale-95 active:bg-[#cc8800]",
-              "group-hover/buttons:shadow-sm",
-            )}
-            aria-label="Minimize"
-          >
-            <svg
-              className="w-2 h-2 text-black/0 group-hover/buttons:text-black/60 transition-colors"
-              viewBox="0 0 12 12"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M2 6h8" />
-            </svg>
-          </button>
+          {/* Title centré */}
+          <div className="flex-1 flex items-center justify-center">
+            <span className="text-white font-semibold text-base truncate">
+              {windowState.title}
+            </span>
+          </div>
 
-          <button
-            onClick={handleMaximize}
-            className={cn(
-              "size-4  rounded-full bg-[#28c840]",
-              "flex items-center justify-center",
-              "transition-all duration-150 ease-out",
-              "hover:bg-[#1db934] hover:scale-110",
-              "active:scale-95 active:bg-[#17a02a]",
-              "group-hover/buttons:shadow-sm",
-            )}
-            aria-label="Maximize"
-          >
-            <svg
-              className="w-2 h-2 text-black/0 group-hover/buttons:text-black/60 transition-colors"
-              viewBox="0 0 12 12"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              {windowState.isMaximized ? (
-                <path d="M3 8V4h4M9 4v4H5" />
-              ) : (
-                <>
-                  <path d="M2 2l3.5 3.5M10 10l-3.5-3.5" />
-                  <path d="M6.5 2H2v4.5M5.5 10H10V5.5" />
-                </>
-              )}
-            </svg>
-          </button>
+          {/* Spacer pour équilibrer */}
+          <div className="w-20" />
         </div>
-
-        {/* Title */}
-        <div className="flex-1 flex items-center justify-center gap-2 min-w-0">
-          {windowState.icon && (
-            <div className="w-4 h-4 shrink-0">{windowState.icon}</div>
+      ) : (
+        // Desktop Title Bar - Style macOS
+        <div
+          className={cn(
+            "h-12 flex items-center px-4 gap-3 shrink-0",
+            "bg-neutral-800/90 border-b border-white/5",
+            "select-none",
+            !windowState.isMaximized && !isDragging && "cursor-grab",
+            isDragging && "cursor-grabbing",
           )}
-          <span className="text-white/80 text-sm font-medium truncate">
-            {windowState.title}
-          </span>
-        </div>
+          onMouseDown={handleDragStart}
+          onDoubleClick={handleMaximize}
+        >
+          {/* Traffic Light Buttons */}
+          <div
+            className="flex items-center gap-2 group/buttons"
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={handleClose}
+              className={cn(
+                "size-4 rounded-full bg-[#ff5f57]",
+                "flex items-center justify-center",
+                "transition-all duration-150 ease-out",
+                "hover:bg-[#ff4444] hover:scale-110",
+                "active:scale-95 active:bg-[#cc4040]",
+                "group-hover/buttons:shadow-sm",
+              )}
+              aria-label="Close"
+            >
+              <svg
+                className="w-2 h-2 text-black/0 group-hover/buttons:text-black/60 transition-colors"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M3 3l6 6M9 3l-6 6" />
+              </svg>
+            </button>
 
-        {/* Spacer for symmetry */}
-        <div className="w-14" />
-      </div>
+            <button
+              onClick={handleMinimize}
+              className={cn(
+                "size-4 rounded-full bg-[#febc2e]",
+                "flex items-center justify-center",
+                "transition-all duration-150 ease-out",
+                "hover:bg-[#f5a623] hover:scale-110",
+                "active:scale-95 active:bg-[#cc8800]",
+                "group-hover/buttons:shadow-sm",
+              )}
+              aria-label="Minimize"
+            >
+              <svg
+                className="w-2 h-2 text-black/0 group-hover/buttons:text-black/60 transition-colors"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M2 6h8" />
+              </svg>
+            </button>
+
+            <button
+              onClick={handleMaximize}
+              className={cn(
+                "size-4 rounded-full bg-[#28c840]",
+                "flex items-center justify-center",
+                "transition-all duration-150 ease-out",
+                "hover:bg-[#1db934] hover:scale-110",
+                "active:scale-95 active:bg-[#17a02a]",
+                "group-hover/buttons:shadow-sm",
+              )}
+              aria-label="Maximize"
+            >
+              <svg
+                className="w-2 h-2 text-black/0 group-hover/buttons:text-black/60 transition-colors"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                {windowState.isMaximized ? (
+                  <path d="M3 8V4h4M9 4v4H5" />
+                ) : (
+                  <>
+                    <path d="M2 2l3.5 3.5M10 10l-3.5-3.5" />
+                    <path d="M6.5 2H2v4.5M5.5 10H10V5.5" />
+                  </>
+                )}
+              </svg>
+            </button>
+          </div>
+
+          {/* Title */}
+          <div className="flex-1 flex items-center justify-center gap-2 min-w-0">
+            {windowState.icon && (
+              <div className="w-4 h-4 shrink-0">{windowState.icon}</div>
+            )}
+            <span className="text-white/80 text-sm font-medium truncate">
+              {windowState.title}
+            </span>
+          </div>
+
+          {/* Spacer for symmetry */}
+          <div className="w-14" />
+        </div>
+      )}
 
       {/* Content */}
-      <div className="flex-1 overflow-auto window-viewport">
+      <div
+        className={cn(
+          "flex-1 overflow-auto window-viewport",
+          isMobile && "pb-safe", // Safe area pour les iPhones avec notch
+        )}
+      >
         {windowState.content}
       </div>
 
-      {/* Resize Handles */}
-      {!windowState.isMaximized && (
+      {/* Resize Handles - seulement sur desktop et non maximisé */}
+      {!isMobile && !windowState.isMaximized && (
         <>
           {/* Edge handles */}
           <div
@@ -554,5 +640,3 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     </div>
   );
 };
-
-export default Window;
