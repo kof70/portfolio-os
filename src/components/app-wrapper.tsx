@@ -65,7 +65,7 @@ export const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
           duration: 1,
           ease: [0.4, 0, 0.2, 1],
         }}
-        className="w-full h-full overflow-hidden"
+        className="w-full h-full overflow-hidden flex flex-col"
       >
         {children}
       </motion.div>

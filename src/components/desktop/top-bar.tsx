@@ -114,7 +114,7 @@ export const TopBar: React.FC<TopBarProps> = () => {
   return (
     <nav
       className={cn(
-        "h-9 bg-black/40 backdrop-blur-xs w-full flex justify-between items-center px-3",
+        "h-9 bg-black/40 backdrop-blur-xs w-full flex justify-between items-center px-3 shrink-0 relative z-50",
       )}
     >
       <div className="flex items-center gap-2">

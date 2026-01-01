@@ -14,7 +14,6 @@ import {
   useWindows,
 } from "@/components/desktop/viewer";
 import { WallpaperPicker } from "@/components/desktop/wallpaper-picker";
-import Background from "@/components/shared/background";
 import { useDesktopStorage } from "@/hooks/use-desktop-storage-context";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { personalInfo } from "@/lib/data";
@@ -215,142 +214,134 @@ export default function Home() {
   };
 
   return (
-    <>
-      {/* Background dynamique */}
-      <Background wallpaper={wallpaper} wallpaperMobile={wallpaperMobile} />
-
-      <main
-        className={cn(
-          "w-full h-full relative flex overflow-hidden",
-          isMobile ? "flex-col" : "flex-row",
-        )}
-        onContextMenu={handleDesktopContextMenu}
-      >
-        {/* Mobile: Bento en haut */}
-        {isMobile && (
-          <div className="w-full pt-12 pb-4 px-4 shrink-0 flex items-center justify-center">
-            <AboutBento
-              photoSrc="/assets/p4-1.png"
-              name="Tchandikou U. Shalom"
-              title={personalInfo.title}
-              description={personalInfo.bioShort}
-              className="max-w-[280px]"
-            />
-          </div>
-        )}
-
-        {/* Desktop Grid - À GAUCHE sur desktop, en bas sur mobile */}
-        <div className={cn(isMobile ? "flex-1 w-full" : "flex-1 h-full")}>
-          <DesktopGrid
-            key={refreshKey}
-            rows={gridConfig.rows}
-            cols={gridConfig.cols}
-            cellSize={gridConfig.cellSize}
-            gap={gridConfig.gap}
-            padding={gridConfig.padding}
-          >
-            {/* Dossier Projets */}
-            <DraggableItem
-              id="folder-projects"
-              initialPosition={getInitialPosition(
-                "folder-projects",
-                defaultPositions.projects,
-              )}
-              onDoubleClick={handleOpenProjects}
-              onClick={() => setSelectedFile("projects")}
-              onContextMenu={(e) =>
-                handleItemContextMenu(e, "folder-projects", "folder")
-              }
-              onPositionChange={handlePositionChange}
-              isSelected={selectedFile === "projects"}
-            >
-              <ProjectFile name="Projets" />
-            </DraggableItem>
-
-            {/* Dossier À propos */}
-            <DraggableItem
-              id="folder-about"
-              initialPosition={getInitialPosition(
-                "folder-about",
-                defaultPositions.about,
-              )}
-              onDoubleClick={handleOpenAbout}
-              onClick={() => setSelectedFile("about")}
-              onContextMenu={(e) =>
-                handleItemContextMenu(e, "folder-about", "folder")
-              }
-              onPositionChange={handlePositionChange}
-              isSelected={selectedFile === "about"}
-            >
-              <AboutFile name="À propos" />
-            </DraggableItem>
-
-            {/* Dossier Contact */}
-            <DraggableItem
-              id="folder-contact"
-              initialPosition={getInitialPosition(
-                "folder-contact",
-                defaultPositions.contact,
-              )}
-              onDoubleClick={handleOpenContact}
-              onClick={() => setSelectedFile("contact")}
-              onContextMenu={(e) =>
-                handleItemContextMenu(e, "folder-contact", "folder")
-              }
-              onPositionChange={handlePositionChange}
-              isSelected={selectedFile === "contact"}
-            >
-              <ContactFile name="Contact" />
-            </DraggableItem>
-
-            {/* Fichier CV */}
-            <DraggableItem
-              id="file-cv"
-              initialPosition={getInitialPosition(
-                "file-cv",
-                defaultPositions.cv,
-              )}
-              onClick={() => setSelectedFile("cv")}
-              onContextMenu={(e) => handleItemContextMenu(e, "file-cv", "file")}
-              onPositionChange={handlePositionChange}
-              isSelected={selectedFile === "cv"}
-              onDoubleClick={handleOpenCV}
-            >
-              <FilePDF name="Mon CV" />
-            </DraggableItem>
-          </DesktopGrid>
+    <main
+      className={cn(
+        "w-full h-full relative flex overflow-hidden",
+        isMobile ? "flex-col" : "flex-row",
+      )}
+      onContextMenu={handleDesktopContextMenu}
+    >
+      {/* Mobile: Bento en haut */}
+      {isMobile && (
+        <div className="w-full pt-12 pb-4 px-4 shrink-0 flex items-center justify-center">
+          <AboutBento
+            photoSrc="/assets/p4-1.png"
+            name="Tchandikou U. Shalom"
+            title={personalInfo.title}
+            description={personalInfo.bioShort}
+            className="max-w-[280px]"
+          />
         </div>
+      )}
 
-        {/* Desktop: Bento à DROITE */}
-        {!isMobile && (
-          <div className="h-full flex-1 flex items-center justify-center">
-            <AboutBento
-              photoSrc="/assets/p4-1.png"
-              name="Tchandikou U. Shalom"
-              title={personalInfo.title}
-              description={personalInfo.bioShort}
-              className="grid-cols-2"
-            />
-          </div>
-        )}
+      {/* Desktop Grid - À GAUCHE sur desktop, en bas sur mobile */}
+      <div className={cn(isMobile ? "flex-1 w-full" : "flex-1 h-full")}>
+        <DesktopGrid
+          key={refreshKey}
+          rows={gridConfig.rows}
+          cols={gridConfig.cols}
+          cellSize={gridConfig.cellSize}
+          gap={gridConfig.gap}
+          padding={gridConfig.padding}
+        >
+          {/* Dossier Projets */}
+          <DraggableItem
+            id="folder-projects"
+            initialPosition={getInitialPosition(
+              "folder-projects",
+              defaultPositions.projects,
+            )}
+            onDoubleClick={handleOpenProjects}
+            onClick={() => setSelectedFile("projects")}
+            onContextMenu={(e) =>
+              handleItemContextMenu(e, "folder-projects", "folder")
+            }
+            onPositionChange={handlePositionChange}
+            isSelected={selectedFile === "projects"}
+          >
+            <ProjectFile name="Projets" />
+          </DraggableItem>
 
-        {/* Context Menu */}
-        <ContextMenu
-          onRefresh={handleRefresh}
-          onChangeWallpaper={handleChangeWallpaper}
-          onResetPositions={handleResetPositions}
-          onOpen={handleContextMenuOpen}
-          onDownload={handleDownload}
-        />
+          {/* Dossier À propos */}
+          <DraggableItem
+            id="folder-about"
+            initialPosition={getInitialPosition(
+              "folder-about",
+              defaultPositions.about,
+            )}
+            onDoubleClick={handleOpenAbout}
+            onClick={() => setSelectedFile("about")}
+            onContextMenu={(e) =>
+              handleItemContextMenu(e, "folder-about", "folder")
+            }
+            onPositionChange={handlePositionChange}
+            isSelected={selectedFile === "about"}
+          >
+            <AboutFile name="À propos" />
+          </DraggableItem>
 
-        {/* Wallpaper Picker */}
-        <WallpaperPicker
-          isOpen={isWallpaperPickerOpen}
-          onClose={() => setIsWallpaperPickerOpen(false)}
-          currentWallpaper={wallpaper}
-          onSelect={setWallpaper}
-        />
-      </main>
-    </>
+          {/* Dossier Contact */}
+          <DraggableItem
+            id="folder-contact"
+            initialPosition={getInitialPosition(
+              "folder-contact",
+              defaultPositions.contact,
+            )}
+            onDoubleClick={handleOpenContact}
+            onClick={() => setSelectedFile("contact")}
+            onContextMenu={(e) =>
+              handleItemContextMenu(e, "folder-contact", "folder")
+            }
+            onPositionChange={handlePositionChange}
+            isSelected={selectedFile === "contact"}
+          >
+            <ContactFile name="Contact" />
+          </DraggableItem>
+
+          {/* Fichier CV */}
+          <DraggableItem
+            id="file-cv"
+            initialPosition={getInitialPosition("file-cv", defaultPositions.cv)}
+            onClick={() => setSelectedFile("cv")}
+            onContextMenu={(e) => handleItemContextMenu(e, "file-cv", "file")}
+            onPositionChange={handlePositionChange}
+            isSelected={selectedFile === "cv"}
+            onDoubleClick={handleOpenCV}
+          >
+            <FilePDF name="Mon CV" />
+          </DraggableItem>
+        </DesktopGrid>
+      </div>
+
+      {/* Desktop: Bento à DROITE */}
+      {!isMobile && (
+        <div className="h-full flex-1 flex items-center justify-center">
+          <AboutBento
+            photoSrc="/assets/p4-1.png"
+            name="Tchandikou U. Shalom"
+            title={personalInfo.title}
+            description={personalInfo.bioShort}
+            className="grid-cols-2"
+          />
+        </div>
+      )}
+
+      {/* Context Menu */}
+      <ContextMenu
+        onRefresh={handleRefresh}
+        onChangeWallpaper={handleChangeWallpaper}
+        onResetPositions={handleResetPositions}
+        onOpen={handleContextMenuOpen}
+        onDownload={handleDownload}
+      />
+
+      {/* Wallpaper Picker */}
+      <WallpaperPicker
+        isOpen={isWallpaperPickerOpen}
+        onClose={() => setIsWallpaperPickerOpen(false)}
+        currentWallpaper={wallpaper}
+        onSelect={setWallpaper}
+      />
+    </main>
   );
 }
