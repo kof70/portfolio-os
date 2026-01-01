@@ -149,17 +149,17 @@ pnpm lint
 
 ## 📝 TODO / Améliorations futures
 
-- [x] ~~Système de grille pour le bureau~~
-- [x] ~~Drag and drop des dossiers/fichiers~~
+- [x] Système de grille pour le bureau
+- [x] Drag and drop des dossiers/fichiers
 - [x] Rendre les dossiers cliquables avec ouverture de fenêtres modales
 - [x] Ajouter le contenu dans chaque dossier (Projets, À propos, etc.)
 - [x] Implémenter le composant `file-pdf.tsx` pour afficher un CV PDF
 - [x] Ajouter plus d'applications dans le dock
 - [x] Système de fenêtres draggables et redimensionnables
-- [ ] Menu contextuel (clic droit)
+- [x] Menu contextuel (clic droit)
 - [x] Animations de démarrage
-- [ ] Persistance des positions des éléments (localStorage)
-- [ ] Support mobile / responsive
+- [x] Persistance des positions des éléments (localStorage)
+- [x] Support mobile / responsive
 
 ---
 
@@ -200,10 +200,4 @@ Wrapper qui rend n'importe quel élément enfant draggable sur la grille.
 
 ## 👤 Auteur
 
-**Tchandikou U. Shalom**
-
----
-
-## 📄 Licence
-
-Ce projet est privé.
+**CianusDev**
