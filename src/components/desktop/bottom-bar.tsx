@@ -23,7 +23,7 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
   // Sur mobile, on montre toujours le dock de façon simplifiée
   if (isMobile) {
     return (
-      <div className="w-full flex justify-center items-center fixed z-200 left-0 right-0 bottom-0 pb-safe">
+      <div className="w-full flex justify-center items-center fixed md:z-200 left-0 right-0 bottom-0 pb-safe">
         <motion.footer
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

@@ -182,7 +182,7 @@ export function CustomDock() {
                     onClick={() =>
                       handleWindowClick(window.id, window.isMinimized)
                     }
-                    className="relative w-full h-full flex items-center hover:scale-130 transition-all duration-300 ease-in-out justify-center"
+                    className="relative w-full h-full md:size-14 shrink-0 flex items-center hover:scale-130 transition-all duration-300 ease-in-out justify-center"
                   >
                     {WindowIcons[window.id] &&
                       WindowIcons[window.id]({
