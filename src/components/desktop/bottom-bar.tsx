@@ -15,7 +15,10 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
   const [isHovered, setIsHovered] = React.useState(false);
 
   // Check if any window is open and not minimized
-  const hasActiveWindow = windows.some((w) => !w.isMinimized);
+  const hasActiveWindow = React.useMemo(
+    () => windows.some((w) => !w.isMinimized),
+    [windows],
+  );
 
   // Dock should be hidden when there are active windows and not hovered (only on desktop)
   const shouldHide = !isMobile && hasActiveWindow && !isHovered;

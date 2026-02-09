@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { personalInfo } from "@/lib/data";
 import { CircleIcon } from "lucide-react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface SplashScreenProps {
   onComplete?: () => void;
@@ -37,9 +38,13 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   onComplete,
   duration = 3500,
 }) => {
+  const prefersReducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = React.useState(true);
   const [loadingProgress, setLoadingProgress] = React.useState(0);
   const [showWelcome, setShowWelcome] = React.useState(false);
+
+  // Skip or shorten splash screen when user prefers reduced motion
+  const effectiveDuration = prefersReducedMotion ? 500 : duration;
 
   React.useEffect(() => {
     // Simulate loading progress
@@ -57,20 +62,20 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     // Show welcome message
     const welcomeTimeout = setTimeout(() => {
       setShowWelcome(true);
-    }, duration * 0.6);
+    }, effectiveDuration * 0.6);
 
     // Complete splash screen
     const completeTimeout = setTimeout(() => {
       setIsVisible(false);
       onComplete?.();
-    }, duration);
+    }, effectiveDuration);
 
     return () => {
       clearInterval(progressInterval);
       clearTimeout(welcomeTimeout);
       clearTimeout(completeTimeout);
     };
-  }, [duration, onComplete]);
+  }, [effectiveDuration, onComplete]);
 
   return (
     <AnimatePresence>
@@ -88,29 +93,31 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black overflow-hidden"
         >
-          {/* Animated background particles */}
-          <div className="absolute inset-0 overflow-hidden">
-            {PARTICLES.map((particle) => (
-              <motion.div
-                key={particle.id}
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: [0, 0.3, 0],
-                  y: [0, particle.yOffset],
-                }}
-                transition={{
-                  duration: particle.duration,
-                  repeat: Infinity,
-                  delay: particle.delay,
-                }}
-                style={{
-                  left: `${particle.x}%`,
-                  top: `${particle.y}%`,
-                }}
-                className="absolute w-1 h-1 bg-white/20 rounded-full"
-              />
-            ))}
-          </div>
+          {/* Animated background particles — skip when reduced motion */}
+          {!prefersReducedMotion && (
+            <div className="absolute inset-0 overflow-hidden">
+              {PARTICLES.map((particle) => (
+                <motion.div
+                  key={particle.id}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 0.3, 0],
+                    y: [0, particle.yOffset],
+                  }}
+                  transition={{
+                    duration: particle.duration,
+                    repeat: Infinity,
+                    delay: particle.delay,
+                  }}
+                  style={{
+                    left: `${particle.x}%`,
+                    top: `${particle.y}%`,
+                  }}
+                  className="absolute w-1 h-1 bg-white/20 rounded-full"
+                />
+              ))}
+            </div>
+          )}
 
           {/* Main content */}
           <motion.div

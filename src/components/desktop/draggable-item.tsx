@@ -133,7 +133,7 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   }, [position, isDragging, x, y]);
 
   // Trouve la cellule avec la plus grande collision
-  const findBestCollision = (): GridPosition | null => {
+  const findBestCollision = React.useCallback((): GridPosition | null => {
     const itemElement = itemRef.current;
     const gridElement = gridRef.current;
 
@@ -177,7 +177,7 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
     }
 
     return bestCell;
-  };
+  }, [gridRef, gridSize, cellSize, gap, padding]);
 
   // Nettoyer le timer de long press
   const clearLongPressTimer = React.useCallback(() => {
@@ -258,20 +258,20 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
     };
   }, [clearLongPressTimer]);
 
-  const handleDragStart = () => {
+  const handleDragStart = React.useCallback(() => {
     // Ne pas permettre le drag pendant un long press
     if (isLongPressRef.current) return;
 
     setIsDragging(true);
     setDraggingItem(id);
-  };
+  }, [id, setDraggingItem]);
 
-  const handleDrag = () => {
+  const handleDrag = React.useCallback(() => {
     const collidingCell = findBestCollision();
     setHoveredCell(collidingCell);
-  };
+  }, [findBestCollision, setHoveredCell]);
 
-  const handleDragEnd = () => {
+  const handleDragEnd = React.useCallback(() => {
     setIsDragging(false);
     setDraggingItem(null);
 
@@ -289,13 +289,16 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
     // Réinitialiser les valeurs de drag
     x.set(0);
     y.set(0);
-  };
+  }, [id, findBestCollision, isPositionOccupied, updateItemPosition, onPositionChange, setDraggingItem, x, y]);
 
-  const handleContextMenuInternal = (e: React.MouseEvent) => {
-    if (onContextMenu) {
-      onContextMenu(e);
-    }
-  };
+  const handleContextMenuInternal = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (onContextMenu) {
+        onContextMenu(e);
+      }
+    },
+    [onContextMenu],
+  );
 
   const handleClick = React.useCallback(() => {
     // Ne pas déclencher le click si c'était un long press

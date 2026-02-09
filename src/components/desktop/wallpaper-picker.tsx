@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 // Liste des fonds d'écran disponibles
-const wallpapers = [
+export const wallpapers = [
   { id: "bg-1", src: "/assets/bg-1.jpg", name: "Gradient Blue" },
   { id: "bg-3", src: "/assets/bg-3.jpg", name: "Abstract Dark" },
   { id: "bg", src: "/assets/bg.jpg", name: "Default" },
@@ -15,6 +15,18 @@ const wallpapers = [
   { id: "macos-bg-2", src: "/assets/macos-bg-2.png", name: "macOS Sonoma" },
   { id: "space", src: "/assets/space.jpg", name: "Space" },
   { id: "word", src: "/assets/word.jpg", name: "World" },
+  { id: "bg033", src: "/assets/wallpapers/Bg033.jpg", name: "Sunset Glow" },
+  { id: "bg034", src: "/assets/wallpapers/Bg034.jpg", name: "Warm Horizon" },
+  { id: "bg050", src: "/assets/wallpapers/Bg050.JPG", name: "Nature Light" },
+  { id: "bg071", src: "/assets/wallpapers/Bg071.JPG", name: "Mountain Haze" },
+  { id: "bg079", src: "/assets/wallpapers/Bg079.JPG", name: "Ocean Breeze" },
+  { id: "bg130", src: "/assets/wallpapers/Bg130.JPG", name: "Golden Hour" },
+  { id: "bg135", src: "/assets/wallpapers/Bg135.JPG", name: "Sky Canvas" },
+  { id: "bg187", src: "/assets/wallpapers/Bg187.JPG", name: "Twilight" },
+  { id: "bg210", src: "/assets/wallpapers/Bg210.JPG", name: "Deep Blue" },
+  { id: "bg361", src: "/assets/wallpapers/Bg361.PNG", name: "Neon Pulse" },
+  { id: "bg430", src: "/assets/wallpapers/Bg430.PNG", name: "Aurora" },
+  { id: "bg450", src: "/assets/wallpapers/Bg450.png", name: "Cosmic Dust" },
 ];
 
 interface WallpaperPickerProps {

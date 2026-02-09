@@ -28,9 +28,10 @@ export interface WindowState {
   zIndex: number;
 }
 
-interface WindowContextType {
-  windows: WindowState[];
-  activeWindowId: string | null;
+// ---------------------------------------------------------------------------
+// Actions context — stable callbacks, rarely changes
+// ---------------------------------------------------------------------------
+interface WindowActionsContextType {
   openWindow: (window: Omit<WindowState, "zIndex" | "isFocused">) => void;
   closeWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
@@ -39,18 +40,58 @@ interface WindowContextType {
   focusWindow: (id: string) => void;
   updateWindowPosition: (id: string, position: WindowPosition) => void;
   updateWindowSize: (id: string, size: WindowSize) => void;
+}
+
+// ---------------------------------------------------------------------------
+// State context — windows list, changes on every interaction
+// ---------------------------------------------------------------------------
+interface WindowStateContextType {
+  windows: WindowState[];
+  activeWindowId: string | null;
   getWindow: (id: string) => WindowState | undefined;
   isWindowOpen: (id: string) => boolean;
 }
 
-const WindowContext = createContext<WindowContextType | null>(null);
+// ---------------------------------------------------------------------------
+// Combined type for backwards compatibility
+// ---------------------------------------------------------------------------
+type WindowContextType = WindowActionsContextType & WindowStateContextType;
 
-export const useWindows = () => {
-  const context = useContext(WindowContext);
+const WindowActionsContext = createContext<WindowActionsContextType | null>(null);
+const WindowStateContext = createContext<WindowStateContextType | null>(null);
+
+/**
+ * Use only when you need window actions (open, close, focus, etc.)
+ * Does NOT cause re-renders when window state changes.
+ */
+export const useWindowActions = () => {
+  const context = useContext(WindowActionsContext);
   if (!context) {
-    throw new Error("useWindows must be used within a WindowProvider");
+    throw new Error("useWindowActions must be used within a WindowProvider");
   }
   return context;
+};
+
+/**
+ * Use only when you need window state (list, active window).
+ * Re-renders when any window state changes.
+ */
+export const useWindowState = () => {
+  const context = useContext(WindowStateContext);
+  if (!context) {
+    throw new Error("useWindowState must be used within a WindowProvider");
+  }
+  return context;
+};
+
+/**
+ * Combined hook — backwards compatible with existing code.
+ * Equivalent to using both useWindowActions + useWindowState.
+ */
+export const useWindows = (): WindowContextType => {
+  const actions = useWindowActions();
+  const state = useWindowState();
+  return { ...actions, ...state };
 };
 
 interface WindowProviderProps {
@@ -62,11 +103,11 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
   const [highestZIndex, setHighestZIndex] = useState(100);
 
-  // Ouvrir une nouvelle fenêtre
+  // ---- Actions (stable callbacks) ----
+
   const openWindow = useCallback(
     (windowData: Omit<WindowState, "zIndex" | "isFocused">) => {
       setWindows((prev) => {
-        // Si la fenêtre existe déjà, on la focus
         const existingWindow = prev.find((w) => w.id === windowData.id);
         if (existingWindow) {
           return prev.map((w) =>
@@ -81,7 +122,6 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
           );
         }
 
-        // Sinon, on crée une nouvelle fenêtre
         const newWindow: WindowState = {
           ...windowData,
           isFocused: true,
@@ -97,13 +137,11 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     [highestZIndex],
   );
 
-  // Fermer une fenêtre
   const closeWindow = useCallback((id: string) => {
     setWindows((prev) => prev.filter((w) => w.id !== id));
     setActiveWindowId((prev) => (prev === id ? null : prev));
   }, []);
 
-  // Minimiser une fenêtre
   const minimizeWindow = useCallback((id: string) => {
     setWindows((prev) =>
       prev.map((w) =>
@@ -113,14 +151,12 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     setActiveWindowId((prev) => (prev === id ? null : prev));
   }, []);
 
-  // Maximiser une fenêtre
   const maximizeWindow = useCallback((id: string) => {
     setWindows((prev) =>
       prev.map((w) => (w.id === id ? { ...w, isMaximized: true } : w)),
     );
   }, []);
 
-  // Restaurer une fenêtre (depuis minimisé ou maximisé)
   const restoreWindow = useCallback(
     (id: string) => {
       setWindows((prev) =>
@@ -142,7 +178,6 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     [highestZIndex],
   );
 
-  // Focus sur une fenêtre
   const focusWindow = useCallback(
     (id: string) => {
       setWindows((prev) =>
@@ -158,7 +193,6 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     [highestZIndex],
   );
 
-  // Mettre à jour la position d'une fenêtre
   const updateWindowPosition = useCallback(
     (id: string, position: WindowPosition) => {
       setWindows((prev) =>
@@ -168,12 +202,12 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     [],
   );
 
-  // Mettre à jour la taille d'une fenêtre
   const updateWindowSize = useCallback((id: string, size: WindowSize) => {
     setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, size } : w)));
   }, []);
 
-  // Récupérer une fenêtre par ID
+  // ---- State (derived) ----
+
   const getWindow = useCallback(
     (id: string) => {
       return windows.find((w) => w.id === id);
@@ -181,7 +215,6 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     [windows],
   );
 
-  // Vérifier si une fenêtre est ouverte
   const isWindowOpen = useCallback(
     (id: string) => {
       return windows.some((w) => w.id === id);
@@ -189,25 +222,47 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
     [windows],
   );
 
-  const contextValue: WindowContextType = {
-    windows,
-    activeWindowId,
-    openWindow,
-    closeWindow,
-    minimizeWindow,
-    maximizeWindow,
-    restoreWindow,
-    focusWindow,
-    updateWindowPosition,
-    updateWindowSize,
-    getWindow,
-    isWindowOpen,
-  };
+  // ---- Memoized context values ----
+
+  const actionsValue = React.useMemo<WindowActionsContextType>(
+    () => ({
+      openWindow,
+      closeWindow,
+      minimizeWindow,
+      maximizeWindow,
+      restoreWindow,
+      focusWindow,
+      updateWindowPosition,
+      updateWindowSize,
+    }),
+    [
+      openWindow,
+      closeWindow,
+      minimizeWindow,
+      maximizeWindow,
+      restoreWindow,
+      focusWindow,
+      updateWindowPosition,
+      updateWindowSize,
+    ],
+  );
+
+  const stateValue = React.useMemo<WindowStateContextType>(
+    () => ({
+      windows,
+      activeWindowId,
+      getWindow,
+      isWindowOpen,
+    }),
+    [windows, activeWindowId, getWindow, isWindowOpen],
+  );
 
   return (
-    <WindowContext.Provider value={contextValue}>
-      {children}
-    </WindowContext.Provider>
+    <WindowActionsContext.Provider value={actionsValue}>
+      <WindowStateContext.Provider value={stateValue}>
+        {children}
+      </WindowStateContext.Provider>
+    </WindowActionsContext.Provider>
   );
 };
 

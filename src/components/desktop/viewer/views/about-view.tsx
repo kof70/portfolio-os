@@ -7,12 +7,9 @@ import {
   useWindowViewport,
   WindowViewportProvider,
 } from "../use-window-viewport";
-import {
-  ExperienceCard,
-  EducationCard,
-  SectionHeader,
-} from "@/components/shared/info-card";
-import { personalInfo, experiences, education, interests } from "@/lib/data";
+import { SectionHeader } from "@/components/shared/info-card";
+import { GlitchName } from "@/components/shared/glitch-name";
+import { personalInfo, interests } from "@/lib/data";
 
 interface AboutViewProps {
   className?: string;
@@ -48,6 +45,7 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
               src={personalInfo.avatar}
               alt={personalInfo.name}
               fill
+              sizes="176px"
               className="object-cover object-top"
               priority
             />
@@ -55,22 +53,40 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
 
           {/* Info */}
           <div className={cn(isMdUp ? "text-left" : "text-center")}>
-            <h1
-              className={cn(
-                "text-white font-bold mb-2",
-                isSmUp ? "text-3xl" : "text-2xl",
-              )}
-            >
-              {personalInfo.name}
-            </h1>
+            <GlitchName
+              fullName={personalInfo.name}
+              pseudoClassName={isSmUp ? "text-3xl" : "text-2xl"}
+              nameClassName={cn("tracking-tight", isSmUp ? "text-3xl" : "text-2xl")}
+              className="mb-2"
+            />
             <p
               className={cn(
-                "text-white/70 mb-3",
+                "text-white/80 mb-1",
                 isSmUp ? "text-lg" : "text-base",
               )}
             >
               {personalInfo.title}
             </p>
+            {personalInfo.subtitle && (
+              <p
+                className={cn(
+                  "text-white/60 mb-1",
+                  isSmUp ? "text-base" : "text-sm",
+                )}
+              >
+                {personalInfo.subtitle}
+              </p>
+            )}
+            {personalInfo.tagline && (
+              <p
+                className={cn(
+                  "text-white/90 italic mb-3",
+                  isSmUp ? "text-base" : "text-sm",
+                )}
+              >
+                {personalInfo.tagline}
+              </p>
+            )}
             <div
               className={cn(
                 "flex items-center gap-3",
@@ -94,52 +110,18 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
         <section className="mb-8">
           <SectionHeader
             title="À propos de moi"
-            emoji="👋"
             size={isSmUp ? "md" : "sm"}
           />
-          <div className="bg-white/5 rounded-xl border border-white/10 p-5">
-            <p className="text-white/70 leading-relaxed">{personalInfo.bio}</p>
-          </div>
-        </section>
-
-        {/* Expérience */}
-        <section className="mb-8">
-          <SectionHeader
-            title="Expérience"
-            emoji="💼"
-            size={isSmUp ? "md" : "sm"}
-          />
-          <div className="space-y-4">
-            {experiences.map((exp) => (
-              <ExperienceCard
-                key={exp.id}
-                title={exp.title}
-                company={exp.company}
-                period={exp.period}
-                description={exp.description}
-                isMdUp={isMdUp}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Formation */}
-        <section className="mb-8">
-          <SectionHeader
-            title="Formation"
-            emoji="🎓"
-            size={isSmUp ? "md" : "sm"}
-          />
-          <div className="space-y-4">
-            {education.map((edu) => (
-              <EducationCard
-                key={edu.id}
-                degree={edu.degree}
-                school={edu.school}
-                period={edu.period}
-                isMdUp={isMdUp}
-              />
-            ))}
+          <div className="bg-white/5 rounded-xl border border-white/10 p-5 space-y-4">
+            {personalInfo.aboutParagraphs && personalInfo.aboutParagraphs.length > 0 ? (
+              personalInfo.aboutParagraphs.map((paragraph, i) => (
+                <p key={i} className="text-white/70 leading-relaxed">
+                  {paragraph}
+                </p>
+              ))
+            ) : (
+              <p className="text-white/70 leading-relaxed">{personalInfo.bio}</p>
+            )}
           </div>
         </section>
 

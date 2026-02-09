@@ -21,8 +21,9 @@ export const ContactFile: React.FC<ContactFileProps> = ({
         alt="Contact Icon"
         width={70}
         height={70}
+        sizes="70px"
       />
-      <span className="text-xs text-white font-medium text-shadow-lg/30 text-center px-1 truncate max-w-full">
+      <span className="text-xs text-white font-medium text-center px-1 truncate max-w-full" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)" }}>
         {name}
       </span>
     </div>

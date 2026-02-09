@@ -4,13 +4,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useWindows, WindowState } from "./window-context";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { ChevronLeft } from "lucide-react";
 
 interface WindowProps {
   window: WindowState;
 }
 
-export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
+const WindowInner: React.FC<WindowProps> = ({ window: windowState }) => {
   const {
     closeWindow,
     minimizeWindow,
@@ -22,6 +23,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
   } = useWindows();
 
   const { isMobile } = useIsMobile();
+  const prefersReducedMotion = useReducedMotion();
 
   const windowRef = React.useRef<HTMLDivElement>(null);
   const isDraggingRef = React.useRef(false);
@@ -322,18 +324,41 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
   }
 
   // Animation styles based on state
+  // Position is applied via translate() (GPU-accelerated) instead of left/top
   const getAnimationStyles = (): React.CSSProperties => {
+    const posTranslate = isMobile
+      ? ""
+      : windowState.isMaximized && !isMaximizeAnimating
+        ? "translate(0px, 28px)"
+        : `translate(${currentPos.x}px, ${currentPos.y}px)`;
+
+    // Skip all visual animations when user prefers reduced motion
+    if (prefersReducedMotion) {
+      const isHiding = animationState === "closing" || animationState === "minimizing";
+      return {
+        transform: isMobile
+          ? "translateY(0)"
+          : `${posTranslate} scale(1)`,
+        opacity: isHiding ? 0 : 1,
+        transition: isHiding ? "opacity 0.15s ease-out" : "none",
+      };
+    }
+
     switch (animationState) {
       case "entering":
         return {
-          transform: isMobile ? "translateY(100%)" : "scale(0.5)",
+          transform: isMobile
+            ? "translateY(100%)"
+            : `${posTranslate} scale(0.5)`,
           opacity: 0,
           transition: "none",
         };
 
       case "closing":
         return {
-          transform: isMobile ? "translateY(100%)" : "scale(0.85)",
+          transform: isMobile
+            ? "translateY(100%)"
+            : `${posTranslate} scale(0.85)`,
           opacity: 0,
           transition: isMobile
             ? "transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out"
@@ -344,7 +369,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
         return {
           transform: isMobile
             ? "translateY(100%)"
-            : "scale(0.5) translateY(50px)",
+            : `${posTranslate} scale(0.5) translateY(50px)`,
           opacity: 0,
           transition: isMobile
             ? "transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s ease-out"
@@ -354,7 +379,9 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
       case "visible":
       default:
         return {
-          transform: isMobile ? "translateY(0)" : "scale(1)",
+          transform: isMobile
+            ? "translateY(0)"
+            : `${posTranslate} scale(1)`,
           opacity: 1,
           transition:
             isDragging || isResizing
@@ -367,6 +394,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
   };
 
   // Window positioning styles - fullscreen sur mobile
+  // Position offset is handled via transform:translate in getAnimationStyles (GPU-accelerated)
   const getPositionStyles = (): React.CSSProperties => {
     if (isMobile) {
       // Fullscreen sur mobile
@@ -385,7 +413,7 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
       return {
         position: "fixed",
         left: 0,
-        top: 28,
+        top: 0,
         width: "100%",
         height: "calc(100vh - 108px)",
         zIndex: windowState.zIndex,
@@ -395,8 +423,8 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
 
     return {
       position: "fixed",
-      left: currentPos.x,
-      top: currentPos.y,
+      left: 0,
+      top: 0,
       width: currentSize.width,
       height: currentSize.height,
       zIndex: windowState.zIndex,
@@ -405,9 +433,11 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
 
   const positionStyles = getPositionStyles();
 
-  // Maximize/restore animation transition
+  // Maximize/restore animation transition (GPU-accelerated)
   const layoutTransition = isMaximizeAnimating
-    ? "left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
+    ? prefersReducedMotion
+      ? "transform 0.15s ease-out, width 0.15s ease-out, height 0.15s ease-out"
+      : "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
     : undefined;
 
   const animationStyles = getAnimationStyles();
@@ -432,16 +462,16 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
       style={{
         ...positionStyles,
         ...animationStyles,
-        transition: [layoutTransition, animationStyles.transition]
-          .filter(Boolean)
-          .join(", "),
+        transition: isMaximizeAnimating
+          ? layoutTransition
+          : animationStyles.transition,
         transformOrigin: isMobile ? "bottom center" : "center center",
         willChange:
           isDragging ||
           isResizing ||
           isMaximizeAnimating ||
           animationState !== "visible"
-            ? "transform, opacity, left, top, width, height"
+            ? "transform, opacity, width, height"
             : "auto",
       }}
       onMouseDown={handleFocus}
@@ -640,3 +670,21 @@ export const Window: React.FC<WindowProps> = ({ window: windowState }) => {
     </div>
   );
 };
+
+export const Window = React.memo(WindowInner, (prev, next) => {
+  const a = prev.window;
+  const b = next.window;
+  return (
+    a.id === b.id &&
+    a.title === b.title &&
+    a.isMinimized === b.isMinimized &&
+    a.isMaximized === b.isMaximized &&
+    a.isFocused === b.isFocused &&
+    a.zIndex === b.zIndex &&
+    a.position.x === b.position.x &&
+    a.position.y === b.position.y &&
+    a.size.width === b.size.width &&
+    a.size.height === b.size.height &&
+    a.content === b.content
+  );
+});

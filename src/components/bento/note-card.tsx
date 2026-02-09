@@ -28,14 +28,14 @@ export const NoteCard: React.FC<NoteCardProps> = ({
       className={cn("flex flex-col p-0 max-md:hidden", className)}
     >
       {/* Header */}
-      <div className="flex px-4 py-2 items-center bg-amber-300 gap-2 mb-3">
+      <div className="flex px-3 py-1.5 items-center bg-amber-300 gap-2 mb-2">
         {icon}
-        <h3 className="text-white font-semibold text-lg">{title}</h3>
+        <h3 className="text-white font-semibold text-sm">{title}</h3>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-hidden px-4">
-        <p className="text-white/70 text-sm leading-relaxed line-clamp-6">
+      <div className="flex-1 overflow-hidden px-4 pb-3">
+        <p className="text-white/70 text-xs leading-relaxed line-clamp-4">
           {content}
         </p>
       </div>

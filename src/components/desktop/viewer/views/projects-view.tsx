@@ -10,6 +10,19 @@ import {
 import { Icons } from "@/components/icons";
 import { projects, type Project } from "@/lib/data";
 
+/** Retourne un extrait court du lien (sans protocole, domaine + chemin court) */
+function getLinkExcerpt(url: string, maxLength = 40): string {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    const path = u.pathname !== "/" ? u.pathname : "";
+    const full = host + path;
+    return full.length > maxLength ? full.slice(0, maxLength - 3) + "…" : full;
+  } catch {
+    return url.length > maxLength ? url.slice(0, maxLength - 3) + "…" : url;
+  }
+}
+
 interface ProjectCardProps {
   project: Project;
   isCompact?: boolean;
@@ -19,6 +32,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   isCompact = false,
 }) => {
+  const linkUrl = project.liveUrl || project.githubUrl;
+  const linkExcerpt = linkUrl ? getLinkExcerpt(linkUrl) : null;
+
   return (
     <div
       className={cn(
@@ -27,21 +43,49 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         "transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5",
       )}
     >
-      {/* Image */}
+      {/* Aperçu : image statique ou iframe de la page live (extrait de la vue réelle) */}
       <div
-        className={cn("relative overflow-hidden", isCompact ? "h-32" : "h-40")}
+        className={cn(
+          "relative overflow-hidden bg-white",
+          isCompact ? "h-32" : "h-40",
+        )}
       >
         {project.image ? (
           <Image
             src={project.image}
             alt={project.title}
             fill
+            sizes="(max-width: 768px) 100vw, 300px"
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
+        ) : (project.liveUrl || project.githubUrl) ? (
+          <>
+            <iframe
+              src={project.liveUrl || project.githubUrl}
+              title={`Aperçu : ${project.title}`}
+              className="absolute inset-0 w-full h-full border-0 pointer-events-none scale-[0.35] origin-top-left"
+              style={{
+                width: "285.71%",
+                height: "285.71%",
+              }}
+              sandbox="allow-scripts allow-same-origin"
+              loading="lazy"
+            />
+            {!project.liveUrl && project.githubUrl && (
+              <div
+                className="absolute inset-0 z-10 flex items-center justify-center bg-neutral-900/90 pointer-events-none"
+                aria-hidden
+              >
+                <p className="text-white text-sm text-center px-3 font-medium">
+                  Aperçu non disponible pour ce lien
+                </p>
+              </div>
+            )}
+          </>
         ) : (
-          <div className="w-full h-full bg-linear-to-br from-purple-500/20 to-blue-500/20" />
+          <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20" />
         )}
-        <div className="absolute  bg-linear-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
       </div>
 
       {/* Content */}
@@ -54,11 +98,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         >
           {project.title}
         </h3>
+        {/* Extrait / description du projet */}
         <p
           className={cn(
-            "text-white/70 mb-3 line-clamp-2",
+            "text-white/70 mb-3 line-clamp-3",
             isCompact ? "text-xs" : "text-sm",
           )}
+          title={project.description}
         >
           {project.description}
         </p>
@@ -79,6 +125,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </span>
           )}
         </div>
+
+        {/* Extrait du lien du projet */}
+        {linkExcerpt && (
+          <a
+            href={linkUrl!}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-white/50 hover:text-white/80 text-xs truncate mb-2 transition-colors"
+            title={linkUrl!}
+          >
+            {linkExcerpt}
+          </a>
+        )}
 
         {/* Links */}
         <div className="flex items-center gap-3">

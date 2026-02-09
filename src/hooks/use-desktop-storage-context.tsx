@@ -3,6 +3,7 @@
 import * as React from "react";
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { GridPosition } from "@/components/desktop/desktop-grid";
+import { wallpapers } from "@/components/desktop/wallpaper-picker";
 
 // Types
 export interface DesktopItemStorage {
@@ -44,7 +45,17 @@ interface DesktopStorageContextType {
 const STORAGE_KEY = "portfolio-os-desktop-state";
 const STORAGE_VERSION = 1;
 
-// Valeurs par défaut
+/**
+ * Choisit un wallpaper aléatoire dans la liste.
+ * Le choix est déterministe pour un même visiteur grâce à la persistance localStorage,
+ * mais différent d'un visiteur à l'autre grâce à Math.random().
+ */
+const getRandomWallpaper = (): string => {
+  const index = Math.floor(Math.random() * wallpapers.length);
+  return wallpapers[index].src;
+};
+
+// Valeurs par défaut (le wallpaper sera remplacé par un aléatoire à la première visite)
 const defaultState: DesktopStorageState = {
   items: [],
   wallpaper: "/assets/bg-3.jpg",
@@ -117,6 +128,9 @@ export const DesktopStorageProvider: React.FC<DesktopStorageProviderProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Charger l'état au montage (côté client uniquement)
+  // Si aucun état n'est trouvé (premier visiteur), on attribue un wallpaper
+  // aléatoire et on le persiste immédiatement. Ainsi chaque visiteur reçoit
+  // un fond d'écran unique qui reste stable entre ses visites.
   useEffect(() => {
     const stored = loadFromStorage();
     if (stored) {
@@ -124,6 +138,16 @@ export const DesktopStorageProvider: React.FC<DesktopStorageProviderProps> = ({
         ...defaultState,
         ...stored,
       });
+    } else {
+      // Première visite : wallpaper aléatoire, persisté tout de suite
+      const randomWallpaper = getRandomWallpaper();
+      const initialState: DesktopStorageState = {
+        ...defaultState,
+        wallpaper: randomWallpaper,
+        lastUpdated: Date.now(),
+      };
+      setState(initialState);
+      saveToStorage(initialState);
     }
     setIsLoaded(true);
   }, []);

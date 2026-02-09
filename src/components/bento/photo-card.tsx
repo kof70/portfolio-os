@@ -4,7 +4,13 @@ import * as React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { BentoCard } from "./bento-grid";
+import { GlitchName } from "@/components/shared/glitch-name";
 import { useIsMobile } from "@/hooks/use-mobile";
+
+
+// ---------------------------------------------------------------------------
+// PhotoCard
+// ---------------------------------------------------------------------------
 
 interface PhotoCardProps {
   src: string;
@@ -55,14 +61,12 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
             )}
           >
             {name && (
-              <h2
-                className={cn(
-                  "text-white font-bold tracking-tight",
-                  isMobile ? "text-base" : "text-xl",
-                )}
-              >
-                {name}
-              </h2>
+              <GlitchName
+                fullName={name}
+                pseudoClassName={isMobile ? "text-base" : "text-xl"}
+                nameClassName={cn("tracking-tight", isMobile ? "text-base" : "text-xl")}
+                className="min-h-[28px]"
+              />
             )}
             {title && (
               <p

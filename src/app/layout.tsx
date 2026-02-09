@@ -16,28 +16,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tchandikou U. Shalom",
+  title: "DJAKPA Koffi Tepe Venougne - Portfolio",
   description:
-    "Portfolio de Tchandikou U. Shalom - Développeur Web | Front-End | React",
+    "Portfolio de DJAKPA Koffi - Ingénieur Réseaux & Développeur Full Stack | PyDevs Togo",
   keywords: [
-    "Tchandikou U. Shalom",
+    "DJAKPA Koffi",
     "Portfolio",
-    "Développeur Front-End",
-    "Developpeur Web",
+    "Ingénieur Réseaux",
+    "Développeur Full Stack",
+    "PyDevs Togo",
   ],
-  authors: [{ name: "Tchandikou U. Shalom", url: "https://cianus.dev" }],
+  authors: [{ name: "DJAKPA Koffi Tepe Venougne", url: "https://github.com/kof70" }],
   openGraph: {
-    title: "Tchandikou U. Shalom - Portfolio",
+    title: "DJAKPA Koffi Tepe Venougne - Portfolio",
     description:
-      "Découvrez le portfolio de Tchandikou U. Shalom, développeur web spécialisé en développement front-end avec React.",
-    url: "https://cianus.dev",
-    siteName: "Tchandikou U. Shalom Portfolio",
+      "Ingénieur Réseaux et Développeur Full Stack passionné par l'innovation technologique. Co-fondateur PyDevs Togo.",
+    url: "https://github.com/kof70",
+    siteName: "DJAKPA Koffi - Portfolio",
     images: [
       {
-        url: "https://cianus.dev/assets/p1.jpeg",
+        url: "/assets/profile2.png",
         width: 1200,
         height: 630,
-        alt: "Tchandikou U. Shalom Portfolio",
+        alt: "DJAKPA Koffi Tepe Venougne - Portfolio",
       },
     ],
     locale: "fr_FR",
@@ -54,6 +55,7 @@ export default function RootLayout({
     <html lang="fr" className="h-full overflow-hidden">
       <body
         className={`${inter.className} antialiased relative h-full flex flex-col items-center bg-black overflow-hidden`}
+        suppressHydrationWarning
       >
         <DesktopStorageProvider>
           <ContextMenuProvider>

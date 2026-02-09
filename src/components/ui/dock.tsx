@@ -1,6 +1,6 @@
 "use client";
 
-import React, { PropsWithChildren, useRef } from "react";
+import React, { PropsWithChildren, useRef, useCallback, useEffect } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   motion,
@@ -12,6 +12,7 @@ import {
 import type { MotionProps } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export interface DockProps extends VariantProps<typeof dockVariants> {
   className?: string;
@@ -47,25 +48,28 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
     ref,
   ) => {
     const mouseX = useMotionValue(Infinity);
+    const prefersReducedMotion = useReducedMotion();
 
-    const renderChildren = () => {
-      return React.Children.map(children, (child) => {
-        if (
-          React.isValidElement<DockIconProps>(child) &&
-          child.type === DockIcon
-        ) {
-          return React.cloneElement(child, {
-            ...child.props,
-            mouseX: mouseX,
-            size: iconSize,
-            magnification: iconMagnification,
-            disableMagnification: disableMagnification,
-            distance: iconDistance,
-          });
-        }
-        return child;
-      });
-    };
+    const renderedChildren = React.useMemo(
+      () =>
+        React.Children.map(children, (child) => {
+          if (
+            React.isValidElement<DockIconProps>(child) &&
+            child.type === DockIcon
+          ) {
+            return React.cloneElement(child, {
+              ...child.props,
+              mouseX: mouseX,
+              size: iconSize,
+              magnification: iconMagnification,
+              disableMagnification: disableMagnification || prefersReducedMotion,
+              distance: iconDistance,
+            });
+          }
+          return child;
+        }),
+      [children, mouseX, iconSize, iconMagnification, disableMagnification, iconDistance, prefersReducedMotion],
+    );
 
     return (
       <motion.div
@@ -79,7 +83,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           "items-end": direction === "bottom",
         })}
       >
-        {renderChildren()}
+        {renderedChildren}
       </motion.div>
     );
   },
@@ -110,12 +114,32 @@ const DockIcon = ({
   ...props
 }: DockIconProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const boundsRef = useRef<{ x: number; width: number }>({ x: 0, width: 0 });
   // Réduction du padding pour répondre au prompt "le padding est trop"
   const padding = Math.max(2, size * 0.1);
   const defaultMouseX = useMotionValue(Infinity);
 
+  // Cache getBoundingClientRect to avoid forced layout reads on every mousemove
+  const updateBounds = useCallback(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      boundsRef.current = { x: rect.x, width: rect.width };
+    }
+  }, []);
+
+  // Update bounds on mount, resize, and scroll
+  useEffect(() => {
+    updateBounds();
+    window.addEventListener("resize", updateBounds);
+    window.addEventListener("scroll", updateBounds, true);
+    return () => {
+      window.removeEventListener("resize", updateBounds);
+      window.removeEventListener("scroll", updateBounds, true);
+    };
+  }, [updateBounds]);
+
   const distanceCalc = useTransform(mouseX ?? defaultMouseX, (val: number) => {
-    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    const bounds = boundsRef.current;
     return val - bounds.x - bounds.width / 2;
   });
 
@@ -129,8 +153,8 @@ const DockIcon = ({
 
   const scaleSize = useSpring(sizeTransform, {
     mass: 0.1,
-    stiffness: 150,
-    damping: 12,
+    stiffness: 300,
+    damping: 20,
   });
 
   return (

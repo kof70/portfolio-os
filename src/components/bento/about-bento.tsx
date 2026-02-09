@@ -15,10 +15,10 @@ interface AboutBentoProps {
 
 export const AboutBento: React.FC<AboutBentoProps> = ({
   className,
-  photoSrc = "/assets/photo.jpg",
-  name = "Tchandikou U. Shalom",
-  title = "Développeur Full Stack",
-  description = "Passionné par le développement web et les nouvelles technologies. Je crée des applications modernes et performantes avec une attention particulière à l'expérience utilisateur et au design.",
+  photoSrc = "/assets/moisansbg.png",
+  name = "DJAKPA Koffi Tepe Venougne",
+  title = "Ingénieur Réseaux & Développeur Full Stack",
+  description = "Passionné par l'innovation technologique. Co-fondateur PyDevs Togo, je crée des solutions à l'intersection des infrastructures réseau et du développement web/mobile.",
 }) => {
   return (
     <BentoGrid className={className}>
@@ -26,7 +26,7 @@ export const AboutBento: React.FC<AboutBentoProps> = ({
       <PhotoCard src={photoSrc} name={name} title={title} />
 
       {/* Note Card - 2x2 */}
-      <NoteCard title="À propos" content={description} />
+      <NoteCard title="En bref" content={description} />
     </BentoGrid>
   );
 };

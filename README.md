@@ -1,6 +1,6 @@
 # 📁 My Portfolio - Documentation
 
-> Portfolio personnel de **Tchandikou U. Shalom** avec une interface style macOS/Desktop
+> Portfolio personnel de **DJAKPA Koffi Tepe Venougne** avec une interface style macOS/Desktop
 
 ---
 
@@ -200,4 +200,4 @@ Wrapper qui rend n'importe quel élément enfant draggable sur la grille.
 
 ## 👤 Auteur
 
-**CianusDev**
+**DJAKPA Koffi Tepe Venougne** (Kof)
