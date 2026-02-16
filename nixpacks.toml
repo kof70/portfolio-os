@@ -1,5 +1,4 @@
-# Force npm install instead of npm ci (évite l'échec si package-lock.json
-# est absent du contexte de build Coolify).
-# Si package-lock.json est présent, npm install l'utilise pour la reproductibilité.
+# Install des deps sans s'appuyer sur package-lock.json (évite le bug npm
+# "Cannot read properties of undefined (reading 'extraneous')" dans l'image Nixpacks).
 [phases.install]
-cmds = ["npm install"]
+cmds = ["rm -f package-lock.json", "npm install"]
