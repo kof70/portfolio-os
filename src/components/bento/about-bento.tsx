@@ -23,7 +23,12 @@ export const AboutBento: React.FC<AboutBentoProps> = ({
   return (
     <BentoGrid className={className}>
       {/* Photo Card - 2x2 */}
-      <PhotoCard src={photoSrc} name={name} title={title} />
+      <PhotoCard
+        src={photoSrc}
+        name={name}
+        title={title}
+        description={description}
+      />
 
       {/* Note Card - 2x2 */}
       <NoteCard title="En bref" content={description} />

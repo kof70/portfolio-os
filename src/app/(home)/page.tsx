@@ -21,7 +21,7 @@ import { WallpaperPicker } from "@/components/desktop/wallpaper-picker";
 import { useDesktopStorage } from "@/hooks/use-desktop-storage-context";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { personalInfo } from "@/lib/data";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
@@ -40,7 +40,17 @@ export default function Home() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [isWallpaperPickerOpen, setIsWallpaperPickerOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
   const { isMobile } = useIsMobile();
+  const isShortMobile = isMobile && viewportHeight > 0 && viewportHeight < 760;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const syncViewportHeight = () => setViewportHeight(window.innerHeight);
+    syncViewportHeight();
+    window.addEventListener("resize", syncViewportHeight);
+    return () => window.removeEventListener("resize", syncViewportHeight);
+  }, []);
 
   // Handlers pour ouvrir les fenêtres
   const handleOpenProjects = useCallback(() => {
@@ -297,23 +307,23 @@ export default function Home() {
 
   // Positions par défaut - différentes pour mobile et desktop
   const defaultPositions = {
-    projects: { row: isMobile ? 1 : 0, col: isMobile ? 0 : 0 },
-    about: { row: isMobile ? 1 : 1, col: isMobile ? 1 : 0 },
-    contact: { row: isMobile ? 1 : 2, col: isMobile ? 2 : 0 },
-    cv: { row: isMobile ? 2 : 3, col: isMobile ? 0 : 0 },
-    recommendation: { row: isMobile ? 2 : 0, col: isMobile ? 1 : 1 },
-    community: { row: isMobile ? 2 : 1, col: isMobile ? 2 : 1 },
-    opensource: { row: isMobile ? 3 : 2, col: isMobile ? 0 : 1 },
-    hackathon: { row: isMobile ? 3 : 3, col: isMobile ? 1 : 1 },
-    entreprise: { row: isMobile ? 3 : 1, col: isMobile ? 2 : 2 },
+    projects: { row: isMobile ? (isShortMobile ? 1 : 2) : 0, col: isMobile ? 0 : 0 },
+    about: { row: isMobile ? (isShortMobile ? 1 : 2) : 1, col: isMobile ? 1 : 0 },
+    contact: { row: isMobile ? (isShortMobile ? 1 : 2) : 2, col: isMobile ? 2 : 0 },
+    cv: { row: isMobile ? (isShortMobile ? 2 : 3) : 3, col: isMobile ? 0 : 0 },
+    recommendation: { row: isMobile ? (isShortMobile ? 2 : 3) : 0, col: isMobile ? 1 : 1 },
+    community: { row: isMobile ? (isShortMobile ? 2 : 3) : 1, col: isMobile ? 2 : 1 },
+    opensource: { row: isMobile ? (isShortMobile ? 3 : 4) : 2, col: isMobile ? 0 : 1 },
+    hackathon: { row: isMobile ? (isShortMobile ? 3 : 4) : 3, col: isMobile ? 1 : 1 },
+    entreprise: { row: isMobile ? (isShortMobile ? 3 : 4) : 1, col: isMobile ? 2 : 2 },
   };
 
   // Grille config selon le device
   const gridConfig = {
-    rows: isMobile ? 5 : 6,
+    rows: isMobile ? (isShortMobile ? 4 : 5) : 6,
     cols: isMobile ? 3 : 6,
-    cellSize: isMobile ? 66 : 110,
-    gap: isMobile ? 12 : 8,
+    cellSize: isMobile ? (isShortMobile ? 60 : 66) : 110,
+    gap: isMobile ? (isShortMobile ? 8 : 12) : 8,
     padding: isMobile ? 10 : 16,
   };
 
@@ -327,13 +337,18 @@ export default function Home() {
     >
       {/* Mobile: Bento en haut */}
       {isMobile && (
-        <div className="absolute top-0 left-0 right-0 z-20 pt-6 px-3 flex items-center justify-center pointer-events-none">
+        <div
+          className="absolute top-0 left-0 right-0 z-20 px-3 flex items-center justify-center pointer-events-auto"
+          style={{
+            paddingTop: `calc(env(safe-area-inset-top, 0px) + ${isShortMobile ? 58 : 42}px)`,
+          }}
+        >
           <AboutBento
             photoSrc="/assets/moisansbg.png"
             name={personalInfo.name}
             title={personalInfo.title}
             description="Je construis l'infrastructure, les communautés et les médias qui font avancer la tech au Togo. 18+ ⭐ GitHub · 15k+ vues Reddit · 20+ événements couverts · 2 communautés co-fondées."
-            className="max-w-[320px]"
+            className={isShortMobile ? "max-w-[300px]" : "max-w-[320px]"}
           />
         </div>
       )}
@@ -342,7 +357,12 @@ export default function Home() {
       <div
         className={cn(
           isMobile
-            ? "flex-1 w-full pt-[220px] pb-[calc(104px+var(--safe-area-inset-bottom))]"
+            ? cn(
+                "flex-1 w-full",
+                isShortMobile
+                  ? "pt-[278px] pb-[calc(90px+var(--safe-area-inset-bottom))]"
+                  : "pt-[220px] pb-[calc(104px+var(--safe-area-inset-bottom))]",
+              )
             : "flex-1 h-full",
         )}
       >
@@ -353,7 +373,9 @@ export default function Home() {
           cellSize={gridConfig.cellSize}
           gap={gridConfig.gap}
           padding={gridConfig.padding}
-          className={cn(isMobile ? "max-w-[242px] mx-auto" : "")}
+          className={cn(
+            isMobile ? (isShortMobile ? "max-w-[212px] mx-auto" : "max-w-[242px] mx-auto") : "",
+          )}
         >
           {/* Dossier Projets */}
           <DraggableItem
@@ -363,7 +385,9 @@ export default function Home() {
               defaultPositions.projects,
             )}
             onDoubleClick={handleOpenProjects}
-            onClick={() => setSelectedFile("projects")}
+            onClick={() =>
+              isMobile ? handleOpenProjects() : setSelectedFile("projects")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-projects", "folder")
             }
@@ -381,7 +405,7 @@ export default function Home() {
               defaultPositions.about,
             )}
             onDoubleClick={handleOpenAbout}
-            onClick={() => setSelectedFile("about")}
+            onClick={() => (isMobile ? handleOpenAbout() : setSelectedFile("about"))}
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-about", "folder")
             }
@@ -399,7 +423,9 @@ export default function Home() {
               defaultPositions.contact,
             )}
             onDoubleClick={handleOpenContact}
-            onClick={() => setSelectedFile("contact")}
+            onClick={() =>
+              isMobile ? handleOpenContact() : setSelectedFile("contact")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-contact", "folder")
             }
@@ -413,7 +439,7 @@ export default function Home() {
           <DraggableItem
             id="file-cv"
             initialPosition={getInitialPosition("file-cv", defaultPositions.cv)}
-            onClick={() => setSelectedFile("cv")}
+            onClick={() => (isMobile ? handleOpenCV() : setSelectedFile("cv"))}
             onContextMenu={(e) => handleItemContextMenu(e, "file-cv", "file")}
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "cv"}
@@ -430,7 +456,11 @@ export default function Home() {
               defaultPositions.recommendation,
             )}
             onDoubleClick={handleOpenRecommendation}
-            onClick={() => setSelectedFile("recommendation")}
+            onClick={() =>
+              isMobile
+                ? handleOpenRecommendation()
+                : setSelectedFile("recommendation")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-recommendation", "folder")
             }
@@ -448,7 +478,9 @@ export default function Home() {
               defaultPositions.community,
             )}
             onDoubleClick={handleOpenCommunity}
-            onClick={() => setSelectedFile("community")}
+            onClick={() =>
+              isMobile ? handleOpenCommunity() : setSelectedFile("community")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-community", "folder")
             }
@@ -466,7 +498,9 @@ export default function Home() {
               defaultPositions.opensource,
             )}
             onDoubleClick={handleOpenOpensource}
-            onClick={() => setSelectedFile("opensource")}
+            onClick={() =>
+              isMobile ? handleOpenOpensource() : setSelectedFile("opensource")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-opensource", "folder")
             }
@@ -484,7 +518,9 @@ export default function Home() {
               defaultPositions.hackathon,
             )}
             onDoubleClick={handleOpenHackathon}
-            onClick={() => setSelectedFile("hackathon")}
+            onClick={() =>
+              isMobile ? handleOpenHackathon() : setSelectedFile("hackathon")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-hackathon", "folder")
             }
@@ -502,7 +538,9 @@ export default function Home() {
               defaultPositions.entreprise,
             )}
             onDoubleClick={handleOpenEntreprise}
-            onClick={() => setSelectedFile("entreprise")}
+            onClick={() =>
+              isMobile ? handleOpenEntreprise() : setSelectedFile("entreprise")
+            }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-entreprise", "folder")
             }

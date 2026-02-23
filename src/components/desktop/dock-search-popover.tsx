@@ -20,6 +20,8 @@ import { ContactView } from "./viewer/views/contact-view";
 import { CVView } from "./viewer/views/cv-view";
 import { CategoryView } from "./viewer/views/category-view";
 import { AnimatePresence, motion } from "motion/react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { createPortal } from "react-dom";
 
 interface DockSearchPopoverProps {
   open: boolean;
@@ -51,10 +53,16 @@ export function DockSearchPopover({
   onClose,
   anchorRect,
 }: DockSearchPopoverProps) {
+  const { isMobile } = useIsMobile();
   const { openWindow } = useWindowActions();
   const panelRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [query, setQuery] = React.useState("");
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
@@ -266,13 +274,25 @@ export function DockSearchPopover({
 
   const normalizedQuery = query.trim().toLowerCase();
   const results = React.useMemo(() => {
-    if (!normalizedQuery) return baseResults.slice(0, 14);
+    if (!normalizedQuery) return baseResults.slice(0, isMobile ? 10 : 14);
     return baseResults
       .filter((item) => item.searchable.toLowerCase().includes(normalizedQuery))
-      .slice(0, 24);
-  }, [baseResults, normalizedQuery]);
+      .slice(0, isMobile ? 14 : 24);
+  }, [baseResults, normalizedQuery, isMobile]);
 
-  const style: React.CSSProperties = React.useMemo(() => {
+  const containerStyle: React.CSSProperties = React.useMemo(() => {
+    if (isMobile) {
+      const bottomPx =
+        typeof window !== "undefined"
+          ? 80 + Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--safe-area-inset-bottom") || "0")
+          : 80;
+      return {
+        position: "fixed",
+        left: "50%",
+        bottom: bottomPx,
+        zIndex: 9999,
+      };
+    }
     if (!anchorRect) return {};
     const bottomPx =
       typeof window !== "undefined" ? window.innerHeight - anchorRect.top + 10 : 0;
@@ -280,78 +300,97 @@ export function DockSearchPopover({
       position: "fixed",
       left: anchorRect.left + anchorRect.width / 2,
       bottom: bottomPx,
-      transform: "translateX(-50%)",
       zIndex: 9999,
     };
-  }, [anchorRect]);
+  }, [anchorRect, isMobile]);
 
-  return (
+  const content = (
     <AnimatePresence>
-      {open && anchorRect && (
-        <motion.div
-          ref={panelRef}
-          initial={{ opacity: 0, y: 8, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 8, scale: 0.98 }}
-          transition={{ duration: 0.12, ease: "easeOut" }}
-          style={style}
-          className={cn(
-            "w-[min(92vw,600px)] rounded-2xl border border-white/15",
-            "bg-black/75 backdrop-blur-2xl shadow-2xl shadow-black/60",
-            "overflow-hidden",
-          )}
-        >
-          <div className="p-3 border-b border-white/10">
-            <div className="flex items-center gap-2.5 rounded-xl border border-white/15 bg-black/30 px-3 py-2.5">
-              <Search className="size-4 text-white/60" />
-              <input
-                ref={inputRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Rechercher: projet, techno, expérience, contact..."
-                className="w-full bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none"
-              />
-            </div>
-          </div>
-
-          <div className="p-2 max-h-[52vh] overflow-y-auto space-y-1.5">
-            {results.length === 0 ? (
-              <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white/70">
-                Aucun résultat pour “{query}”.
-              </div>
-            ) : (
-              results.map((result) => (
-                <button
-                  key={result.id}
-                  type="button"
-                  onClick={result.onSelect}
-                  className="w-full text-left rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors p-3"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="font-medium text-sm leading-tight text-white">
-                        {result.title}
-                      </p>
-                      <p className="text-xs text-white/65 mt-1 line-clamp-2">
-                        {result.description}
-                      </p>
-                    </div>
-                    <div className="shrink-0 flex items-center gap-2">
-                      <span className="text-[10px] uppercase tracking-wide text-white/45">
-                        {RESULT_TYPE_LABEL[result.type]}
-                      </span>
-                      {result.externalHref && (
-                        <ExternalLink className="size-3.5 text-white/45" />
-                      )}
-                    </div>
-                  </div>
-                </button>
-              ))
+      {open && (isMobile || anchorRect) && (
+        <div style={containerStyle} className="left-1/2 -translate-x-1/2">
+          <motion.div
+            ref={panelRef}
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.12, ease: "easeOut" }}
+            className={cn(
+              isMobile ? "w-[min(90vw,360px)]" : "w-[min(94vw,600px)]",
+              "rounded-2xl border border-white/15",
+              "bg-black/75 backdrop-blur-2xl shadow-2xl shadow-black/60",
+              "overflow-hidden",
             )}
-          </div>
-        </motion.div>
+          >
+            <div className={cn("border-b border-white/10", isMobile ? "p-2.5" : "p-3")}>
+              <div
+                className={cn(
+                  "flex items-center gap-2.5 rounded-xl border border-white/15 bg-black/30",
+                  isMobile ? "px-2.5 py-2" : "px-3 py-2.5",
+                )}
+              >
+                <Search className="size-4 text-white/60" />
+                <input
+                  ref={inputRef}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Rechercher..."
+                  className={cn(
+                    "w-full bg-transparent text-white placeholder:text-white/50 focus:outline-none",
+                    isMobile ? "text-xs" : "text-sm",
+                  )}
+                />
+              </div>
+            </div>
+
+            <div
+              className={cn(
+                "p-2 overflow-y-auto space-y-1.5",
+                isMobile ? "max-h-[45vh]" : "max-h-[52vh]",
+              )}
+            >
+              {results.length === 0 ? (
+                <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white/70">
+                  Aucun résultat pour “{query}”.
+                </div>
+              ) : (
+                results.map((result) => (
+                  <button
+                    key={result.id}
+                    type="button"
+                    onClick={result.onSelect}
+                    className={cn(
+                      "w-full text-left rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors",
+                      isMobile ? "p-2.5" : "p-3",
+                    )}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className={cn("font-medium leading-tight text-white", isMobile ? "text-xs" : "text-sm")}>
+                          {result.title}
+                        </p>
+                        <p className="text-xs text-white/65 mt-1 line-clamp-2">
+                          {result.description}
+                        </p>
+                      </div>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <span className="text-[10px] uppercase tracking-wide text-white/45">
+                          {RESULT_TYPE_LABEL[result.type]}
+                        </span>
+                        {result.externalHref && (
+                          <ExternalLink className="size-3.5 text-white/45" />
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
-}
 
+  if (!mounted) return null;
+  return createPortal(content, document.body);
+}
