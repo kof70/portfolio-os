@@ -84,13 +84,14 @@ export function DockProjectPopover({
           </div>
           <ul className="py-1">
             {items.map((item) => {
-              if (item.projectId && onSelectProject) {
+              const { projectId } = item;
+              if (projectId && onSelectProject) {
                 return (
-                  <li key={`${item.title}-${item.projectId}`}>
+                  <li key={`${item.title}-${projectId}`}>
                     <button
                       type="button"
                       onClick={() => {
-                        onSelectProject(item.projectId);
+                        onSelectProject(projectId);
                         onClose();
                       }}
                       className={cn(

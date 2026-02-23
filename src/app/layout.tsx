@@ -6,14 +6,7 @@ import { WindowManager, WindowProvider } from "@/components/desktop/viewer";
 import DynamicBackground from "@/components/shared/dynamic-background";
 import { DesktopStorageProvider } from "@/hooks/use-desktop-storage-context";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: "variable",
-});
 
 // ---------------------------------------------------------------------------
 // SEO — Métadonnées complètes
@@ -200,7 +193,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} antialiased relative h-full flex flex-col items-center bg-black overflow-hidden`}
+        className="antialiased relative h-full flex flex-col items-center bg-black overflow-hidden font-sans"
         suppressHydrationWarning
       >
         <DesktopStorageProvider>
