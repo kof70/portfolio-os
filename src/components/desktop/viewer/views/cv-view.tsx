@@ -20,8 +20,8 @@ import { Icons } from "@/components/icons";
 import { GlitchName } from "@/components/shared/glitch-name";
 import { Eye, ArrowLeft } from "lucide-react";
 
-const CV_PDF_URL = "/assets/cv.pdf";
-const CV_DOWNLOAD_NAME = "DJAKPA_Koffi_CV.pdf";
+const CV_PDF_URL = "/assets/djakpa-koffi-cv.pdf";
+const CV_DOWNLOAD_NAME = "Djakpa Koffi CV.pdf";
 
 // ---------------------------------------------------------------------------
 // Types & helpers
