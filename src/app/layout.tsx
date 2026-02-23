@@ -12,7 +12,7 @@ import "./globals.css";
 // SEO — Métadonnées complètes
 // ---------------------------------------------------------------------------
 
-const SITE_URL = "https://kof.dev"; // Remplacer par le vrai domaine une fois déployé
+const SITE_URL = "https://kof.coolify.sesachat.com";
 const SITE_NAME = "Kof — DJAKPA Koffi Tepe Venougne";
 const DESCRIPTION =
   "Portfolio de DJAKPA Koffi (Kof) — Développeur Backend & DevOps, Nest.js, Node.js, React Native, Docker, Coolify. Co-fondateur Python Togo & ETH Lomé. Human AI Ambassador. Basé à Lomé, Togo.";

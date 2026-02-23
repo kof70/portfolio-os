@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://kof.dev"; // Remplacer par le vrai domaine
+  const baseUrl = "https://kof.coolify.sesachat.com";
 
   return [
     {

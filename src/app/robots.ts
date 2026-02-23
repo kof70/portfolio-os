@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://kof.dev/sitemap.xml", // Remplacer par le vrai domaine
+    sitemap: "https://kof.coolify.sesachat.com/sitemap.xml",
   };
 }
