@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import Image from "next/image";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProjectFileProps {
   className?: string;
@@ -11,19 +12,28 @@ export const ProjectFile: React.FC<ProjectFileProps> = ({
   className,
   name = "Project",
 }) => {
+  const { isMobile } = useIsMobile();
+
   return (
     <div
-      className={`flex cursor-pointer flex-col items-center justify-center gap-1 w-full h-full ${className ?? ""}`}
+      className={`flex cursor-pointer flex-col items-center justify-center ${
+        isMobile ? "gap-0.5" : "gap-1"
+      } w-full h-full ${className ?? ""}`}
     >
       <Image
         draggable={"false"}
         src="/icons/project.png"
         alt="App Icon"
-        width={70}
-        height={70}
-        sizes="70px"
+        width={isMobile ? 44 : 70}
+        height={isMobile ? 44 : 70}
+        sizes={isMobile ? "44px" : "70px"}
       />
-      <span className="text-xs text-white font-medium text-center px-1 truncate max-w-full" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)" }}>
+      <span
+        className={`text-white font-medium text-center px-0.5 max-w-full ${
+          isMobile ? "text-[10px] leading-3 line-clamp-2" : "text-xs truncate"
+        }`}
+        style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)" }}
+      >
         {name}
       </span>
     </div>

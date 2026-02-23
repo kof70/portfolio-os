@@ -297,24 +297,24 @@ export default function Home() {
 
   // Positions par défaut - différentes pour mobile et desktop
   const defaultPositions = {
-    projects: { row: 0, col: 0 },
-    about: { row: isMobile ? 1 : 1, col: isMobile ? 0 : 0 },
-    contact: { row: isMobile ? 0 : 2, col: isMobile ? 1 : 0 },
-    cv: { row: isMobile ? 1 : 3, col: isMobile ? 1 : 0 },
-    recommendation: { row: isMobile ? 2 : 0, col: isMobile ? 0 : 1 },
-    community: { row: isMobile ? 2 : 1, col: isMobile ? 1 : 1 },
+    projects: { row: isMobile ? 1 : 0, col: isMobile ? 0 : 0 },
+    about: { row: isMobile ? 1 : 1, col: isMobile ? 1 : 0 },
+    contact: { row: isMobile ? 1 : 2, col: isMobile ? 2 : 0 },
+    cv: { row: isMobile ? 2 : 3, col: isMobile ? 0 : 0 },
+    recommendation: { row: isMobile ? 2 : 0, col: isMobile ? 1 : 1 },
+    community: { row: isMobile ? 2 : 1, col: isMobile ? 2 : 1 },
     opensource: { row: isMobile ? 3 : 2, col: isMobile ? 0 : 1 },
     hackathon: { row: isMobile ? 3 : 3, col: isMobile ? 1 : 1 },
-    entreprise: { row: isMobile ? 4 : 1, col: isMobile ? 0 : 2 },
+    entreprise: { row: isMobile ? 3 : 1, col: isMobile ? 2 : 2 },
   };
 
   // Grille config selon le device
   const gridConfig = {
     rows: isMobile ? 5 : 6,
-    cols: isMobile ? 2 : 6,
-    cellSize: isMobile ? 85 : 110,
-    gap: isMobile ? 4 : 8,
-    padding: isMobile ? 12 : 16,
+    cols: isMobile ? 3 : 6,
+    cellSize: isMobile ? 66 : 110,
+    gap: isMobile ? 12 : 8,
+    padding: isMobile ? 10 : 16,
   };
 
   return (
@@ -327,19 +327,25 @@ export default function Home() {
     >
       {/* Mobile: Bento en haut */}
       {isMobile && (
-        <div className="w-full pt-12 pb-4 px-4 shrink-0 flex items-center justify-center">
+        <div className="absolute top-0 left-0 right-0 z-20 pt-6 px-3 flex items-center justify-center pointer-events-none">
           <AboutBento
             photoSrc="/assets/moisansbg.png"
             name={personalInfo.name}
             title={personalInfo.title}
             description="Je construis l'infrastructure, les communautés et les médias qui font avancer la tech au Togo. 18+ ⭐ GitHub · 15k+ vues Reddit · 20+ événements couverts · 2 communautés co-fondées."
-            className="max-w-[280px]"
+            className="max-w-[320px]"
           />
         </div>
       )}
 
       {/* Desktop Grid - À GAUCHE sur desktop, en bas sur mobile */}
-      <div className={cn(isMobile ? "flex-1 w-full" : "flex-1 h-full")}>
+      <div
+        className={cn(
+          isMobile
+            ? "flex-1 w-full pt-[220px] pb-[calc(104px+var(--safe-area-inset-bottom))]"
+            : "flex-1 h-full",
+        )}
+      >
         <DesktopGrid
           key={refreshKey}
           rows={gridConfig.rows}
@@ -347,6 +353,7 @@ export default function Home() {
           cellSize={gridConfig.cellSize}
           gap={gridConfig.gap}
           padding={gridConfig.padding}
+          className={cn(isMobile ? "max-w-[242px] mx-auto" : "")}
         >
           {/* Dossier Projets */}
           <DraggableItem

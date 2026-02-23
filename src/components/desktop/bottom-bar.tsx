@@ -26,7 +26,7 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
   // Sur mobile, on montre toujours le dock de façon simplifiée
   if (isMobile) {
     return (
-      <div className="w-full flex justify-center items-center fixed md:z-200 left-0 right-0 bottom-0 pb-safe">
+      <div className="w-full flex justify-center items-center fixed z-200 left-0 right-0 bottom-0 pb-safe pointer-events-none">
         <motion.footer
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -36,14 +36,14 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
             damping: 30,
             delay: 0.2,
           }}
-          className="mx-auto mb-2"
+          className="mx-auto mb-1 w-fit pointer-events-auto"
         >
           <CustomDock />
         </motion.footer>
 
         {/* Home indicator - iOS style */}
         <div className="absolute bottom-1 left-1/2 -translate-x-1/2">
-          <div className="w-32 h-1 bg-white/30 rounded-full" />
+          <div className="w-24 h-1 bg-white/30 rounded-full" />
         </div>
       </div>
     );

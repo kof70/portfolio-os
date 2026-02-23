@@ -22,7 +22,7 @@ export const BentoGrid: React.FC<BentoGridProps> = ({
         // Sur mobile: grille 2 colonnes compacte
         // Sur desktop: grille 4 colonnes avec plus d'espace
         isMobile
-          ? "grid-cols-2 max-w-[300px] auto-rows-[100px]"
+          ? "grid-cols-2 max-w-[320px] auto-rows-[100px]"
           : "grid-cols-4 max-w-md auto-rows-[120px]",
         className,
       )}

@@ -1,17 +1,37 @@
 "use client";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Dock, DockIcon } from "../ui/dock";
 import { CustomTooltip } from "../shared/custom-tooltip";
 import { Icons, type IconProps } from "@/components/icons";
-import { useWindows } from "./viewer";
+import { ProjectsView, useWindows } from "./viewer";
 import Image from "next/image";
 import { popTransition } from "@/lib/animations";
 import Link from "next/link";
-import { contactLinks } from "@/lib/data";
+import {
+  contactLinks,
+  getDockTechProjects,
+  type DockTechId,
+} from "@/lib/data";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
+import { DockProjectPopover } from "./dock-project-popover";
+import { DockSearchPopover } from "./dock-search-popover";
+
+const DOCK_TECH_LABELS: Record<DockTechId, string> = {
+  postman: "Integration API",
+  typescript: "TypeScript",
+  react: "React",
+  nextjs: "Next.js",
+  tailwind: "Tailwind CSS",
+  nodejs: "Node.js",
+  git: "Git",
+  reactnative: "React Native",
+  expo: "Expo",
+  docker: "Docker",
+  coolify: "Coolify",
+};
 import {
   FileText,
   Star,
@@ -93,9 +113,21 @@ const exitTransition = {
 };
 
 export function CustomDock() {
-  const { windows, focusWindow, restoreWindow } = useWindows();
+  const { windows, focusWindow, restoreWindow, openWindow } = useWindows();
   const { isMobile } = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
+  const [dockPopover, setDockPopover] = useState<{
+    techId: DockTechId;
+    anchorRect: DOMRect;
+  } | null>(null);
+  const [searchPopoverRect, setSearchPopoverRect] = useState<DOMRect | null>(null);
+
+  const openDockPopover = useCallback((techId: DockTechId, e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setSearchPopoverRect(null);
+    setDockPopover({ techId, anchorRect: rect });
+  }, []);
+  const closeDockPopover = useCallback(() => setDockPopover(null), []);
 
   const handleWindowClick = (windowId: string, isMinimized: boolean) => {
     if (isMinimized) {
@@ -105,141 +137,247 @@ export function CustomDock() {
     }
   };
 
+  const handleOpenProjectFromDock = useCallback(
+    (projectId: string) => {
+      openWindow({
+        id: "projects",
+        title: "Projets",
+        content: <ProjectsView initialProjectId={projectId} />,
+        position: { x: 100, y: 50 },
+        size: { width: 900, height: 600 },
+        minSize: { width: 600, height: 400 },
+        isMinimized: false,
+        isMaximized: false,
+      });
+    },
+    [openWindow],
+  );
+
+  const handleToggleSearchPopover = useCallback((e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setDockPopover(null);
+    setSearchPopoverRect((prev) => (prev ? null : rect));
+  }, []);
+
+  const closeSearchPopover = useCallback(() => setSearchPopoverRect(null), []);
+
+  if (isMobile) {
+    const mobileLinks = [
+      { id: "github", icon: "/icons/github-m.png", label: "GitHub" },
+      { id: "email", icon: "/icons/gmail-m.png", label: "Gmail" },
+      { id: "linkedin", icon: "/icons/linkedin-m.png", label: "LinkedIn" },
+      { id: "whatsapp", icon: "/icons/whatsapp-m.png", label: "WhatsApp" },
+    ] as const;
+
+    return (
+      <div className="w-full flex justify-center">
+        <DockSearchPopover
+          open={searchPopoverRect !== null}
+          onClose={closeSearchPopover}
+          anchorRect={searchPopoverRect}
+        />
+        <div
+          className={cn(
+            "w-fit flex items-center gap-1.5 rounded-[20px] border border-white/12",
+            "bg-black/45 backdrop-blur-2xl px-2 py-1.5 shadow-lg shadow-black/50",
+          )}
+        >
+          <button
+            type="button"
+            onClick={handleToggleSearchPopover}
+            className="size-10 !min-h-0 !min-w-0 shrink-0 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Ouvrir la recherche"
+          >
+            <Icons.circle className="size-6 text-white/90" />
+          </button>
+
+          <div className="w-px h-7 bg-white/15" />
+
+          {mobileLinks.map((item) => {
+            const href = contactLinks.find((f) => f.id === item.id)?.href || "#";
+            return (
+              <Link
+                key={item.id}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="size-10 !min-h-0 !min-w-0 shrink-0 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                aria-label={item.label}
+              >
+                <Image
+                  draggable={false}
+                  src={item.icon}
+                  alt={`${item.label} Icon`}
+                  width={36}
+                  height={36}
+                  sizes="36px"
+                  className="size-9"
+                />
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
+      <DockProjectPopover
+        open={dockPopover !== null}
+        onClose={closeDockPopover}
+        onSelectProject={handleOpenProjectFromDock}
+        anchorRect={dockPopover?.anchorRect ?? null}
+        label={dockPopover ? DOCK_TECH_LABELS[dockPopover.techId] : ""}
+        items={dockPopover ? getDockTechProjects(dockPopover.techId) : []}
+      />
+      <DockSearchPopover
+        open={searchPopoverRect !== null}
+        onClose={closeSearchPopover}
+        anchorRect={searchPopoverRect}
+      />
       <Dock
-        className="bg-black/20 rounded-3xl border-[0.5px] border-white/10"
-        iconSize={isMobile ? 75 : 60}
-        iconMagnification={78}
-        iconDistance={isMobile ? 80 : 50}
+        className={cn(
+          "bg-black/20 rounded-3xl border-[0.5px] border-white/10",
+          isMobile ? "h-16 gap-1 p-1.5 rounded-2xl" : "",
+        )}
+        iconSize={isMobile ? 48 : 60}
+        iconMagnification={isMobile ? 48 : 78}
+        iconDistance={isMobile ? 36 : 50}
       >
         <DockIcon hidden={isMobile}>
           <CustomTooltip label="Launcher">
-            <Icons.circle className="size-10 text-white" />
+            <button
+              type="button"
+              onClick={handleToggleSearchPopover}
+              className="w-full h-full flex items-center justify-center"
+            >
+              <Icons.circle className="size-10 text-white" />
+            </button>
           </CustomTooltip>
         </DockIcon>
 
-        {/* Skills / Technologies */}
+        {/* Skills / Technologies — clic = popover Projets */}
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://www.postman.com/api-platform/api-integration"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Integration API">
+          <CustomTooltip label="Integration API">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("postman", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.apiIntegration className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://www.typescriptlang.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="TypeScript">
+          <CustomTooltip label="TypeScript">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("typescript", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.typescript className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://react.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="React">
+          <CustomTooltip label="React">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("react", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.react className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://nextjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Next.js">
+          <CustomTooltip label="Next.js">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("nextjs", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.nextjs className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://tailwindcss.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Tailwind CSS">
+          <CustomTooltip label="Tailwind CSS">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("tailwind", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.tailwind className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://nodejs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Node.js">
+          <CustomTooltip label="Node.js">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("nodejs", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.nodejs className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://git-scm.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Git">
+          <CustomTooltip label="Git">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("git", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.git className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://reactnative.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="React Native">
+          <CustomTooltip label="React Native">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("reactnative", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.reactNative className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://expo.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Expo">
+          <CustomTooltip label="Expo">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("expo", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.expo className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://www.docker.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Docker">
+          <CustomTooltip label="Docker">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("docker", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.docker className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         <DockIcon hidden={isMobile}>
-          <Link
-            href="https://coolify.io/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CustomTooltip label="Coolify">
+          <CustomTooltip label="Coolify">
+            <button
+              type="button"
+              onClick={(e) => openDockPopover("coolify", e)}
+              className="w-full h-full flex items-center justify-center"
+            >
               <Icons.coolify className="size-full" />
-            </CustomTooltip>
-          </Link>
+            </button>
+          </CustomTooltip>
         </DockIcon>
         {/* Animated Window Icons */}
         <AnimatePresence mode="wait">
@@ -315,8 +453,8 @@ export function CustomDock() {
                   alt="Github Icon"
                   width={90}
                   height={90}
-                  sizes="96px"
-                  className="size-24"
+                  sizes="44px"
+                  className="size-11"
                 />
               ) : (
                 <Icons.githubWithBg className="size-full" />
@@ -338,8 +476,8 @@ export function CustomDock() {
                   alt="Gmail Icon"
                   width={90}
                   height={90}
-                  sizes="96px"
-                  className="size-24"
+                  sizes="44px"
+                  className="size-11"
                 />
               ) : (
                 <Icons.gmailWithBg className="size-full" />
@@ -361,8 +499,8 @@ export function CustomDock() {
                   alt="LinkedIn Icon"
                   width={90}
                   height={90}
-                  sizes="96px"
-                  className="size-24"
+                  sizes="44px"
+                  className="size-11"
                 />
               ) : (
                 <Icons.linkedinWithBg className="size-full" />
@@ -384,8 +522,8 @@ export function CustomDock() {
                   alt="WhatsApp Icon"
                   width={90}
                   height={90}
-                  sizes="96px"
-                  className="size-24"
+                  sizes="44px"
+                  className="size-11"
                 />
               ) : (
                 <Icons.whatsappWithBg className="size-full" />

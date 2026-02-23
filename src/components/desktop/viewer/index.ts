@@ -15,3 +15,4 @@ export { AboutView } from "./views/about-view";
 export { ContactView } from "./views/contact-view";
 export { CategoryView } from "./views/category-view";
 export { CVView } from "./views/cv-view";
+export { SearchView } from "./views/search-view";

@@ -114,6 +114,8 @@ export const WindowProvider: React.FC<WindowProviderProps> = ({ children }) => {
             w.id === windowData.id
               ? {
                   ...w,
+                  title: windowData.title,
+                  content: windowData.content,
                   isMinimized: false,
                   isFocused: true,
                   zIndex: highestZIndex + 1,

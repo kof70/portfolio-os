@@ -34,7 +34,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
       colSpan={isMobile ? 2 : 4}
       rowSpan={isMobile ? 2 : 3}
       variant="glass"
-      className={cn("p-0 overflow-hidden group", className)}
+      className={cn("p-0 overflow-hidden group", isMobile && "min-h-[200px]", className)}
     >
       {/* Photo */}
       <div className="relative w-full h-full">

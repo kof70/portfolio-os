@@ -2,6 +2,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SplashScreen } from "./splash-screen";
+import { ReleaseNotification } from "./shared/release-notification";
 
 interface AppWrapperProps {
   children: React.ReactNode;
@@ -81,6 +82,9 @@ export const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
           <SplashScreen onComplete={handleSplashComplete} duration={3500} />
         </motion.div>
       )}
+
+      {/* Notification release (ex. Coolify MCP v1.3.1) */}
+      <ReleaseNotification />
 
       {/* Fullscreen Prompt Overlay */}
       <AnimatePresence></AnimatePresence>

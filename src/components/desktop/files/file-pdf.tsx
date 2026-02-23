@@ -2,6 +2,7 @@ import * as React from "react";
 import { FileText } from "lucide-react";
 import { type IconProps } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FilePDFProps {
   className?: string;
@@ -82,16 +83,24 @@ const Icons = {
 };
 
 const FilePDF: React.FC<FilePDFProps> = ({ className, name = "Folder", variant = "pdf" }) => {
+  const { isMobile } = useIsMobile();
   const Icon = Icons[variant];
   return (
     <div
       className={cn(
-        "flex cursor-pointer flex-col items-center justify-center gap-1 w-full h-full rounded-xl hover:bg-white/20 hover:border-[0.5px] border-white/10 transition-colors ease-in-out duration-150 select-none",
+        "flex cursor-pointer flex-col items-center justify-center w-full h-full rounded-xl hover:bg-white/20 hover:border-[0.5px] border-white/10 transition-colors ease-in-out duration-150 select-none",
+        isMobile ? "gap-0.5" : "gap-1",
         className,
       )}
     >
-      <Icon className="size-16 shrink-0" />
-      <span className="text-xs text-white font-medium text-center px-1 truncate max-w-full" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)" }}>
+      <Icon className={cn("shrink-0", isMobile ? "size-11" : "size-16")} />
+      <span
+        className={cn(
+          "text-white font-medium text-center max-w-full",
+          isMobile ? "text-[10px] leading-3 px-0.5 line-clamp-2" : "text-xs px-1 truncate",
+        )}
+        style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)" }}
+      >
         {name}
       </span>
     </div>

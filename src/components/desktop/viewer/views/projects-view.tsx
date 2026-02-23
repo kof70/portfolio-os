@@ -26,21 +26,28 @@ function getLinkExcerpt(url: string, maxLength = 40): string {
 interface ProjectCardProps {
   project: Project;
   isCompact?: boolean;
+  isFocused?: boolean;
+  cardRef?: (node: HTMLDivElement | null) => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   isCompact = false,
+  isFocused = false,
+  cardRef,
 }) => {
   const linkUrl = project.liveUrl || project.githubUrl;
   const linkExcerpt = linkUrl ? getLinkExcerpt(linkUrl) : null;
 
   return (
     <div
+      ref={cardRef}
       className={cn(
         "group relative overflow-hidden",
         "bg-white/5 rounded-xl border border-white/10 hover:border-white/20",
         "transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5",
+        isFocused &&
+          "ring-2 ring-cyan-300/80 border-cyan-300/70 shadow-[0_0_0_1px_rgba(103,232,249,0.25)]",
       )}
     >
       {/* Aperçu : image statique ou iframe de la page live (extrait de la vue réelle) */}
@@ -171,10 +178,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
 interface ProjectsViewProps {
   className?: string;
+  initialProjectId?: string;
 }
 
-const ProjectsViewContent: React.FC<ProjectsViewProps> = ({ className }) => {
+const ProjectsViewContent: React.FC<ProjectsViewProps> = ({
+  className,
+  initialProjectId,
+}) => {
   const { isXs, isSmUp, isMdUp, isLgUp } = useWindowViewport();
+  const projectRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+
+  React.useEffect(() => {
+    if (!initialProjectId) return;
+    const target = projectRefs.current[initialProjectId];
+    if (!target) return;
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [initialProjectId]);
 
   // Determine grid columns based on window size
   const getGridCols = () => {
@@ -209,17 +228,31 @@ const ProjectsViewContent: React.FC<ProjectsViewProps> = ({ className }) => {
       {/* Grid */}
       <div className={cn("grid gap-4", getGridCols())}>
         {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} isCompact={isXs} />
+          <ProjectCard
+            key={project.id}
+            project={project}
+            isCompact={isXs}
+            isFocused={project.id === initialProjectId}
+            cardRef={(node) => {
+              projectRefs.current[project.id] = node;
+            }}
+          />
         ))}
       </div>
     </div>
   );
 };
 
-export const ProjectsView: React.FC<ProjectsViewProps> = ({ className }) => {
+export const ProjectsView: React.FC<ProjectsViewProps> = ({
+  className,
+  initialProjectId,
+}) => {
   return (
     <WindowViewportProvider>
-      <ProjectsViewContent className={className} />
+      <ProjectsViewContent
+        className={className}
+        initialProjectId={initialProjectId}
+      />
     </WindowViewportProvider>
   );
 };

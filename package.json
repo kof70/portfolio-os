@@ -2,13 +2,14 @@
   "name": "my-portfolio",
   "author": {
     "name": "DJAKPA Koffi Tepe Venougne",
-    "email": "djakpakoffi@gmail.com"
+    "email": "djakpakoffi7029@gmail.com"
   },
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "setup": "pnpm install --ignore-workspace",
     "dev": "next dev",
+    "dev:host": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

@@ -105,10 +105,10 @@ export const personalInfo: PersonalInfo = {
   subtitle: "Backend & Full-Stack · DevOps · Média & production",
   location: "📍 Lomé, Togo",
   avatar: "/assets/profile2.png",
-  bio: "Développeur backend et DevOps : architecture, déploiement (Coolify, Docker), surveillance. Backend Nest.js pour alonu.tech, application mobile React Native pour Cheffe Citronnelle. Human AI Ambassador pour une IA au service du développement durable en Afrique. Co-fondateur de Python Togo et ETH Lomé, responsable production chez Rekap. Auteur du Coolify MCP Server (18+ étoiles GitHub, ~15k vues Reddit). Participation au hackathon Digital Ocean sur la création d'agents IA.",
+  bio: "Développeur backend et DevOps : architecture, déploiement (Coolify, Docker), surveillance. Backend d'alonu.tech réalisé en Nest.js, avec une majorité de projets web développés en Next.js + TypeScript. Human AI Ambassador pour une IA au service du développement durable en Afrique. Co-fondateur de Python Togo et ETH Lomé, responsable production chez Rekap. Auteur du Coolify MCP Server (18+ étoiles GitHub, ~15k vues Reddit). Participation au hackathon Digital Ocean sur la création d'agents IA.",
   aboutParagraphs: [
     "Développeur backend, full-stack et DevOps basé à Lomé, Togo. Je me définirais avant tout comme un développeur backend et un architecte d'infrastructure. Mon cœur de métier : concevoir des API robustes, mettre en place le déploiement (Coolify, Docker, CI/CD) et construire des architectures backend solides en Nest.js et Node.js.",
-    "J'ai un spectre bien plus large que le seul backend : développement mobile (React Native — j'ai livré l'application de Cheffe Citronnelle), frontend web (alonu.tech, ce portfolio), et production audiovisuelle avec Rekap, le média que j'ai co-fondé. Je fais souvent le pont entre le produit, le design et l'infrastructure technique — comprendre les besoins visuels des designers comme les contraintes structurelles du backend pour livrer un produit final cohérent.",
+    "J'ai un spectre bien plus large que le seul backend : développement mobile (React Native — j'ai livré l'application de Cheffe Citronnelle), frontend web (majoritairement en Next.js + TypeScript, dont ce portfolio), et production audiovisuelle avec Rekap, le média que j'ai co-fondé. Je fais souvent le pont entre le produit, le design et l'infrastructure technique — comprendre les besoins visuels des designers comme les contraintes structurelles du backend pour livrer un produit final cohérent.",
     "Côté communauté, je suis co-fondateur de Python Togo et d'ETH Lomé, deux initiatives qui structurent l'écosystème tech togolais. Avec Rekap, nous avons couvert plus de 20 événements concrets : Africa Blockchain Community, OnlyDust (Togo & Bénin), le reportage GRIT pour des médias locaux, Linked Africa au Bénin, et bien d'autres. J'y gère la partie administrative, les partenariats et la négociation.",
     "Au fil de mon parcours, j'ai eu l'opportunité de travailler sur des projets variés : startups, entreprises locales, communautés open source, hackathons internationaux et initiatives panafricaines. Auteur du Coolify MCP Server (18+ étoiles GitHub, ~15k vues Reddit), participant au hackathon Digital Ocean sur les agents IA avec Titan. Human AI Ambassador pour une IA au service du développement durable en Afrique.",
     "Au-delà du code, ce qui me motive c'est de faire le lien entre technique et produit : comprendre les besoins métier, concevoir l'infrastructure adaptée et livrer des solutions pérennes. Tout le monde dans la tech togolaise me connaît sous le pseudo de Kof — et c'est sous ce nom que je continue à construire, coder et connecter.",
@@ -144,8 +144,8 @@ export const projects: Project[] = [
     id: "14",
     title: "alonu.tech — Backend",
     description:
-      "Backend de la plateforme alonu.tech, développé en Nest.js. Architecture, API et déploiement.",
-    tags: ["Nest.js", "Backend", "API", "DevOps"],
+      "Backend complet de la plateforme alonu.tech réalisé en Nest.js : architecture, API, sécurité et déploiement.",
+    tags: ["Nest.js", "TypeScript", "Backend", "API", "DevOps"],
     liveUrl: "https://alonu.tech",
     category: "web",
   },
@@ -181,6 +181,21 @@ export const projects: Project[] = [
     tags: ["Backend", "DevOps", "Sécurité", "Coolify", "Docker"],
     liveUrl: "https://sesachat.com/",
     category: "web",
+  },
+  {
+    id: "17",
+    title: "SES Mobile — Gestion opérationnelle (Supabase)",
+    description:
+      "Application mobile créée pour l'entreprise SES avec backend Supabase. Gestion complète de l'agence de sécurité et nettoyage: clients, agents, lieux, créneaux, pointage, notifications et administration opérationnelle.",
+    tags: [
+      "React Native",
+      "Supabase",
+      "Mobile",
+      "Backend",
+      "Pointage",
+      "Notifications",
+    ],
+    category: "mobile",
   },
   {
     id: "9",
@@ -299,7 +314,7 @@ export const experiences: Experience[] = [
     company: "SES, Lomé",
     period: "Oct. - Nov. 2025",
     description:
-      "Livraison de l'application mobile SES et correction des derniers bugs. Développement d'une application de gestion des clients, agents, plannings, alertes et communications administratives.",
+      "Conception et livraison de l'application mobile SES avec backend Supabase. Gestion complète: clients, agents de sécurité, lieux d'affectation, créneaux, pointage, notifications et gestion administrative pour les activités de sécurité et nettoyage.",
   },
   {
     id: "9",
@@ -424,8 +439,8 @@ export const contactLinks: ContactLink[] = [
     id: "email",
     icon: "email",
     label: "Email",
-    value: "djakpakoffi@gmail.com",
-    href: "mailto:djakpakoffi@gmail.com",
+    value: "djakpakoffi7029@gmail.com",
+    href: "mailto:djakpakoffi7029@gmail.com",
     hoverColor: "hover:text-red-400",
   },
   {
@@ -654,3 +669,209 @@ export const getProjectsByBadge = (badge: BadgeType) =>
 
 export const getEventsByBadge = (badge: BadgeType) =>
   events.filter((e) => e.badge === badge);
+
+// =============================================================================
+// DOCK — Icônes techno → projets (popover au clic)
+// =============================================================================
+
+export interface DockTechProjectItem {
+  title: string;
+  descriptionShort: string;
+  href?: string;
+  projectId?: string;
+}
+
+/** Id des icônes techno du dock (custom-dock.tsx) */
+export type DockTechId =
+  | "postman"
+  | "typescript"
+  | "react"
+  | "nextjs"
+  | "tailwind"
+  | "nodejs"
+  | "git"
+  | "reactnative"
+  | "expo"
+  | "docker"
+  | "coolify";
+
+/** Projets associés à chaque techno du dock (nom, courte description, lien) */
+export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
+  postman: [
+    {
+      title: "Coolify MCP Server",
+      descriptionShort: "API Coolify exposée via MCP — tests et doc Postman.",
+      projectId: "7",
+    },
+    {
+      title: "alonu.tech — Backend",
+      descriptionShort: "API Nest.js — intégration et tests.",
+      projectId: "14",
+    },
+    {
+      title: "SES & CGSP",
+      descriptionShort: "Applications de gestion — APIs backend.",
+      projectId: "10",
+    },
+  ],
+  typescript: [
+    {
+      title: "Coolify MCP Server",
+      descriptionShort: "Serveur MCP en TypeScript pour l’API Coolify.",
+      projectId: "7",
+    },
+    {
+      title: "Drive",
+      descriptionShort: "Workspace collaboratif local — stack TypeScript + Vite.",
+      projectId: "6",
+    },
+    {
+      title: "Ce portfolio",
+      descriptionShort: "Site Next.js + TypeScript.",
+      href: "/",
+    },
+  ],
+  react: [
+    {
+      title: "Drive",
+      descriptionShort: "Canvas et sync temps réel — React + WebSocket.",
+      projectId: "6",
+    },
+    {
+      title: "StartUpHub",
+      descriptionShort: "Plateforme startups / investisseurs — React + Supabase.",
+      projectId: "4",
+    },
+    {
+      title: "Ce portfolio",
+      descriptionShort: "Interface bureau — React (Next.js).",
+      href: "/",
+    },
+  ],
+  nextjs: [
+    {
+      title: "Ce portfolio",
+      descriptionShort: "Portfolio type OS / bureau — Next.js.",
+      href: "/",
+    },
+  ],
+  tailwind: [
+    {
+      title: "Ce portfolio",
+      descriptionShort: "UI du bureau, dock et fenêtres — Tailwind CSS.",
+      href: "/",
+    },
+  ],
+  nodejs: [
+    {
+      title: "VoirDrama Stremio Addon",
+      descriptionShort: "Addon Stremio — Node.js, scraping et streams.",
+      projectId: "8",
+    },
+    {
+      title: "alonu.tech — Backend",
+      descriptionShort: "API Nest.js — Node.js.",
+      projectId: "14",
+    },
+    {
+      title: "Coolify MCP Server",
+      descriptionShort: "Serveur MCP — runtime Node / TypeScript.",
+      projectId: "7",
+    },
+  ],
+  git: [
+    {
+      title: "Coolify MCP Server",
+      descriptionShort: "Open source — dépôt GitHub.",
+      projectId: "7",
+    },
+    {
+      title: "Drive",
+      descriptionShort: "Projet hackathon Kiro — GitHub.",
+      projectId: "6",
+    },
+    {
+      title: "StartUpHub",
+      descriptionShort: "Open source — GitHub.",
+      projectId: "4",
+    },
+    {
+      title: "VoirDrama Stremio Addon",
+      descriptionShort: "Addon perso — GitHub.",
+      projectId: "8",
+    },
+  ],
+  reactnative: [
+    {
+      title: "SES Mobile",
+      descriptionShort:
+        "App mobile SES + backend Supabase: clients, agents, lieux, créneaux, pointage, notifications.",
+      projectId: "17",
+    },
+    {
+      title: "Cheffe Citronnelle",
+      descriptionShort: "App mobile React Native livrée: commandes, suivi, livraison.",
+      projectId: "9",
+    },
+  ],
+  expo: [
+    {
+      title: "SES Mobile",
+      descriptionShort:
+        "Application métier mobile pour agence sécurité/nettoyage avec backend Supabase.",
+      projectId: "17",
+    },
+    {
+      title: "Cheffe Citronnelle",
+      descriptionShort: "Version Expo/React Native avec flux mobile complet.",
+      projectId: "9",
+    },
+  ],
+  docker: [
+    {
+      title: "SES & CGSP",
+      descriptionShort:
+        "Conteneurisation et déploiement des apps de gestion avec Docker + Coolify.",
+      projectId: "10",
+    },
+    {
+      title: "Coolify MCP Server",
+      descriptionShort: "Distribution et déploiement — Docker.",
+      projectId: "7",
+    },
+    {
+      title: "alonu.tech",
+      descriptionShort: "Infra et déploiement — Docker.",
+      projectId: "14",
+    },
+  ],
+  coolify: [
+    {
+      title: "Coolify MCP Server",
+      descriptionShort:
+        "Auteur du serveur MCP Coolify: orchestration API, documentation et intégrations assistants IA.",
+      projectId: "7",
+    },
+    {
+      title: "SES & CGSP",
+      descriptionShort:
+        "DevOps backend: architecture, déploiement et supervision via Coolify pour plusieurs apps d'entreprise.",
+      projectId: "10",
+    },
+    {
+      title: "alonu.tech — Backend",
+      descriptionShort:
+        "Architecture backend Nest.js et déploiement en production sur l'infrastructure Coolify.",
+      projectId: "14",
+    },
+    {
+      title: "Cheffe Citronnelle — Mobile",
+      descriptionShort:
+        "Stack mobile (React Native) connectée au backend déployé et maintenu côté infrastructure.",
+      projectId: "9",
+    },
+  ],
+};
+
+export const getDockTechProjects = (techId: DockTechId): DockTechProjectItem[] =>
+  DOCK_TECH_PROJECTS[techId] ?? [];
