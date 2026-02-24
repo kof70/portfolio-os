@@ -19,8 +19,17 @@ import { Eye, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { t } from "@/lib/i18n";
 
-const CV_PDF_URL = "/assets/djakpa-koffi-cv.pdf";
-const CV_DOWNLOAD_NAME = "Djakpa Koffi CV.pdf";
+const CV_BY_LANGUAGE: Record<"fr" | "en", { url: string; downloadName: string }> =
+  {
+    fr: {
+      url: "/assets/djakpa-koffi-cv.pdf",
+      downloadName: "Djakpa Koffi CV.pdf",
+    },
+    en: {
+      url: "/assets/djakpa-koffi-cv-en.pdf",
+      downloadName: "Djakpa Koffi CV (EN).pdf",
+    },
+  };
 
 // ---------------------------------------------------------------------------
 // Types & helpers
@@ -205,15 +214,16 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
     [language],
   );
   const [showPdf, setShowPdf] = React.useState(false);
+  const cvAsset = CV_BY_LANGUAGE[language];
 
   const handleDownload = React.useCallback(() => {
     const link = document.createElement("a");
-    link.href = CV_PDF_URL;
-    link.download = CV_DOWNLOAD_NAME;
+    link.href = cvAsset.url;
+    link.download = cvAsset.downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, []);
+  }, [cvAsset.downloadName, cvAsset.url]);
 
   // Identifier les changements d'année pour placer des marqueurs
   let lastYear = 0;
@@ -275,7 +285,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
       {showPdf && (
         <div className="flex-1 min-h-0 p-2">
           <iframe
-            src={`${CV_PDF_URL}#toolbar=1&navpanes=1`}
+            src={`${cvAsset.url}#toolbar=1&navpanes=1`}
             title={t(language, "myResume")}
             className="w-full h-full rounded-lg border border-white/10 bg-white"
           />
