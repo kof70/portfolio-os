@@ -5,6 +5,7 @@ import { TopBar } from "@/components/desktop/top-bar";
 import { WindowManager, WindowProvider } from "@/components/desktop/viewer";
 import DynamicBackground from "@/components/shared/dynamic-background";
 import { DesktopStorageProvider } from "@/hooks/use-desktop-storage-context";
+import { LanguageProvider } from "@/hooks/use-language";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -15,7 +16,7 @@ import "./globals.css";
 const SITE_URL = "https://kof.coolify.sesachat.com";
 const SITE_NAME = "Kof — DJAKPA Koffi Tepe Venougne";
 const DESCRIPTION =
-  "Portfolio de DJAKPA Koffi (Kof) — Développeur Backend & DevOps, Nest.js, Node.js, React Native, Docker, Coolify. Co-fondateur Python Togo & ETH Lomé. Human AI Ambassador. Basé à Lomé, Togo.";
+  "Portfolio of DJAKPA Koffi (Kof) — Backend Developer & DevOps, Nest.js, Node.js, React Native, Docker, Coolify. Co-founder of Python Togo & ETH Lome. Human AI Ambassador. Based in Lome, Togo.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -34,8 +35,8 @@ export const metadata: Metadata = {
     "kof togo",
     "kof dev",
     // Métiers
-    "Développeur Backend",
-    "Développeur Full Stack",
+    "Backend Developer",
+    "Full-Stack Developer",
     "DevOps",
     "Ingénieur Réseaux",
     "Développeur Nest.js",
@@ -98,7 +99,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     // L'image OG est générée automatiquement par opengraph-image.tsx
-    locale: "fr_FR",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
@@ -128,7 +129,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="h-full overflow-hidden">
+    <html lang="en" className="h-full overflow-hidden">
       <head>
         {/* JSON-LD : Person + WebSite — référencement structuré */}
         <script
@@ -143,7 +144,7 @@ export default function RootLayout({
                   url: SITE_URL,
                   name: SITE_NAME,
                   description: DESCRIPTION,
-                  inLanguage: "fr-FR",
+                  inLanguage: "en-US",
                 },
                 {
                   "@type": "Person",
@@ -153,12 +154,12 @@ export default function RootLayout({
                   url: SITE_URL,
                   image: `${SITE_URL}/assets/profile2.png`,
                   jobTitle: [
-                    "Développeur Backend",
+                    "Backend Developer",
                     "DevOps Engineer",
-                    "Développeur Full Stack",
+                    "Full-Stack Developer",
                   ],
                   description:
-                    "Développeur Backend & DevOps basé à Lomé, Togo. Nest.js, Node.js, Docker, Coolify. Co-fondateur Python Togo & ETH Lomé. Human AI Ambassador.",
+                    "Backend Developer & DevOps based in Lome, Togo. Nest.js, Node.js, Docker, Coolify. Co-fondateur Python Togo & ETH Lomé. Human AI Ambassador.",
                   address: {
                     "@type": "PostalAddress",
                     addressLocality: "Lomé",
@@ -196,21 +197,23 @@ export default function RootLayout({
         className="antialiased relative h-full flex flex-col items-center bg-black overflow-hidden font-sans"
         suppressHydrationWarning
       >
-        <DesktopStorageProvider>
-          <ContextMenuProvider>
-            <WindowProvider>
-              <AppWrapper>
-                <DynamicBackground />
-                <TopBar />
-                <main className="flex-1 w-full overflow-hidden">
-                  {children}
-                </main>
-                <BottomBar />
-                <WindowManager />
-              </AppWrapper>
-            </WindowProvider>
-          </ContextMenuProvider>
-        </DesktopStorageProvider>
+        <LanguageProvider>
+          <DesktopStorageProvider>
+            <ContextMenuProvider>
+              <WindowProvider>
+                <AppWrapper>
+                  <DynamicBackground />
+                  <TopBar />
+                  <main className="flex-1 w-full overflow-hidden">
+                    {children}
+                  </main>
+                  <BottomBar />
+                  <WindowManager />
+                </AppWrapper>
+              </WindowProvider>
+            </ContextMenuProvider>
+          </DesktopStorageProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

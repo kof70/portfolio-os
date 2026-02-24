@@ -9,7 +9,9 @@ import {
 } from "../use-window-viewport";
 import { SectionHeader } from "@/components/shared/info-card";
 import { GlitchName } from "@/components/shared/glitch-name";
-import { personalInfo, interests } from "@/lib/data";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 
 interface AboutViewProps {
   className?: string;
@@ -17,6 +19,8 @@ interface AboutViewProps {
 
 const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
   const { isMdUp, isSmUp } = useWindowViewport();
+  const { language } = useLanguage();
+  const { personalInfo, interests } = usePortfolioContent();
 
   return (
     <div
@@ -96,7 +100,7 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
               {personalInfo.available && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  Disponible
+                  {t(language, "available")}
                 </span>
               )}
               <span className="text-white/40 text-sm">
@@ -109,7 +113,7 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
         {/* À propos */}
         <section className="mb-8">
           <SectionHeader
-            title="À propos de moi"
+            title={t(language, "aboutMe")}
             size={isSmUp ? "md" : "sm"}
           />
           <div className="bg-white/5 rounded-xl border border-white/10 p-5 space-y-4">
@@ -125,10 +129,10 @@ const AboutViewContent: React.FC<AboutViewProps> = ({ className }) => {
           </div>
         </section>
 
-        {/* Centres d'intérêt */}
+        {/* Interests */}
         <section>
           <SectionHeader
-            title="Centres d'intérêt"
+            title={t(language, "interests")}
             emoji="✨"
             size={isSmUp ? "md" : "sm"}
           />

@@ -8,7 +8,10 @@ import {
   WindowViewportProvider,
 } from "../use-window-viewport";
 import { Icons } from "@/components/icons";
-import { projects, type Project } from "@/lib/data";
+import { type Project } from "@/lib/data";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 
 /** Retourne un extrait court du lien (sans protocole, domaine + chemin court) */
 function getLinkExcerpt(url: string, maxLength = 40): string {
@@ -36,6 +39,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   isFocused = false,
   cardRef,
 }) => {
+  const { language } = useLanguage();
   const linkUrl = project.liveUrl || project.githubUrl;
   const linkExcerpt = linkUrl ? getLinkExcerpt(linkUrl) : null;
 
@@ -50,7 +54,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           "ring-2 ring-cyan-300/80 border-cyan-300/70 shadow-[0_0_0_1px_rgba(103,232,249,0.25)]",
       )}
     >
-      {/* Aperçu : image statique ou iframe de la page live (extrait de la vue réelle) */}
+      {/* Preview: image statique ou iframe de la page live (extrait de la vue réelle) */}
       <div
         className={cn(
           "relative overflow-hidden bg-white",
@@ -69,7 +73,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <>
             <iframe
               src={project.liveUrl || project.githubUrl}
-              title={`Aperçu : ${project.title}`}
+              title={`Preview: ${project.title}`}
               className="absolute inset-0 w-full h-full border-0 pointer-events-none scale-[0.35] origin-top-left"
               style={{
                 width: "285.71%",
@@ -84,7 +88,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 aria-hidden
               >
                 <p className="text-white text-sm text-center px-3 font-medium">
-                  Aperçu non disponible pour ce lien
+                  {t(language, "previewUnavailable")}
                 </p>
               </div>
             )}
@@ -156,7 +160,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               className="flex items-center gap-1.5 text-white/60 hover:text-white text-sm transition-colors"
             >
               <Icons.github className="w-4 h-4" />
-              <span className={cn(isCompact && "hidden sm:inline")}>Code</span>
+              <span className={cn(isCompact && "hidden sm:inline")}>{t(language, "code")}</span>
             </a>
           )}
           {project.liveUrl && (
@@ -167,7 +171,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               className="flex items-center gap-1.5 text-white/60 hover:text-white text-sm transition-colors"
             >
               <Icons.externalLink className="w-4 h-4" />
-              <span className={cn(isCompact && "hidden sm:inline")}>Live</span>
+              <span className={cn(isCompact && "hidden sm:inline")}>{t(language, "live")}</span>
             </a>
           )}
         </div>
@@ -186,6 +190,8 @@ const ProjectsViewContent: React.FC<ProjectsViewProps> = ({
   initialProjectId,
 }) => {
   const { isXs, isSmUp, isMdUp, isLgUp } = useWindowViewport();
+  const { language } = useLanguage();
+  const { projects } = usePortfolioContent();
   const projectRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
 
   React.useEffect(() => {
@@ -218,10 +224,10 @@ const ProjectsViewContent: React.FC<ProjectsViewProps> = ({
             isSmUp ? "text-2xl" : "text-xl",
           )}
         >
-          Mes Projets
+          {t(language, "myProjects")}
         </h2>
         <p className={cn("text-white/70", isXs ? "text-xs" : "text-sm")}>
-          Découvrez quelques-uns de mes projets récents
+          {t(language, "projectsIntro")}
         </p>
       </div>
 

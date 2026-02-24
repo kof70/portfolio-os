@@ -7,6 +7,7 @@ import {
   ContextMenuItem,
   ContextMenuTarget,
 } from "./context-menu-context";
+import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
 import {
   RefreshCw,
@@ -24,6 +25,7 @@ import {
 // Définition des menus selon le contexte
 const getMenuItems = (
   target: ContextMenuTarget,
+  language: "fr" | "en",
   targetId?: string,
   callbacks?: {
     onRefresh?: () => void;
@@ -34,13 +36,14 @@ const getMenuItems = (
     onResetPositions?: () => void;
   },
 ): ContextMenuItem[] => {
+  const isFr = language === "fr";
   switch (target) {
     case "desktop":
       return [
         {
           id: "refresh",
           type: "action",
-          label: "Actualiser",
+          label: isFr ? "Actualiser" : "Refresh",
           icon: <RefreshCw className="size-4" />,
           shortcut: "⌘R",
           onClick: callbacks?.onRefresh,
@@ -49,14 +52,14 @@ const getMenuItems = (
         {
           id: "change-wallpaper",
           type: "action",
-          label: "Changer le fond d'écran",
+          label: isFr ? "Changer le fond d'écran" : "Change wallpaper",
           icon: <ImageIcon className="size-4" />,
           onClick: callbacks?.onChangeWallpaper,
         },
         {
           id: "reset-positions",
           type: "action",
-          label: "Réinitialiser les positions",
+          label: isFr ? "Réinitialiser les positions" : "Reset positions",
           icon: <Grid3X3 className="size-4" />,
           onClick: callbacks?.onResetPositions,
         },
@@ -64,7 +67,7 @@ const getMenuItems = (
         {
           id: "settings",
           type: "action",
-          label: "Paramètres",
+          label: isFr ? "Paramètres" : "Settings",
           icon: <Settings className="size-4" />,
           disabled: true,
         },
@@ -75,7 +78,7 @@ const getMenuItems = (
         {
           id: "open",
           type: "action",
-          label: "Ouvrir",
+          label: isFr ? "Ouvrir" : "Open",
           icon: <FolderOpen className="size-4" />,
           shortcut: "⏎",
           onClick: callbacks?.onOpen,
@@ -84,7 +87,7 @@ const getMenuItems = (
         {
           id: "get-info",
           type: "action",
-          label: "Obtenir des informations",
+          label: isFr ? "Obtenir des informations" : "Get info",
           icon: <Info className="size-4" />,
           shortcut: "⌘I",
           onClick: callbacks?.onShowInfo,
@@ -92,7 +95,7 @@ const getMenuItems = (
         {
           id: "duplicate",
           type: "action",
-          label: "Dupliquer",
+          label: isFr ? "Dupliquer" : "Duplicate",
           icon: <Copy className="size-4" />,
           shortcut: "⌘D",
           disabled: true,
@@ -101,7 +104,7 @@ const getMenuItems = (
         {
           id: "delete",
           type: "action",
-          label: "Mettre à la corbeille",
+          label: isFr ? "Mettre à la corbeille" : "Move to trash",
           icon: <Trash2 className="size-4" />,
           shortcut: "⌘⌫",
           danger: true,
@@ -114,7 +117,7 @@ const getMenuItems = (
         {
           id: "open",
           type: "action",
-          label: "Ouvrir",
+          label: isFr ? "Ouvrir" : "Open",
           icon: <ExternalLink className="size-4" />,
           shortcut: "⏎",
           onClick: callbacks?.onOpen,
@@ -122,7 +125,7 @@ const getMenuItems = (
         {
           id: "download",
           type: "action",
-          label: "Télécharger",
+          label: isFr ? "Télécharger" : "Download",
           icon: <Download className="size-4" />,
           shortcut: "⌘S",
           onClick: callbacks?.onDownload,
@@ -131,7 +134,7 @@ const getMenuItems = (
         {
           id: "get-info",
           type: "action",
-          label: "Obtenir des informations",
+          label: isFr ? "Obtenir des informations" : "Get info",
           icon: <Info className="size-4" />,
           shortcut: "⌘I",
           onClick: callbacks?.onShowInfo,
@@ -140,7 +143,7 @@ const getMenuItems = (
         {
           id: "delete",
           type: "action",
-          label: "Mettre à la corbeille",
+          label: isFr ? "Mettre à la corbeille" : "Move to trash",
           icon: <Trash2 className="size-4" />,
           shortcut: "⌘⌫",
           danger: true,
@@ -214,6 +217,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   onResetPositions,
 }) => {
   const { menuState, closeContextMenu } = useContextMenu();
+  const { language } = useLanguage();
   const menuRef = React.useRef<HTMLDivElement>(null);
 
   // Fermer le menu au clic extérieur
@@ -241,7 +245,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     };
   }, [menuState.isOpen, closeContextMenu]);
 
-  const menuItems = getMenuItems(menuState.target, menuState.targetId, {
+  const menuItems = getMenuItems(menuState.target, language, menuState.targetId, {
     onRefresh,
     onOpen: () => menuState.targetId && onOpen?.(menuState.targetId),
     onChangeWallpaper,

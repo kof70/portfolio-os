@@ -4,7 +4,7 @@ import { type IconName } from "@/components/icons";
 // TYPES
 // =============================================================================
 
-/** Badge pour type de projet / événement (reco, communauté, open source, hackathon, entreprise) */
+/** Badge pour type de project / événement (reco, communauté, open source, hackathon, entreprise) */
 export type BadgeType =
   | "recommendation"
   | "community"
@@ -92,40 +92,40 @@ export interface Event {
 //
 // Règles des badges (où doit apparaître chaque type de contenu) :
 //
-// - recommendation : Recommandations clients, projets sous NDA, invitations.
-// - community      : Communauté — UNIQUEMENT des événements (PyDevs, PyDay, PyCon).
-// - opensource     : Projets ou événements open source (repos publics, workshops).
+// - recommendation : Recommendations clients, projects sous NDA, invitations.
+// - community      : Community — UNIQUEMENT des events (PyDevs, PyDay, PyCon).
+// - opensource     : Projets ou events open source (repos publics, workshops).
 // - hackathon      : Participations à des hackathons.
-// - entreprise     : Projets dont je suis CEO/gestionnaire (Rekap, Titan, etc.).
+// - entreprise     : Projets dont je suis CEO/managementnaire (Rekap, Titan, etc.).
 //
 
 export const personalInfo: PersonalInfo = {
   name: "DJAKPA Koffi Tepe Venougne",
-  title: "Backend · DevOps · Nest.js · Node.js | Human AI Ambassador | Co-fondateur Python Togo & ETH Lomé | Rekap",
-  subtitle: "Backend & Full-Stack · DevOps · Média & production",
-  location: "📍 Lomé, Togo",
+  title: "Backend · DevOps · Nest.js · Node.js | Human AI Ambassador | Co-founder of Python Togo & ETH Lome | Rekap",
+  subtitle: "Backend & Full-Stack · DevOps · Media & production",
+  location: "📍 Lome, Togo",
   avatar: "/assets/profile2.png",
-  bio: "Développeur backend et DevOps : architecture, déploiement (Coolify, Docker), surveillance. Backend d'alonu.tech réalisé en Nest.js, avec une majorité de projets web développés en Next.js + TypeScript. Human AI Ambassador pour une IA au service du développement durable en Afrique. Co-fondateur de Python Togo et ETH Lomé, responsable production chez Rekap. Auteur du Coolify MCP Server (18+ étoiles GitHub, ~15k vues Reddit). Participation au hackathon Digital Ocean sur la création d'agents IA.",
+  bio: "Backend and DevOps developer focused on architecture, deployment (Coolify, Docker), and monitoring. Main backend engineer for alonu.tech in Nest.js, with most web products built in Next.js + TypeScript. Human AI Ambassador for practical and sustainable AI in Africa. Co-founder of Python Togo and ETH Lome, production lead at Rekap, and author of the Coolify MCP Server.",
   aboutParagraphs: [
-    "Développeur backend, full-stack et DevOps basé à Lomé, Togo. Je me définirais avant tout comme un développeur backend et un architecte d'infrastructure. Mon cœur de métier : concevoir des API robustes, mettre en place le déploiement (Coolify, Docker, CI/CD) et construire des architectures backend solides en Nest.js et Node.js.",
-    "J'ai un spectre bien plus large que le seul backend : développement mobile (React Native — j'ai livré l'application de Cheffe Citronnelle), frontend web (majoritairement en Next.js + TypeScript, dont ce portfolio), et production audiovisuelle avec Rekap, le média que j'ai co-fondé. Je fais souvent le pont entre le produit, le design et l'infrastructure technique — comprendre les besoins visuels des designers comme les contraintes structurelles du backend pour livrer un produit final cohérent.",
-    "Côté communauté, je suis co-fondateur de Python Togo et d'ETH Lomé, deux initiatives qui structurent l'écosystème tech togolais. Avec Rekap, nous avons couvert plus de 20 événements concrets : Africa Blockchain Community, OnlyDust (Togo & Bénin), le reportage GRIT pour des médias locaux, Linked Africa au Bénin, et bien d'autres. J'y gère la partie administrative, les partenariats et la négociation.",
-    "Au fil de mon parcours, j'ai eu l'opportunité de travailler sur des projets variés : startups, entreprises locales, communautés open source, hackathons internationaux et initiatives panafricaines. Auteur du Coolify MCP Server (18+ étoiles GitHub, ~15k vues Reddit), participant au hackathon Digital Ocean sur les agents IA avec Titan. Human AI Ambassador pour une IA au service du développement durable en Afrique.",
-    "Au-delà du code, ce qui me motive c'est de faire le lien entre technique et produit : comprendre les besoins métier, concevoir l'infrastructure adaptée et livrer des solutions pérennes. Tout le monde dans la tech togolaise me connaît sous le pseudo de Kof — et c'est sous ce nom que je continue à construire, coder et connecter.",
+    "I am a backend, full-stack, and DevOps developer based in Lome, Togo. I work primarily as a backend engineer and infrastructure architect.",
+    "My core work is building robust APIs, setting up production deployment with Coolify, Docker, and CI/CD, and shipping reliable backend systems with Nest.js and Node.js.",
+    "My scope also includes mobile development (React Native), web frontend delivery (mostly Next.js + TypeScript), and media production through Rekap, the media company I co-founded.",
+    "On the community side, I co-founded Python Togo and ETH Lome. I also build open-source tooling, including the Coolify MCP Server.",
+    "I focus on connecting product needs, design expectations, and technical constraints to deliver software that is practical and durable.",
   ],
   bioShort:
-    "Backend · DevOps · Développeur logiciel · Human AI Ambassador · Co-fondateur Python Togo & ETH Lomé.",
+    "Backend · DevOps · Software Developer · Human AI Ambassador · Co-founder of Python Togo & ETH Lome.",
   available: true,
 };
 
 // Du plus récent au plus ancien
 export const projects: Project[] = [
-  // Entreprise
+  // Company
   {
     id: "16",
     title: "Titan",
     description:
-      "Agent IA créé dans le cadre du hackathon Digital Ocean sur Devpost. Projet en cours — création d'agents IA.",
+      "Agent IA créé dans le cadre du hackathon Digital Ocean sur Devpost. Project en cours — creation d'agents IA.",
     tags: ["IA", "Agent", "Hackathon", "Digital Ocean", "Devpost"],
     category: "web",
     badge: "entreprise",
@@ -134,8 +134,8 @@ export const projects: Project[] = [
     id: "15",
     title: "Rekap",
     description:
-      "Média dédié à la couverture audiovisuelle des événements tech et culturels. Nous avons assuré le média pour Africa Blockchain Community et OnlyDust (Togo, Bénin), reportage GRIT pour des médias locaux, couverture Linked Africa au Bénin, et plus d'une vingtaine d'autres projets concrets. Je gère la partie administrative, les partenariats et la négociation. Courtes vidéos, photos, podcasts.",
-    tags: ["Média", "Audiovisuel", "Tech", "Africa Blockchain", "OnlyDust", "CEO"],
+      "Media dédié à la couverture audiovisuelle des events tech et culturels. Nous avons assuré le média pour Africa Blockchain Community et OnlyDust (Togo, Bénin), reportage GRIT pour des médias locaux, couverture Linked Africa au Bénin, et plus d'une vingtaine d'autres projects concrets. Je gère la partie administrative, les partenariats et la négociation. Courtes vidéos, photos, podcasts.",
+    tags: ["Media", "Audiovisual", "Tech", "Africa Blockchain", "OnlyDust", "CEO"],
     category: "web",
     badge: "entreprise",
   },
@@ -144,7 +144,7 @@ export const projects: Project[] = [
     id: "14",
     title: "alonu.tech — Backend",
     description:
-      "Backend complet de la plateforme alonu.tech réalisé en Nest.js : architecture, API, sécurité et déploiement.",
+      "Backend complet de la plateforme alonu.tech réalisé en Nest.js : architecture, API, security et deployment.",
     tags: ["Nest.js", "TypeScript", "Backend", "API", "DevOps"],
     liveUrl: "https://alonu.tech",
     category: "web",
@@ -153,7 +153,7 @@ export const projects: Project[] = [
     id: "13",
     title: "API Vente & Location de voitures",
     description:
-      "Conception et développement de l'API d'un projet de vente et location de voitures. Lancement prévu prochainement.",
+      "Design and development de l'API d'un project de vente et location de voitures. Release planned soon.",
     tags: ["API", "Backend", "Nest.js"],
     category: "web",
   },
@@ -161,7 +161,7 @@ export const projects: Project[] = [
     id: "12",
     title: "Gnonel.com",
     description:
-      "Projet web gnonel.com.",
+      "Project web gnonel.com.",
     tags: ["Web", "Projet"],
     category: "web",
   },
@@ -169,24 +169,24 @@ export const projects: Project[] = [
     id: "11",
     title: "Afrique Informatique — Dashboard",
     description:
-      "Dashboard de gestion pour afriqueinformatique.net. Projet en collaboration (novembre).",
-    tags: ["Dashboard", "Gestion", "Web"],
+      "Dashboard de management pour afriqueinformatique.net. Project en collaboration (novembre).",
+    tags: ["Dashboard", "Management", "Web"],
     category: "web",
   },
   {
     id: "10",
-    title: "SES & CGSP — Applications de gestion",
+    title: "SES & CGSP — Management applications",
     description:
-      "Applications de gestion (SES, CGSP) : backend, sécurité et DevOps. Déploiement et surveillance (Coolify, Docker).",
-    tags: ["Backend", "DevOps", "Sécurité", "Coolify", "Docker"],
+      "Management applications (SES, CGSP) : backend, security et DevOps. Deployment et monitoring (Coolify, Docker).",
+    tags: ["Backend", "DevOps", "Security", "Coolify", "Docker"],
     liveUrl: "https://sesachat.com/",
     category: "web",
   },
   {
     id: "17",
-    title: "SES Mobile — Gestion opérationnelle (Supabase)",
+    title: "SES Mobile — Management operations (Supabase)",
     description:
-      "Application mobile créée pour l'entreprise SES avec backend Supabase. Gestion complète de l'agence de sécurité et nettoyage: clients, agents, lieux, créneaux, pointage, notifications et administration opérationnelle.",
+      "Mobile app built for the company SES avec backend Supabase. Management complète de l'agence de security et nettoyage: clients, agents, locations, shifts, attendance, notifications et administration operations.",
     tags: [
       "React Native",
       "Supabase",
@@ -199,10 +199,10 @@ export const projects: Project[] = [
   },
   {
     id: "9",
-    title: "Cheffe Citronnelle — Application mobile",
+    title: "Cheffe Citronnelle — Mobile app",
     description:
-      "Application mobile React Native pour Cheffe Citronnelle, la maison des délices à Lomé. Commandes, suivi, livraison à domicile.",
-    tags: ["React Native", "Mobile", "Livraison", "Lomé"],
+      "Mobile app React Native pour Cheffe Citronnelle, la maison des délices à Lome. orders, tracking, home delivery.",
+    tags: ["React Native", "Mobile", "Delivery", "Lome"],
     liveUrl: "https://cheffecitronnelle.com/",
     category: "mobile",
   },
@@ -211,7 +211,7 @@ export const projects: Project[] = [
     id: "8",
     title: "VoirDrama Stremio Addon",
     description:
-      "Addon Stremio (catalogue + métadonnées + streams) basé sur le scraping de voirdrama.org. Films et séries — usage personnel.",
+      "Addon Stremio (catalog + metadata + streams) basé sur le scraping de voirdrama.org. Films et séries — personal use.",
     tags: ["Stremio", "Node.js", "Scraping", "Streaming"],
     githubUrl: "https://github.com/kof70/voirdrama-stremio-addon",
     category: "web",
@@ -221,7 +221,7 @@ export const projects: Project[] = [
     id: "7",
     title: "Coolify MCP Server",
     description:
-      "Serveur MCP (Model Context Protocol) pour l'API Coolify. Contrôlez votre PaaS self-hosted depuis Claude, Kiro ou tout assistant compatible MCP. ~18 étoiles GitHub, ~15k vues sur Reddit.",
+      "MCP Server (Model Context Protocol) pour l'API Coolify. Control your self-hosted PaaS from Claude, Kiro, or any MCP-compatible assistant. ~18 étoiles GitHub, ~15k vues sur Reddit.",
     tags: ["MCP", "Coolify", "TypeScript", "DevOps", "API"],
     githubUrl: "https://github.com/kof70/coolify-mcp-server",
     category: "web",
@@ -231,7 +231,7 @@ export const projects: Project[] = [
     id: "6",
     title: "Drive — Local Collaborative Workspace",
     description:
-      "Espace de travail collaboratif local, multiplateforme et sans dépendance Internet. Canvas visuel, synchronisation temps réel via WebSocket, drag & drop, multi-utilisateurs. Développé et soumis au hackathon Kiro Halloween.",
+      "Local cross-platform collaborative workspace with no Internet dependency. Canvas visuel, real-time synchronization via WebSocket, drag & drop, multi-user. Développé et soumis au hackathon Kiro Halloween.",
     tags: ["React", "WebSocket", "TypeScript", "Vite", "Collaboration", "Kiro Halloween"],
     githubUrl: "https://github.com/kof70/drive",
     category: "web",
@@ -241,8 +241,8 @@ export const projects: Project[] = [
     id: "5",
     title: "Gitpath",
     description:
-      "GitHub Contribution Designer : créez des motifs de contributions qui ressemblent à la grille GitHub. Formes prédéfinies, import d'images, programme de commits. Créé dans le cadre du Gitpath Project à Lomé.",
-    tags: ["GitHub", "Open Source", "Outils", "Contributions"],
+      "GitHub Contribution Designer : design contribution patterns that match the GitHub grid. prebuilt shapes, image import, commit scheduler. Créé dans le cadre du Gitpath Project à Lome.",
+    tags: ["GitHub", "Open Source", "Tools", "Contributions"],
     githubUrl: "https://github.com",
     liveUrl: "https://gitpath.vercel.app/",
     category: "web",
@@ -252,7 +252,7 @@ export const projects: Project[] = [
     id: "4",
     title: "StartUpHub",
     description:
-      "Plateforme open source de mise en relation entre startups et investisseurs. Une solution innovante pour faciliter le financement des jeunes entreprises.",
+      "Open-source platform connecting startups and investors. Une solution innovante pour faciliter le financement des jeunes entreprises.",
     image: "/assets/startuphub.png",
     tags: ["React", "Supabase", "Vite", "PostgreSQL"],
     githubUrl: "https://github.com/MyStaartUp/StartUpHub",
@@ -260,32 +260,32 @@ export const projects: Project[] = [
     category: "web",
     badge: "opensource",
   },
-  // Réseau
+  // Network
   {
     id: "3",
-    title: "Infrastructure Réseau UL",
+    title: "Network Infrastructure UL",
     description:
-      "Conception et implémentation du réseau campus avec déploiement de points d'accès haute densité pour les amphithéâtres et bibliothèques.",
+      "Design and implementation du réseau campus avec deployment de points d'accès haute densité pour les amphithéâtres et bibliothèques.",
     image: "/assets/CHUul.jpg",
     tags: ["Haute Densité", "Load Balancing", "QoS"],
     category: "network",
   },
   {
     id: "2",
-    title: "Infrastructure Réseau CHU Kégué",
+    title: "Network Infrastructure CHU Kégué",
     description:
       "Installation et configuration du réseau hospitalier incluant la mise en place d'un système de redondance et la sécurisation des données médicales.",
     image: "/assets/kegueulrich.jpg",
-    tags: ["Routage", "VLAN", "Sécurité"],
+    tags: ["Routing", "VLAN", "Security"],
     category: "network",
   },
   {
     id: "1",
-    title: "Infrastructure Réseau CHU Tokoin",
+    title: "Network Infrastructure CHU Tokoin",
     description:
-      "Déploiement complet du réseau avec câblage structuré et configuration des points d'accès Wi-Fi pour une couverture optimale de l'établissement hospitalier.",
+      "Deployment complet du réseau avec câblage structuré et configuration des points d'accès Wi-Fi pour une couverture optimale de l'établissement hospitalier.",
     image: "/assets/tokoin.jpg",
-    tags: ["Cisco", "Câblage Cat6", "Wi-Fi 6"],
+    tags: ["Cisco", "Cat6 cabling", "Wi-Fi 6"],
     category: "network",
   },
 ];
@@ -296,97 +296,97 @@ export const experiences: Experience[] = [
     id: "12",
     title: "Tester freelance",
     company: "Testerworks & GitHub",
-    period: "2024 - Présent",
+    period: "2024 - Present",
     description:
       "Tests logiciels en freelance sur Testerworks et via GitHub. Contrats réalisés : MI snap Dev App (vérification de passeports et cartes d'identité pour fiabilité et authenticité), et d'autres applications.",
   },
   {
     id: "11",
-    title: "Développeur Full-Stack → Backend & DevOps",
+    title: "Developer Full-Stack → Backend & DevOps",
     company: "alonu.tech",
-    period: "Oct. 2025 - Présent",
+    period: "Oct. 2025 - Present",
     description:
-      "Oct.-Nov. : frontend mobile (app React Native Cheffe Citronnelle) et version web du site alonu.tech. Déc. : migration vers le backend & DevOps — conception de l'API, architecture back, déploiement de toutes les applications sur une nouvelle infrastructure (Coolify, Docker, Nest.js). Janv. terminé, nouveau projet en cours.",
+      "Oct.-Nov. : frontend mobile (app React Native Cheffe Citronnelle) et version web du site alonu.tech. Dec. : migration vers le backend & DevOps — conception de l'API, architecture back, deployment de toutes les applications sur une nouvelle infrastructure (Coolify, Docker, Nest.js). Jan. terminé, nouveau project en cours.",
   },
   {
     id: "10",
-    title: "Développeur mobile",
-    company: "SES, Lomé",
+    title: "Developer mobile",
+    company: "SES, Lome",
     period: "Oct. - Nov. 2025",
     description:
-      "Conception et livraison de l'application mobile SES avec backend Supabase. Gestion complète: clients, agents de sécurité, lieux d'affectation, créneaux, pointage, notifications et gestion administrative pour les activités de sécurité et nettoyage.",
+      "Designed and delivered de l'application mobile SES avec backend Supabase. Management complète: clients, agents de security, lieux d'affectation, créneaux, pointage, notifications et management administrative pour les activités de security et nettoyage.",
   },
   {
     id: "9",
-    title: "Co-fondateur & Responsable production",
-    company: "Rekap, Lomé",
-    period: "Juin 2025 - Présent",
+    title: "Co-founder & Responsable production",
+    company: "Rekap, Lome",
+    period: "Jun. 2025 - Present",
     description:
-      "Média sur des événements tech et culturels : couverture Africa Blockchain Community et OnlyDust (Togo, Bénin), reportage GRIT pour des médias locaux, tournage Linked Africa au Bénin, plus de 20 projets concrets réalisés. Gestion administrative, partenariats et négociation. Production de courtes vidéos, photos et podcasts.",
+      "Media sur des events tech et culturels : couverture Africa Blockchain Community et OnlyDust (Togo, Bénin), reportage GRIT pour des médias locaux, tournage Linked Africa au Bénin, plus de 20 projects concrets réalisés. Management administrative, partenariats et négociation. Production de courtes vidéos, photos et podcasts.",
   },
   {
     id: "8",
-    title: "Semi-finaliste",
-    company: "Concours D-clic entrepreneuriat, Lomé",
-    period: "Avr. 2025",
+    title: "Semi-finalist",
+    company: "Competition D-clic entrepreneuriat, Lome",
+    period: "Apr. 2025",
     description:
-      "Semi-finaliste du concours D-clic avec le projet Mayeutic.",
+      "Semi-finalist du concours D-clic avec le project Mayeutic.",
   },
   {
     id: "7",
-    title: "Développeur",
-    company: "Gitpath Project, Lomé",
-    period: "Mars 2025",
+    title: "Developer",
+    company: "Gitpath Project, Lome",
+    period: "Mar. 2025",
     description:
-      "Création et déploiement de Gitpath, un outil pour optimiser la grille de contributions GitHub.",
+      "Création et deployment de Gitpath, un outil pour optimiser la grille de contributions GitHub.",
   },
   {
     id: "6",
-    title: "Formateur assistant en développement d'applications web",
-    company: "UNIPOD Togo, Lomé",
-    period: "Janv. - Avr. 2025",
+    title: "Assistant web app trainer",
+    company: "UNIPOD Togo, Lome",
+    period: "Jan. - Apr. 2025",
     description:
       "Planification, développement et animation de supports de cours pour plus de 80 apprenants.",
   },
   {
     id: "5",
-    title: "Co-fondateur",
-    company: "ETH Lomé (communauté Ethereum)",
-    period: "Janv. 2025 - Présent",
+    title: "Co-founder",
+    company: "ETH Lome (communauté Ethereum)",
+    period: "Jan. 2025 - Present",
     description:
       "Organisation du satellite Devcon au Togo sous ma supervision.",
   },
   {
     id: "4",
     title: "Speaker & Organisateur",
-    company: "Git & GitHub Fundamentals Event, Lomé",
-    period: "Déc. 2024",
+    company: "Git & GitHub Fundamentals Event, Lome",
+    period: "Dec. 2024",
     description:
       "Organisation et intervention sur les fondamentaux Git & GitHub.",
   },
   {
     id: "3",
-    title: "Co-fondateur & Co-organisateur PyCon Togo",
+    title: "Co-founder & Co-organisateur PyCon Togo",
     company: "Python Togo",
-    period: "Nov. 2024 - Présent",
+    period: "Nov. 2024 - Present",
     description:
-      "Développement et animation de la communauté des développeurs Python au Togo. Organisation d'événements techniques et d'ateliers de formation. Coaching des membres pour encourager le partage de connaissances et l'innovation.",
+      "Développement et animation de la communauté des developers Python au Togo. Organisation d'events techniques et d'ateliers de formation. Coaching des membres pour encourager le partage de connaissances et l'innovation.",
   },
   {
     id: "2",
-    title: "Technicien en réseaux informatiques",
-    company: "SOS Smart Group, Lomé",
-    period: "Août 2023 - Déc. 2024",
+    title: "Network technician",
+    company: "SOS Smart Group, Lome",
+    period: "Aug. 2023 - Dec. 2024",
     description:
-      "Déploiement et maintenance de réseaux informatiques. Participation au déploiement réseau au CHU Tokoin, CHU Sylvanus Olympio et CHU Université. Installation d'antennes Wi-Fi et câblage structuré pour une connectivité stable et performante.",
+      "Deployment et maintenance de réseaux informatiques. Participation au deployment réseau au CHU Tokoin, CHU Sylvanus Olympio et CHU Université. Installation d'antennes Wi-Fi et câblage structuré pour une connectivité stable et performante.",
   },
   {
     id: "1",
     title: "Human AI Ambassador",
     company: "Human AI Initiative, Africa",
-    period: "Juin 2024 - Présent",
+    period: "Jun. 2024 - Present",
     description:
-      "Promotion et sensibilisation à l'intelligence artificielle pour un développement durable en Afrique. Organisation de conférences et d'événements éducatifs. Participation à des projets innovants en IA et technologie.",
+      "Awareness and advocacy à l'artificial intelligence pour un développement durable en Afrique. Organisation de conférences et d'events éducatifs. Participation à des projects innovants en IA et technologie.",
   },
 ];
 
@@ -394,14 +394,14 @@ export const experiences: Experience[] = [
 export const education: Education[] = [
   {
     id: "2",
-    degree: "Formation Développement Full Stack",
-    school: "Autodidacte & Certifications en ligne",
-    period: "2021 - Présent",
+    degree: "Education Développement Full Stack",
+    school: "Self-taught & Online certifications",
+    period: "2021 - Present",
   },
   {
     id: "1",
-    degree: "Ingénieur en Réseaux et Télécommunications",
-    school: "Formation spécialisée en infrastructure réseau",
+    degree: "Ingénieur en Networks et Télécommunications",
+    school: "Education spécialisée en infrastructure réseau",
     period: "2020 - 2023",
   },
 ];
@@ -417,13 +417,13 @@ export const skills: Skill[] = [
   // Mobile
   { name: "React Native", icon: "reactNative", level: 80, category: "mobile" },
   { name: "Expo", icon: "expo", level: 75, category: "mobile" },
-  // Outils & DevOps
+  // Tools & DevOps
   { name: "Git", icon: "git", level: 90, category: "tools" },
   { name: "Docker", icon: "docker", level: 80, category: "tools" },
   { name: "Coolify", icon: "coolify", level: 85, category: "tools" },
   { name: "CI/CD & DevOps", icon: "git", level: 75, category: "tools" },
-  // Réseaux
-  { name: "Réseaux & Wi-Fi", icon: "wifi", level: 85, category: "network" },
+  // Networks
+  { name: "Networks & Wi-Fi", icon: "wifi", level: 85, category: "network" },
 ];
 
 export const contactLinks: ContactLink[] = [
@@ -446,7 +446,7 @@ export const contactLinks: ContactLink[] = [
   {
     id: "phone",
     icon: "whatsapp",
-    label: "Téléphone",
+    label: "Phone",
     value: "+228 79 28 83 24",
     href: "tel:+22879288324",
     hoverColor: "hover:text-green-400",
@@ -469,15 +469,15 @@ export const contactLinks: ContactLink[] = [
   },
 ];
 
-// Événements du plus récent au plus ancien
+// Events du plus récent au plus ancien
 export const events: Event[] = [
   // En cours / 2025
   {
     id: "10",
     title: "Hackathon Digital Ocean — Création d'agents IA",
-    date: "Janv. 2026 - En cours",
+    date: "Jan. 2026 - En cours",
     description:
-      "Participation au hackathon Digital Ocean sur Devpost, dédié à la création d'agents IA. Projet open source (Titan).",
+      "Participation au hackathon Digital Ocean sur Devpost, dédié à la creation d'agents IA. Project open source (Titan).",
     tags: ["Hackathon", "Digital Ocean", "Devpost", "IA", "Agents", "Open Source"],
     highlight: true,
     badge: "hackathon",
@@ -485,17 +485,17 @@ export const events: Event[] = [
   {
     id: "5",
     title: "Speaker & Organisateur Git & GitHub Fundamentals",
-    date: "Déc. 2024",
+    date: "Dec. 2024",
     description:
-      "Organisation et intervention sur les fondamentaux Git & GitHub à Lomé.",
+      "Organisation et intervention sur les fondamentaux Git & GitHub à Lome.",
     image: "/assets/workshopgit.jpeg",
-    tags: ["Formation", "Git", "GitHub", "Communauté"],
+    tags: ["Education", "Git", "GitHub", "Community"],
     badge: "community",
   },
   {
     id: "12",
     title: "Speaker — Product / Project Manager (TCC Events)",
-    date: "Fév. 2025",
+    date: "Feb. 2025",
     description:
       "Intervention sur le métier de Product / Project Manager : compétences, défis et opportunités dans l'univers Tech. Événement organisé par Tech Communities Club (TCC).",
     image: "/assets/tcc.jpg",
@@ -505,12 +505,12 @@ export const events: Event[] = [
   },
   {
     id: "14",
-    title: "Premier Devcon satellite ETH Lomé",
-    date: "Janv. 2025",
+    title: "Premier Devcon satellite ETH Lome",
+    date: "Jan. 2025",
     description:
-      "Organisation du premier satellite Devcon au Togo par ETH Lomé, sous ma supervision. Communauté Ethereum à Lomé.",
+      "Organisation du premier satellite Devcon au Togo par ETH Lome, sous ma supervision. Community Ethereum à Lome.",
     image: "/assets/eth-lome-devcon.png",
-    tags: ["ETH Lomé", "Devcon", "Ethereum", "Organisateur", "Lomé"],
+    tags: ["ETH Lome", "Devcon", "Ethereum", "Organisateur", "Lome"],
     badge: "community",
   },
   {
@@ -518,35 +518,35 @@ export const events: Event[] = [
     title: "Kiro Halloween",
     date: "2025",
     description:
-      "Hackathon Kiro Halloween. J'y ai développé et soumis Drive — Local Collaborative Workspace (espace de travail collaboratif local en temps réel). Projet open source.",
+      "Hackathon Kiro Halloween. J'y ai développé et soumis Drive — Local Collaborative Workspace (espace de travail collaboratif local en temps réel). Project open source.",
     tags: ["Hackathon", "Kiro", "Drive", "Collaboration", "Open Source"],
     badge: "hackathon",
   },
   {
     id: "8",
     title: "Amazon Hackathon",
-    date: "Août 2025",
+    date: "Aug. 2025",
     description:
-      "Participation à l'Amazon hackathon à Lomé, Togo. Projet open source.",
+      "Participation à l'Amazon hackathon à Lome, Togo. Project open source.",
     tags: ["Hackathon", "Amazon", "Open Source"],
     badge: "hackathon",
   },
   {
     id: "7",
     title: "Amazon Kiro Hackathon",
-    date: "Juillet 2025",
+    date: "Jul. 2025",
     description:
-      "Participation à l'Amazon Kiro hackathon : développement d'une application de détection image par image de la source des vidéos sur les réseaux sociaux, utile pour les journalistes. Projet open source.",
+      "Participation à l'Amazon Kiro hackathon : développement d'une application de détection image par image de la source des vidéos sur les réseaux sociaux, utile pour les journalistes. Project open source.",
     tags: ["Hackathon", "Amazon", "Développement", "Open Source"],
     badge: "hackathon",
   },
   {
     id: "6",
     title: "Bolt Hackathon",
-    date: "Juin 2025",
+    date: "Jun. 2025",
     description:
-      "Participation au Bolt hackathon à Lomé, Togo. Projet open source.",
-    tags: ["Hackathon", "Lomé", "Open Source"],
+      "Participation au Bolt hackathon à Lome, Togo. Project open source.",
+    tags: ["Hackathon", "Lome", "Open Source"],
     badge: "hackathon",
   },
   {
@@ -554,19 +554,19 @@ export const events: Event[] = [
     title: "Finaliste — Accompagnement entrepreneurial OIF par CUBE (D-clic)",
     date: "Avril 2025",
     description:
-      "Finaliste du programme d'accompagnement entrepreneurial de l'OIF par CUBE sur D-clic. Pitch du projet Mayele, restructuré par la suite en Rekap.",
+      "Finaliste du programme d'accompagnement entrepreneurial de l'OIF par CUBE sur D-clic. Pitch du project Mayele, restructuré par la suite en Rekap.",
     image: "/assets/declic-mayele-rekap.png",
     tags: ["Entrepreneuriat", "D-clic", "OIF", "CUBE", "Mayele", "Rekap"],
     badge: "community",
   },
   {
     id: "13",
-    title: "Teknolime — Réseaux informatiques (Tsévié)",
+    title: "Teknolime — Networks informatiques (Tsévié)",
     date: "23-25 avril 2025",
     description:
-      "Invité par le projet Teknolime pour animer une session sur les réseaux informatiques auprès des filles du collège et lycée à Tsévié : routeur, SSID, adresse IP, sécurisation du Wi-Fi, autonomie. Initiative Filles & Tech et éducation numérique. Merci à Samira Amadou et à Teknolime.",
+      "Invité par le project Teknolime pour animer une session sur les réseaux informatiques auprès des filles du collège et lycée à Tsévié : routeur, SSID, adresse IP, sécurisation du Wi-Fi, autonomie. Initiative Filles & Tech et éducation numérique. Merci à Samira Amadou et à Teknolime.",
     image: "/assets/teknolime.jpeg",
-    tags: ["Teknolime", "Réseaux", "FillesEtTech", "Éducation numérique", "Tsévié"],
+    tags: ["Teknolime", "Networks", "FillesEtTech", "Éducation numérique", "Tsévié"],
     url: "https://www.linkedin.com/posts/djakpa-koffi_teknolime-teknolime-raezseauinformatique-ugcPost-7327489914474831873-0125",
     badge: "community",
   },
@@ -584,12 +584,12 @@ export const events: Event[] = [
   // 2024
   {
     id: "1",
-    title: "Co-fondateur & Co-organisateur PyCon Togo",
-    date: "Nov. 2024 - Présent",
+    title: "Co-founder & Co-organisateur PyCon Togo",
+    date: "Nov. 2024 - Present",
     description:
-      "Développement et animation de la communauté des développeurs Python au Togo. Organisation d'événements techniques et d'ateliers.",
+      "Développement et animation de la communauté des developers Python au Togo. Organisation d'events techniques et d'ateliers.",
     image: "/assets/coretieam.jpg",
-    tags: ["Fondateur", "Communauté", "Leadership"],
+    tags: ["Founder", "Community", "Leadership"],
     highlight: true,
     badge: "community",
   },
@@ -616,15 +616,15 @@ export const events: Event[] = [
 ];
 
 export const interests: string[] = [
-  "🌐 Réseaux & Infrastructure",
+  "🌐 Networks & Infrastructure",
   "💻 Open Source",
-  "👥 Communauté Tech",
-  "📚 Partage de connaissances",
+  "👥 Community Tech",
+  "📚 Knowledge Sharing",
   "🚀 Innovation",
   "🎬 Cinéma",
   "🏀 Basketball",
   "📷 Photographie",
-  "📖 Lecture",
+  "📖 Reading",
 ];
 
 // =============================================================================
@@ -648,11 +648,11 @@ export const getEventById = (id: string) =>
 
 /** Libellés des badges pour l’affichage */
 export const BADGE_LABELS: Record<BadgeType, string> = {
-  recommendation: "Recommandation",
-  community: "Communauté",
+  recommendation: "Recommendation",
+  community: "Community",
   opensource: "Open Source",
   hackathon: "Hackathon",
-  entreprise: "Entreprise",
+  entreprise: "Company",
 };
 
 /** Nom de l’icône (Icons) pour chaque badge */
@@ -671,7 +671,7 @@ export const getEventsByBadge = (badge: BadgeType) =>
   events.filter((e) => e.badge === badge);
 
 // =============================================================================
-// DOCK — Icônes techno → projets (popover au clic)
+// DOCK — Icônes techno → projects (popover au clic)
 // =============================================================================
 
 export interface DockTechProjectItem {
@@ -710,14 +710,14 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     },
     {
       title: "SES & CGSP",
-      descriptionShort: "Applications de gestion — APIs backend.",
+      descriptionShort: "Management applications — APIs backend.",
       projectId: "10",
     },
   ],
   typescript: [
     {
       title: "Coolify MCP Server",
-      descriptionShort: "Serveur MCP en TypeScript pour l’API Coolify.",
+      descriptionShort: "MCP Server en TypeScript pour l’API Coolify.",
       projectId: "7",
     },
     {
@@ -775,7 +775,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     },
     {
       title: "Coolify MCP Server",
-      descriptionShort: "Serveur MCP — runtime Node / TypeScript.",
+      descriptionShort: "MCP Server — runtime Node / TypeScript.",
       projectId: "7",
     },
   ],
@@ -787,7 +787,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     },
     {
       title: "Drive",
-      descriptionShort: "Projet hackathon Kiro — GitHub.",
+      descriptionShort: "Project hackathon Kiro — GitHub.",
       projectId: "6",
     },
     {
@@ -805,7 +805,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     {
       title: "SES Mobile",
       descriptionShort:
-        "App mobile SES + backend Supabase: clients, agents, lieux, créneaux, pointage, notifications.",
+        "App mobile SES + backend Supabase: clients, agents, locations, shifts, attendance, notifications.",
       projectId: "17",
     },
     {
@@ -818,7 +818,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     {
       title: "SES Mobile",
       descriptionShort:
-        "Application métier mobile pour agence sécurité/nettoyage avec backend Supabase.",
+        "Application métier mobile pour agence security/nettoyage avec backend Supabase.",
       projectId: "17",
     },
     {
@@ -831,17 +831,17 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     {
       title: "SES & CGSP",
       descriptionShort:
-        "Conteneurisation et déploiement des apps de gestion avec Docker + Coolify.",
+        "Conteneurisation et deployment des apps de management avec Docker + Coolify.",
       projectId: "10",
     },
     {
       title: "Coolify MCP Server",
-      descriptionShort: "Distribution et déploiement — Docker.",
+      descriptionShort: "Distribution et deployment — Docker.",
       projectId: "7",
     },
     {
       title: "alonu.tech",
-      descriptionShort: "Infra et déploiement — Docker.",
+      descriptionShort: "Infra et deployment — Docker.",
       projectId: "14",
     },
   ],
@@ -855,13 +855,13 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
     {
       title: "SES & CGSP",
       descriptionShort:
-        "DevOps backend: architecture, déploiement et supervision via Coolify pour plusieurs apps d'entreprise.",
+        "DevOps backend: architecture, deployment et supervision via Coolify pour plusieurs apps d'entreprise.",
       projectId: "10",
     },
     {
       title: "alonu.tech — Backend",
       descriptionShort:
-        "Architecture backend Nest.js et déploiement en production sur l'infrastructure Coolify.",
+        "Architecture backend Nest.js et deployment en production sur l'infrastructure Coolify.",
       projectId: "14",
     },
     {

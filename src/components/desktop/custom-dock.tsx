@@ -18,9 +18,11 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
 import { DockProjectPopover } from "./dock-project-popover";
 import { DockSearchPopover } from "./dock-search-popover";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 
 const DOCK_TECH_LABELS: Record<DockTechId, string> = {
-  postman: "Integration API",
+  postman: "API",
   typescript: "TypeScript",
   react: "React",
   nextjs: "Next.js",
@@ -115,12 +117,20 @@ const exitTransition = {
 export function CustomDock() {
   const { windows, focusWindow, restoreWindow, openWindow } = useWindows();
   const { isMobile } = useIsMobile();
+  const { language } = useLanguage();
   const prefersReducedMotion = useReducedMotion();
   const [dockPopover, setDockPopover] = useState<{
     techId: DockTechId;
     anchorRect: DOMRect;
   } | null>(null);
   const [searchPopoverRect, setSearchPopoverRect] = useState<DOMRect | null>(null);
+  const dockTechLabels = React.useMemo(
+    () => ({
+      ...DOCK_TECH_LABELS,
+      postman: t(language, "integrationApi"),
+    }),
+    [language],
+  );
 
   const openDockPopover = useCallback((techId: DockTechId, e: React.MouseEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -141,7 +151,7 @@ export function CustomDock() {
     (projectId: string) => {
       openWindow({
         id: "projects",
-        title: "Projets",
+        title: t(language, "projects"),
         content: <ProjectsView initialProjectId={projectId} />,
         position: { x: 100, y: 50 },
         size: { width: 900, height: 600 },
@@ -150,7 +160,7 @@ export function CustomDock() {
         isMaximized: false,
       });
     },
-    [openWindow],
+    [language, openWindow],
   );
 
   const handleToggleSearchPopover = useCallback((e: React.MouseEvent) => {
@@ -186,7 +196,7 @@ export function CustomDock() {
             type="button"
             onClick={handleToggleSearchPopover}
             className="size-10 !min-h-0 !min-w-0 shrink-0 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-            aria-label="Ouvrir la recherche"
+            aria-label={t(language, "openSearch")}
           >
             <Icons.circle className="size-6 text-white/90" />
           </button>
@@ -228,7 +238,7 @@ export function CustomDock() {
         onClose={closeDockPopover}
         onSelectProject={handleOpenProjectFromDock}
         anchorRect={dockPopover?.anchorRect ?? null}
-        label={dockPopover ? DOCK_TECH_LABELS[dockPopover.techId] : ""}
+        label={dockPopover ? dockTechLabels[dockPopover.techId] : ""}
         items={dockPopover ? getDockTechProjects(dockPopover.techId) : []}
       />
       <DockSearchPopover
@@ -246,7 +256,7 @@ export function CustomDock() {
         iconDistance={isMobile ? 36 : 50}
       >
         <DockIcon hidden={isMobile}>
-          <CustomTooltip label="Launcher">
+          <CustomTooltip label={t(language, "launcher")}>
             <button
               type="button"
               onClick={handleToggleSearchPopover}
@@ -259,7 +269,7 @@ export function CustomDock() {
 
         {/* Skills / Technologies — clic = popover Projets */}
         <DockIcon hidden={isMobile}>
-          <CustomTooltip label="Integration API">
+          <CustomTooltip label={t(language, "integrationApi")}>
             <button
               type="button"
               onClick={(e) => openDockPopover("postman", e)}

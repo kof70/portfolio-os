@@ -2,6 +2,7 @@
 import * as React from "react";
 import { Icons } from "@/components/icons";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
 import { Signal, Wifi, Battery } from "lucide-react";
 
@@ -10,10 +11,10 @@ interface TopBarProps {
 }
 
 // Memoize formatted date/time to avoid unnecessary recalculations
-function formatDateTime(date: Date, isMobile: boolean) {
+function formatDateTime(date: Date, isMobile: boolean, locale: string) {
   if (isMobile) {
     // Format iOS style: "9:41"
-    return date.toLocaleTimeString("en-US", {
+    return date.toLocaleTimeString(locale, {
       hour: "numeric",
       minute: "2-digit",
       hour12: false,
@@ -21,12 +22,12 @@ function formatDateTime(date: Date, isMobile: boolean) {
   }
 
   return (
-    date.toLocaleDateString("en-US", {
+    date.toLocaleDateString(locale, {
       month: "short",
       day: "numeric",
     }) +
     ". " +
-    date.toLocaleTimeString("en-US", {
+    date.toLocaleTimeString(locale, {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
@@ -37,6 +38,8 @@ function formatDateTime(date: Date, isMobile: boolean) {
 export const TopBar: React.FC<TopBarProps> = () => {
   const [dateTime, setDateTime] = React.useState<Date>(new Date());
   const { isMobile } = useIsMobile();
+  const { language, setLanguage } = useLanguage();
+  const locale = language === "fr" ? "fr-FR" : "en-US";
 
   React.useEffect(() => {
     // Use requestAnimationFrame for better performance than setInterval
@@ -59,8 +62,8 @@ export const TopBar: React.FC<TopBarProps> = () => {
   }, []);
 
   const formattedDateTime = React.useMemo(
-    () => formatDateTime(dateTime, isMobile),
-    [dateTime, isMobile],
+    () => formatDateTime(dateTime, isMobile, locale),
+    [dateTime, isMobile, locale],
   );
 
   // Mobile iOS-style status bar
@@ -87,6 +90,13 @@ export const TopBar: React.FC<TopBarProps> = () => {
 
         {/* Right side - Status icons */}
         <div className="flex-1 flex items-center justify-end gap-1.5">
+          <button
+            type="button"
+            onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+            className="text-[11px] font-semibold text-white/90 px-2 py-0.5 rounded-md border border-white/30"
+          >
+            {language.toUpperCase()}
+          </button>
           {/* Signal strength */}
           <Signal className="size-4 text-white" strokeWidth={2.5} />
 
@@ -124,6 +134,13 @@ export const TopBar: React.FC<TopBarProps> = () => {
         </button>
       </div>
       <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+          className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150"
+        >
+          <span className="text-xs font-semibold">{language.toUpperCase()}</span>
+        </button>
         <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150">
           <span className="text-xs font-semibold">75%</span>
           <Icons.batteryHalf className="size-5 text-muted" />

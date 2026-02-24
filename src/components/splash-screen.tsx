@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { personalInfo } from "@/lib/data";
 import { CircleIcon } from "lucide-react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 
 interface SplashScreenProps {
   onComplete?: () => void;
@@ -39,6 +40,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   duration = 3500,
 }) => {
   const prefersReducedMotion = useReducedMotion();
+  const { language } = useLanguage();
   const [isVisible, setIsVisible] = React.useState(true);
   const [loadingProgress, setLoadingProgress] = React.useState(0);
   const [showWelcome, setShowWelcome] = React.useState(false);
@@ -207,14 +209,14 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   className="text-center"
                 >
                   <p className="text-white/60 text-sm">
-                    {loadingProgress < 30 && "Initialisation..."}
+                    {loadingProgress < 30 && t(language, "loadingInit")}
                     {loadingProgress >= 30 &&
                       loadingProgress < 60 &&
-                      "Chargement des ressources..."}
+                      t(language, "loadingResources")}
                     {loadingProgress >= 60 &&
                       loadingProgress < 90 &&
-                      "Préparation de l'interface..."}
-                    {loadingProgress >= 90 && "Presque prêt..."}
+                      t(language, "loadingUi")}
+                    {loadingProgress >= 90 && t(language, "loadingReady")}
                   </p>
                 </motion.div>
               ) : (
@@ -226,7 +228,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   className="text-center"
                 >
                   <h1 className="text-2xl font-semibold text-white mb-2">
-                    Bienvenue
+                    {t(language, "welcome")}
                   </h1>
                 </motion.div>
               )}

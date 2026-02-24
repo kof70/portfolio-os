@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 import type { DockTechProjectItem } from "@/lib/data";
 
 interface DockProjectPopoverProps {
@@ -27,6 +29,7 @@ export function DockProjectPopover({
   label,
   items,
 }: DockProjectPopoverProps) {
+  const { language } = useLanguage();
   const panelRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -79,7 +82,7 @@ export function DockProjectPopover({
         >
           <div className="px-3 py-1.5 border-b border-white/10">
             <p className="text-xs font-medium text-white/70 uppercase tracking-wider">
-              Projets — {label}
+              {t(language, "projects")} — {label}
             </p>
           </div>
           <ul className="py-1">

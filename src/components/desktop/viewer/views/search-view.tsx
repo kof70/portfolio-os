@@ -4,21 +4,17 @@ import * as React from "react";
 import { Search, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
-  BADGE_LABELS,
-  contactLinks,
-  events,
-  experiences,
-  personalInfo,
-  projects,
-  skills,
   type BadgeType,
 } from "@/lib/data";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
 import { useWindowActions } from "../window-context";
 import { ProjectsView } from "./projects-view";
 import { AboutView } from "./about-view";
 import { ContactView } from "./contact-view";
 import { CVView } from "./cv-view";
 import { CategoryView } from "./category-view";
+import { useLanguage } from "@/hooks/use-language";
+import { badgeLabel, t } from "@/lib/i18n";
 
 interface SearchResult {
   id: string;
@@ -30,21 +26,36 @@ interface SearchResult {
   searchable: string;
 }
 
-const RESULT_TYPE_LABEL: Record<SearchResult["type"], string> = {
-  action: "Action",
-  project: "Projet",
-  skill: "Compétence",
-  experience: "Expérience",
-  event: "Événement",
-  contact: "Contact",
-};
-
 interface SearchViewProps {
   className?: string;
 }
 
 export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
   const { openWindow } = useWindowActions();
+  const { language } = useLanguage();
+  const { contactLinks, events, experiences, personalInfo, projects, skills } =
+    usePortfolioContent();
+  const resultTypeLabel: Record<SearchResult["type"], string> = React.useMemo(
+    () =>
+      language === "fr"
+        ? {
+            action: "Action",
+            project: "Projet",
+            skill: "Compétence",
+            experience: "Expérience",
+            event: "Événement",
+            contact: "Contact",
+          }
+        : {
+            action: "Action",
+            project: "Project",
+            skill: "Skill",
+            experience: "Experience",
+            event: "Event",
+            contact: "Contact",
+          },
+    [language],
+  );
   const [query, setQuery] = React.useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -57,7 +68,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
     (initialProjectId?: string) => {
       openWindow({
         id: "projects",
-        title: "Projets",
+        title: t(language, "projects"),
         content: <ProjectsView initialProjectId={initialProjectId} />,
         position: { x: 100, y: 50 },
         size: { width: 900, height: 600 },
@@ -66,13 +77,13 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
         isMaximized: false,
       });
     },
-    [openWindow],
+    [language, openWindow],
   );
 
   const openAbout = React.useCallback(() => {
     openWindow({
       id: "about",
-      title: "À propos",
+      title: t(language, "about"),
       content: <AboutView />,
       position: { x: 150, y: 80 },
       size: { width: 800, height: 600 },
@@ -80,12 +91,12 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
       isMinimized: false,
       isMaximized: false,
     });
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const openContact = React.useCallback(() => {
     openWindow({
       id: "contact",
-      title: "Contact",
+      title: t(language, "contact"),
       content: <ContactView />,
       position: { x: 200, y: 100 },
       size: { width: 850, height: 550 },
@@ -93,12 +104,12 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
       isMinimized: false,
       isMaximized: false,
     });
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const openCv = React.useCallback(() => {
     openWindow({
       id: "cv",
-      title: "Mon CV",
+      title: t(language, "myResume"),
       content: <CVView />,
       position: { x: 180, y: 80 },
       size: { width: 800, height: 700 },
@@ -106,14 +117,14 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
       isMinimized: false,
       isMaximized: false,
     });
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const openCategory = React.useCallback(
     (badge: BadgeType) => {
       openWindow({
         id: `category-${badge}`,
-        title: BADGE_LABELS[badge],
-        content: <CategoryView badge={badge} title={BADGE_LABELS[badge]} />,
+        title: badgeLabel(language, badge),
+        content: <CategoryView badge={badge} title={badgeLabel(language, badge)} />,
         position: { x: 160, y: 100 },
         size: { width: 800, height: 600 },
         minSize: { width: 500, height: 400 },
@@ -121,42 +132,45 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
         isMaximized: false,
       });
     },
-    [openWindow],
+    [language, openWindow],
   );
 
   const baseResults = React.useMemo<SearchResult[]>(() => {
     const quickActions: SearchResult[] = [
       {
         id: "action-projects",
-        title: "Ouvrir Projets",
-        description: "Voir tous les projets",
+        title: t(language, "openProjects"),
+        description: t(language, "viewAllProjects"),
         type: "action",
         onSelect: () => openProjects(),
         searchable: "ouvrir projets portfolio app",
       },
       {
         id: "action-about",
-        title: "Ouvrir À propos",
-        description: "Bio, parcours, positionnement",
+        title: t(language, "openAbout"),
+        description:
+          language === "fr"
+            ? "Bio, parcours, positionnement"
+            : "Bio, background, positioning",
         type: "action",
         onSelect: openAbout,
         searchable: "ouvrir a propos bio presentation",
       },
       {
         id: "action-contact",
-        title: "Ouvrir Contact",
-        description: "Coordonnées et liens",
+        title: t(language, "openContact"),
+        description: t(language, "contactDetails"),
         type: "action",
         onSelect: openContact,
         searchable: "ouvrir contact email linkedin github whatsapp",
       },
       {
         id: "action-cv",
-        title: "Ouvrir CV",
-        description: "Expériences, formation et parcours",
+        title: t(language, "openCV"),
+        description: t(language, "cvSummary"),
         type: "action",
         onSelect: openCv,
-        searchable: "ouvrir cv experiences formation",
+        searchable: "open cv resume experience education",
       },
     ];
 
@@ -172,10 +186,10 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
     const skillResults: SearchResult[] = skills.map((skill) => ({
       id: `skill-${skill.name}`,
       title: skill.name,
-      description: `Compétence ${skill.category}`,
+      description: `Skill ${skill.category}`,
       type: "skill",
       onSelect: openAbout,
-      searchable: `${skill.name} ${skill.category} competence tech`,
+      searchable: `${skill.name} ${skill.category} skill tech`,
     }));
 
     const experienceResults: SearchResult[] = experiences.map((experience) => ({
@@ -227,7 +241,20 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
       ...eventResults,
       ...contactResults,
     ];
-  }, [openAbout, openCategory, openContact, openCv, openProjects]);
+  }, [
+    language,
+    openAbout,
+    openCategory,
+    openContact,
+    openCv,
+    openProjects,
+    projects,
+    skills,
+    experiences,
+    events,
+    contactLinks,
+    personalInfo,
+  ]);
 
   const normalizedQuery = query.trim().toLowerCase();
   const results = React.useMemo(() => {
@@ -246,20 +273,20 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher: projet, techno, expérience, contact..."
+            placeholder={t(language, "searchPlaceholder")}
             className="w-full bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none"
           />
         </div>
 
         <p className="mt-2 text-xs text-white/60">
-          Recherche globale: projets, compétences, expériences, événements, contacts.
+          {t(language, "searchGlobal")}
         </p>
 
         <div className="mt-4 space-y-2 max-h-[65vh] overflow-y-auto pr-1">
           {results.length === 0 ? (
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white/70">
-              Aucun résultat pour “{query}”.
-            </div>
+              <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white/70">
+              {t(language, "searchNoResult")} “{query}”.
+              </div>
           ) : (
             results.map((result) => (
               <button
@@ -277,7 +304,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ className }) => {
                   </div>
                   <div className="shrink-0 flex items-center gap-2">
                     <span className="text-[10px] uppercase tracking-wide text-white/45">
-                      {RESULT_TYPE_LABEL[result.type]}
+                      {resultTypeLabel[result.type]}
                     </span>
                     {result.externalHref && (
                       <ExternalLink className="size-3.5 text-white/45" />

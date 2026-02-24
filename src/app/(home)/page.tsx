@@ -16,11 +16,12 @@ import {
   ProjectsView,
   useWindowActions,
 } from "@/components/desktop/viewer";
-import { BADGE_LABELS } from "@/lib/data";
 import { WallpaperPicker } from "@/components/desktop/wallpaper-picker";
 import { useDesktopStorage } from "@/hooks/use-desktop-storage-context";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { personalInfo } from "@/lib/data";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +43,8 @@ export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [viewportHeight, setViewportHeight] = useState(0);
   const { isMobile } = useIsMobile();
+  const { language } = useLanguage();
+  const { personalInfo } = usePortfolioContent();
   const isShortMobile = isMobile && viewportHeight > 0 && viewportHeight < 760;
 
   useEffect(() => {
@@ -56,7 +59,7 @@ export default function Home() {
   const handleOpenProjects = useCallback(() => {
     openWindow({
       id: "projects",
-      title: "Projets",
+      title: t(language, "projects"),
       content: <ProjectsView />,
       position: { x: 100, y: 50 },
       size: { width: 900, height: 600 },
@@ -65,12 +68,12 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenAbout = useCallback(() => {
     openWindow({
       id: "about",
-      title: "À propos",
+      title: t(language, "about"),
       content: <AboutView />,
       position: { x: 150, y: 80 },
       size: { width: 800, height: 600 },
@@ -79,12 +82,12 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenContact = useCallback(() => {
     openWindow({
       id: "contact",
-      title: "Contact",
+      title: t(language, "contact"),
       content: <ContactView />,
       position: { x: 200, y: 100 },
       size: { width: 850, height: 550 },
@@ -93,13 +96,13 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenRecommendation = useCallback(() => {
     openWindow({
       id: "category-recommendation",
-      title: BADGE_LABELS.recommendation,
-      content: <CategoryView badge="recommendation" title={BADGE_LABELS.recommendation} />,
+      title: t(language, "recommendations"),
+      content: <CategoryView badge="recommendation" title={t(language, "recommendations")} />,
       position: { x: 120, y: 60 },
       size: { width: 800, height: 600 },
       minSize: { width: 500, height: 400 },
@@ -107,13 +110,13 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenCommunity = useCallback(() => {
     openWindow({
       id: "category-community",
-      title: BADGE_LABELS.community,
-      content: <CategoryView badge="community" title={BADGE_LABELS.community} />,
+      title: t(language, "community"),
+      content: <CategoryView badge="community" title={t(language, "community")} />,
       position: { x: 140, y: 80 },
       size: { width: 800, height: 600 },
       minSize: { width: 500, height: 400 },
@@ -121,13 +124,13 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenOpensource = useCallback(() => {
     openWindow({
       id: "category-opensource",
-      title: BADGE_LABELS.opensource,
-      content: <CategoryView badge="opensource" title={BADGE_LABELS.opensource} />,
+      title: t(language, "openSource"),
+      content: <CategoryView badge="opensource" title={t(language, "openSource")} />,
       position: { x: 160, y: 100 },
       size: { width: 800, height: 600 },
       minSize: { width: 500, height: 400 },
@@ -135,13 +138,13 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenHackathon = useCallback(() => {
     openWindow({
       id: "category-hackathon",
-      title: BADGE_LABELS.hackathon,
-      content: <CategoryView badge="hackathon" title={BADGE_LABELS.hackathon} />,
+      title: t(language, "hackathon"),
+      content: <CategoryView badge="hackathon" title={t(language, "hackathon")} />,
       position: { x: 180, y: 120 },
       size: { width: 800, height: 600 },
       minSize: { width: 500, height: 400 },
@@ -149,13 +152,13 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
-  const handleOpenEntreprise = useCallback(() => {
+  const handleOpenCompany = useCallback(() => {
     openWindow({
       id: "category-entreprise",
-      title: BADGE_LABELS.entreprise,
-      content: <CategoryView badge="entreprise" title={BADGE_LABELS.entreprise} />,
+      title: t(language, "company"),
+      content: <CategoryView badge="entreprise" title={t(language, "company")} />,
       position: { x: 160, y: 100 },
       size: { width: 800, height: 600 },
       minSize: { width: 500, height: 400 },
@@ -163,12 +166,12 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   const handleOpenCV = useCallback(() => {
     openWindow({
       id: "cv",
-      title: "Mon CV",
+      title: t(language, "myResume"),
       content: <CVView />,
       position: { x: 180, y: 80 },
       size: { width: 800, height: 700 },
@@ -177,7 +180,7 @@ export default function Home() {
       isMaximized: false,
     });
     setSelectedFile(null);
-  }, [openWindow]);
+  }, [language, openWindow]);
 
   // Handler pour le clic droit sur le bureau
   const handleDesktopContextMenu = useCallback(
@@ -273,7 +276,7 @@ export default function Home() {
       handleOpenCommunity,
       handleOpenOpensource,
       handleOpenHackathon,
-      handleOpenEntreprise,
+      handleOpenCompany,
       handleOpenCV,
     ],
   );
@@ -347,7 +350,8 @@ export default function Home() {
             photoSrc="/assets/moisansbg.png"
             name={personalInfo.name}
             title={personalInfo.title}
-            description="Je construis l'infrastructure, les communautés et les médias qui font avancer la tech au Togo. 18+ ⭐ GitHub · 15k+ vues Reddit · 20+ événements couverts · 2 communautés co-fondées."
+            description={t(language, "profileBlurb")}
+            noteTitle={t(language, "atGlance")}
             className={isShortMobile ? "max-w-[300px]" : "max-w-[320px]"}
           />
         </div>
@@ -377,7 +381,7 @@ export default function Home() {
             isMobile ? (isShortMobile ? "max-w-[212px] mx-auto" : "max-w-[242px] mx-auto") : "",
           )}
         >
-          {/* Dossier Projets */}
+          {/* Dossier Projects */}
           <DraggableItem
             id="folder-projects"
             initialPosition={getInitialPosition(
@@ -394,10 +398,10 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "projects"}
           >
-            <ProjectFile name="Projets" />
+            <ProjectFile name={t(language, "projects")} />
           </DraggableItem>
 
-          {/* Dossier À propos */}
+          {/* Dossier About */}
           <DraggableItem
             id="folder-about"
             initialPosition={getInitialPosition(
@@ -412,7 +416,7 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "about"}
           >
-            <AboutFile name="À propos" />
+            <AboutFile name={t(language, "about")} />
           </DraggableItem>
 
           {/* Dossier Contact */}
@@ -432,7 +436,7 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "contact"}
           >
-            <ContactFile name="Contact" />
+            <ContactFile name={t(language, "contact")} />
           </DraggableItem>
 
           {/* Fichier CV */}
@@ -445,10 +449,10 @@ export default function Home() {
             isSelected={selectedFile === "cv"}
             onDoubleClick={handleOpenCV}
           >
-            <FilePDF name="Mon CV" variant="cv" />
+            <FilePDF name={t(language, "myResume")} variant="cv" />
           </DraggableItem>
 
-          {/* Recommandation */}
+          {/* Recommendations */}
           <DraggableItem
             id="folder-recommendation"
             initialPosition={getInitialPosition(
@@ -467,10 +471,10 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "recommendation"}
           >
-            <CategoryFile type="recommendation" name={BADGE_LABELS.recommendation} />
+            <CategoryFile type="recommendation" name={t(language, "recommendations")} />
           </DraggableItem>
 
-          {/* Communauté / Entreprise */}
+          {/* Community / Company */}
           <DraggableItem
             id="folder-community"
             initialPosition={getInitialPosition(
@@ -487,7 +491,7 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "community"}
           >
-            <CategoryFile type="community" name={BADGE_LABELS.community} />
+            <CategoryFile type="community" name={t(language, "community")} />
           </DraggableItem>
 
           {/* Open Source */}
@@ -507,7 +511,7 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "opensource"}
           >
-            <CategoryFile type="opensource" name={BADGE_LABELS.opensource} />
+            <CategoryFile type="opensource" name={t(language, "openSource")} />
           </DraggableItem>
 
           {/* Hackathon */}
@@ -527,19 +531,19 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "hackathon"}
           >
-            <CategoryFile type="hackathon" name={BADGE_LABELS.hackathon} />
+            <CategoryFile type="hackathon" name={t(language, "hackathon")} />
           </DraggableItem>
 
-          {/* Entreprise (CEO / gestionnaire) */}
+          {/* Company (CEO / gestionnaire) */}
           <DraggableItem
             id="folder-entreprise"
             initialPosition={getInitialPosition(
               "folder-entreprise",
               defaultPositions.entreprise,
             )}
-            onDoubleClick={handleOpenEntreprise}
+            onDoubleClick={handleOpenCompany}
             onClick={() =>
-              isMobile ? handleOpenEntreprise() : setSelectedFile("entreprise")
+              isMobile ? handleOpenCompany() : setSelectedFile("entreprise")
             }
             onContextMenu={(e) =>
               handleItemContextMenu(e, "folder-entreprise", "folder")
@@ -547,7 +551,7 @@ export default function Home() {
             onPositionChange={handlePositionChange}
             isSelected={selectedFile === "entreprise"}
           >
-            <CategoryFile type="entreprise" name={BADGE_LABELS.entreprise} />
+            <CategoryFile type="entreprise" name={t(language, "company")} />
           </DraggableItem>
         </DesktopGrid>
       </div>
@@ -559,7 +563,8 @@ export default function Home() {
             photoSrc="/assets/moisansbg.png"
             name={personalInfo.name}
             title={personalInfo.title}
-            description="Je construis l'infrastructure, les communautés et les médias qui font avancer la tech au Togo. 18+ ⭐ GitHub · 15k+ vues Reddit · 20+ événements couverts · 2 communautés co-fondées."
+            description={t(language, "profileBlurb")}
+            noteTitle={t(language, "atGlance")}
             className="grid-cols-2"
           />
         </div>

@@ -8,17 +8,16 @@ import {
 } from "../use-window-viewport";
 import { Button } from "@/components/ui/button";
 import {
-  experiences,
-  education,
-  events,
-  personalInfo,
   type Experience,
   type Education,
   type Event,
 } from "@/lib/data";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
 import { Icons } from "@/components/icons";
 import { GlitchName } from "@/components/shared/glitch-name";
 import { Eye, ArrowLeft } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 
 const CV_PDF_URL = "/assets/djakpa-koffi-cv.pdf";
 const CV_DOWNLOAD_NAME = "Djakpa Koffi CV.pdf";
@@ -65,7 +64,11 @@ function parseDate(str: string): [number, number] {
   return [year, 0];
 }
 
-function buildItems(): TimelineItem[] {
+function buildItems(
+  experiences: Experience[],
+  education: Education[],
+  events: Event[],
+): TimelineItem[] {
   const items: TimelineItem[] = [];
 
   for (const exp of experiences) {
@@ -130,22 +133,17 @@ const COLORS = [
   "#ec4899", // pink
 ] as const;
 
-const TYPE_LABELS: Record<TimelineItemType, string> = {
-  experience: "Exp.",
-  education: "Formation",
-  event: "Événement",
-};
-
 // ---------------------------------------------------------------------------
 // Card (left or right)
 // ---------------------------------------------------------------------------
 
 const TimelineCard: React.FC<{
   item: TimelineItem;
+  typeLabels: Record<TimelineItemType, string>;
   color: string;
   align: "left" | "right";
   compact?: boolean;
-}> = ({ item, color, align, compact }) => (
+}> = ({ item, typeLabels, color, align, compact }) => (
   <div
     className={cn(
       "rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm",
@@ -163,7 +161,7 @@ const TimelineCard: React.FC<{
         {item.periodLabel}
       </span>
       <span className="text-white/35 text-[10px] uppercase tracking-wider font-medium">
-        {TYPE_LABELS[item.type]}
+        {typeLabels[item.type]}
       </span>
     </div>
     <h3
@@ -192,7 +190,20 @@ const TimelineCard: React.FC<{
 
 const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
   const { isSmUp } = useWindowViewport();
-  const items = React.useMemo(() => buildItems(), []);
+  const { language } = useLanguage();
+  const { personalInfo, experiences, education, events } = usePortfolioContent();
+  const items = React.useMemo(
+    () => buildItems(experiences, education, events),
+    [experiences, education, events],
+  );
+  const typeLabels = React.useMemo<Record<TimelineItemType, string>>(
+    () => ({
+      experience: "Exp.",
+      education: t(language, "education"),
+      event: t(language, "event"),
+    }),
+    [language],
+  );
   const [showPdf, setShowPdf] = React.useState(false);
 
   const handleDownload = React.useCallback(() => {
@@ -222,7 +233,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
         )}
       >
         <h2 className="text-white font-semibold text-sm md:text-base">
-          Curriculum Vitae
+          {t(language, "myResume")}
         </h2>
         <div className="flex items-center gap-2">
           <Button
@@ -239,12 +250,12 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
             {showPdf ? (
               <>
                 <ArrowLeft className="size-4" />
-                Timeline
+                {t(language, "timeline")}
               </>
             ) : (
               <>
                 <Eye className="size-4" />
-                Voir le CV
+                {t(language, "viewCV")}
               </>
             )}
           </Button>
@@ -255,7 +266,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
             className="shrink-0 bg-white text-black hover:bg-white/90 gap-2"
           >
             <Icons.download className="size-4" />
-            Télécharger
+            {t(language, "download")}
           </Button>
         </div>
       </div>
@@ -265,7 +276,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
         <div className="flex-1 min-h-0 p-2">
           <iframe
             src={`${CV_PDF_URL}#toolbar=1&navpanes=1`}
-            title="Mon CV"
+            title={t(language, "myResume")}
             className="w-full h-full rounded-lg border border-white/10 bg-white"
           />
         </div>
@@ -288,15 +299,31 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
               {personalInfo.subtitle}
             </p>
             <div className="space-y-3 text-white/65 text-sm leading-relaxed">
-              <p>
-                Développeur backend, full-stack et DevOps basé à Lomé, Togo. Je me définirais avant tout comme un développeur backend et un architecte d'infrastructure.
-              </p>
-              <p>
-                J'ai un spectre plus large : développement mobile (React Native), frontend web, et production audiovisuelle avec Rekap. Je fais souvent le pont entre le produit, le design et l'infrastructure technique — comprendre les besoins visuels des designers comme les contraintes structurelles du backend pour livrer un produit final solide.
-              </p>
-              <p>
-                Au fil de mon parcours, j'ai eu l'opportunité de travailler sur des projets variés : startups, entreprises locales, communautés open source, hackathons internationaux et initiatives panafricaines.
-              </p>
+              {language === "fr" ? (
+                <>
+                  <p>
+                    Développeur backend, full-stack et DevOps basé à Lomé, Togo. Je me positionne d&apos;abord comme développeur backend et architecte d&apos;infrastructure.
+                  </p>
+                  <p>
+                    Mon périmètre est plus large : mobile (React Native), frontend web et production audiovisuelle avec Rekap. Je relie produit, design et infrastructure technique pour livrer des produits solides.
+                  </p>
+                  <p>
+                    Mon parcours couvre des projets variés : startups, entreprises locales, communautés open source, hackathons internationaux et initiatives panafricaines.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    Backend, full-stack, and DevOps developer based in Lome, Togo. I primarily position myself as a backend developer and infrastructure architect.
+                  </p>
+                  <p>
+                    My scope is broader: mobile development (React Native), web frontend, and audiovisual production with Rekap. I bridge product, design, and technical infrastructure to deliver solid products.
+                  </p>
+                  <p>
+                    My journey spans a wide range of projects: startups, local companies, open-source communities, international hackathons, and pan-African initiatives.
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
@@ -334,6 +361,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
                       <div className="flex items-center gap-0 w-full justify-end">
                         <TimelineCard
                           item={item}
+                          typeLabels={typeLabels}
                           color={color}
                           align="left"
                           compact={!isSmUp}
@@ -384,6 +412,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
                         />
                         <TimelineCard
                           item={item}
+                          typeLabels={typeLabels}
                           color={color}
                           align="right"
                           compact={!isSmUp}

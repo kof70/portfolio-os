@@ -9,8 +9,10 @@ import {
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { contactLinks } from "@/lib/data";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
 import { SectionHeader } from "@/components/shared/info-card";
+import { useLanguage } from "@/hooks/use-language";
+import { t } from "@/lib/i18n";
 
 interface ContactViewProps {
   className?: string;
@@ -18,6 +20,8 @@ interface ContactViewProps {
 
 const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
   const { isXs, isSmUp, isMdUp } = useWindowViewport();
+  const { language } = useLanguage();
+  const { contactLinks } = usePortfolioContent();
 
   const [formData, setFormData] = React.useState({
     name: "",
@@ -75,7 +79,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
               isSmUp ? "text-3xl" : "text-2xl",
             )}
           >
-            Contactez-moi
+            {t(language, "contactMe")}
           </h1>
           <p
             className={cn(
@@ -84,8 +88,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
               isMdUp && "max-w-md mx-auto",
             )}
           >
-            Vous avez un projet en tête ? N&apos;hésitez pas à me contacter pour
-            en discuter !
+            {t(language, "contactIntro")}
           </p>
         </div>
 
@@ -95,7 +98,7 @@ const ContactViewContent: React.FC<ContactViewProps> = ({ className }) => {
           {/* Contact Links */}
           <div>
             <SectionHeader
-              title="Retrouvez-moi sur"
+              title={t(language, "findMeOn")}
               emoji="🔗"
               size={isSmUp ? "md" : "sm"}
             />

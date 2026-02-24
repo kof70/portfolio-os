@@ -14,7 +14,7 @@ interface NoteCardProps {
 }
 
 export const NoteCard: React.FC<NoteCardProps> = ({
-  title = "À propos",
+  title = "About",
   content,
   className,
   icon = <Icons.folderClosed className="size-5 text-white" />,

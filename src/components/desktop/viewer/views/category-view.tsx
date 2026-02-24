@@ -10,13 +10,13 @@ import {
 import { Icons } from "@/components/icons";
 import {
   type BadgeType,
-  BADGE_LABELS,
   BADGE_ICONS,
-  getProjectsByBadge,
-  getEventsByBadge,
   type Project,
 } from "@/lib/data";
 import { SectionHeader } from "@/components/shared/info-card";
+import { usePortfolioContent } from "@/lib/use-portfolio-content";
+import { useLanguage } from "@/hooks/use-language";
+import { badgeLabel, t } from "@/lib/i18n";
 
 interface CategoryViewProps {
   badge: BadgeType;
@@ -28,6 +28,7 @@ const ProjectCard: React.FC<{
   project: Project;
   isCompact?: boolean;
 }> = ({ project, isCompact = false }) => {
+  const { language } = useLanguage();
   const previewUrl = project.liveUrl || project.githubUrl;
   const isGitHubOnly = !project.liveUrl && !!project.githubUrl;
   return (
@@ -51,7 +52,7 @@ const ProjectCard: React.FC<{
           <>
             <iframe
               src={previewUrl}
-              title={`Aperçu : ${project.title}`}
+              title={`Preview: ${project.title}`}
               className="absolute inset-0 w-full h-full border-0 pointer-events-none scale-[0.3] origin-top-left"
               style={{ width: "333.33%", height: "333.33%" }}
               sandbox="allow-scripts allow-same-origin"
@@ -63,7 +64,7 @@ const ProjectCard: React.FC<{
                 aria-hidden
               >
                 <p className="text-white text-sm text-center px-2 font-medium">
-                  Aperçu non disponible pour ce lien
+                  {t(language, "previewUnavailable")}
                 </p>
               </div>
             )}
@@ -101,8 +102,16 @@ const CategoryViewContent: React.FC<CategoryViewProps> = ({
   className,
 }) => {
   const { isXs, isSmUp, isMdUp } = useWindowViewport();
-  const badgeProjects = getProjectsByBadge(badge);
-  const badgeEvents = getEventsByBadge(badge);
+  const { language } = useLanguage();
+  const { projects, events } = usePortfolioContent();
+  const badgeProjects = React.useMemo(
+    () => projects.filter((project) => project.badge === badge),
+    [badge, projects],
+  );
+  const badgeEvents = React.useMemo(
+    () => events.filter((event) => event.badge === badge),
+    [badge, events],
+  );
   const Icon = Icons[BADGE_ICONS[badge]];
 
   return (
@@ -131,16 +140,16 @@ const CategoryViewContent: React.FC<CategoryViewProps> = ({
               {title}
             </h1>
             <p className="text-white/60 text-sm mt-0.5">
-              {BADGE_LABELS[badge]}
+              {badgeLabel(language, badge)}
             </p>
           </div>
         </div>
 
-        {/* Projets */}
+        {/* Projects */}
         {badgeProjects.length > 0 && (
           <section className="mb-8">
             <SectionHeader
-              title="Projets"
+              title={t(language, "projects")}
               emoji="📁"
               size={isSmUp ? "md" : "sm"}
             />
@@ -161,11 +170,11 @@ const CategoryViewContent: React.FC<CategoryViewProps> = ({
           </section>
         )}
 
-        {/* Événements */}
+        {/* Events */}
         {badgeEvents.length > 0 && (
           <section>
             <SectionHeader
-              title="Événements"
+              title={t(language, "events")}
               emoji="📅"
               size={isSmUp ? "md" : "sm"}
             />
@@ -222,7 +231,7 @@ const CategoryViewContent: React.FC<CategoryViewProps> = ({
                             rel="noopener noreferrer"
                             className="text-xs text-white/70 hover:text-white underline"
                           >
-                            Voir l&apos;événement →
+                            {t(language, "viewEvent")} →
                           </a>
                         )}
                       </div>
@@ -236,7 +245,7 @@ const CategoryViewContent: React.FC<CategoryViewProps> = ({
 
         {badgeProjects.length === 0 && badgeEvents.length === 0 && (
           <p className="text-white/50 text-center py-12">
-            Aucun projet ou événement dans cette catégorie pour le moment.
+            {t(language, "noProjectsInCategory")}
           </p>
         )}
       </div>
