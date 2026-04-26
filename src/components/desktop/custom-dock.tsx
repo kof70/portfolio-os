@@ -41,7 +41,9 @@ import {
   GitBranch,
   Trophy,
   Building2,
+  ImageIcon,
 } from "lucide-react";
+import { useDesktopStorage } from "@/hooks/use-desktop-storage-context";
 
 /**
  * WindowIcons: Map of window IDs to icon components.
@@ -118,6 +120,7 @@ export function CustomDock() {
   const { windows, focusWindow, restoreWindow, openWindow } = useWindows();
   const { isMobile } = useIsMobile();
   const { language } = useLanguage();
+  const { openWallpaperPicker } = useDesktopStorage();
   const prefersReducedMotion = useReducedMotion();
   const [dockPopover, setDockPopover] = useState<{
     techId: DockTechId;
@@ -199,6 +202,15 @@ export function CustomDock() {
             aria-label={t(language, "openSearch")}
           >
             <Icons.circle className="size-6 text-white/90" />
+          </button>
+
+          <button
+            type="button"
+            onClick={openWallpaperPicker}
+            className="size-10 !min-h-0 !min-w-0 shrink-0 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+            aria-label="Changer le fond d'écran"
+          >
+            <ImageIcon className="size-5 text-white/80" />
           </button>
 
           <div className="w-px h-7 bg-white/15" />

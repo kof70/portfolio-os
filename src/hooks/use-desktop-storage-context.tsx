@@ -36,6 +36,11 @@ interface DesktopStorageContextType {
   setWallpaper: (wallpaper: string) => void;
   setWallpaperMobile: (wallpaper: string) => void;
 
+  // Wallpaper picker UI
+  isWallpaperPickerOpen: boolean;
+  openWallpaperPicker: () => void;
+  closeWallpaperPicker: () => void;
+
   // Actions globales
   resetAll: () => void;
   exportConfig: () => string;
@@ -126,6 +131,9 @@ export const DesktopStorageProvider: React.FC<DesktopStorageProviderProps> = ({
 }) => {
   const [state, setState] = useState<DesktopStorageState>(defaultState);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isWallpaperPickerOpen, setIsWallpaperPickerOpen] = useState(false);
+  const openWallpaperPicker = useCallback(() => setIsWallpaperPickerOpen(true), []);
+  const closeWallpaperPicker = useCallback(() => setIsWallpaperPickerOpen(false), []);
 
   // Charger l'état au montage (côté client uniquement)
   // Si aucun état n'est trouvé (premier visiteur), on attribue un wallpaper
@@ -301,6 +309,11 @@ export const DesktopStorageProvider: React.FC<DesktopStorageProviderProps> = ({
     // Actions sur le wallpaper
     setWallpaper,
     setWallpaperMobile,
+
+    // Wallpaper picker UI
+    isWallpaperPickerOpen,
+    openWallpaperPicker,
+    closeWallpaperPicker,
 
     // Actions globales
     resetAll,

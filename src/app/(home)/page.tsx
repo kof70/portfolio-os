@@ -16,7 +16,6 @@ import {
   ProjectsView,
   useWindowActions,
 } from "@/components/desktop/viewer";
-import { WallpaperPicker } from "@/components/desktop/wallpaper-picker";
 import { useDesktopStorage } from "@/hooks/use-desktop-storage-context";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { usePortfolioContent } from "@/lib/use-portfolio-content";
@@ -29,17 +28,14 @@ export default function Home() {
   const { openWindow } = useWindowActions();
   const { openContextMenu } = useContextMenu();
   const {
-    wallpaper,
-    wallpaperMobile,
-    setWallpaper,
     resetAllPositions,
     saveItemPosition,
     getItemPosition,
     isLoaded,
+    openWallpaperPicker,
   } = useDesktopStorage();
 
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
-  const [isWallpaperPickerOpen, setIsWallpaperPickerOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [viewportHeight, setViewportHeight] = useState(0);
   const { isMobile } = useIsMobile();
@@ -231,8 +227,8 @@ export default function Home() {
   }, []);
 
   const handleChangeWallpaper = useCallback(() => {
-    setIsWallpaperPickerOpen(true);
-  }, []);
+    openWallpaperPicker();
+  }, [openWallpaperPicker]);
 
   const handleResetPositions = useCallback(() => {
     resetAllPositions();
@@ -579,13 +575,6 @@ export default function Home() {
         onDownload={handleDownload}
       />
 
-      {/* Wallpaper Picker */}
-      <WallpaperPicker
-        isOpen={isWallpaperPickerOpen}
-        onClose={() => setIsWallpaperPickerOpen(false)}
-        currentWallpaper={wallpaper}
-        onSelect={setWallpaper}
-      />
     </main>
   );
 }
