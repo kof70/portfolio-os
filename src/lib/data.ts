@@ -101,20 +101,20 @@ export interface Event {
 
 export const personalInfo: PersonalInfo = {
   name: "DJAKPA Koffi Tepe Venougne",
-  title: "Backend · DevOps · Nest.js · Node.js | Human AI Ambassador | Co-founder of Python Togo & ETH Lome | Rekap",
-  subtitle: "Backend & Full-Stack · DevOps · Media & production",
+  title: "Lead Backend Engineer · DevSecOps · Laravel · Nest.js · Node.js | Human AI Ambassador | Co-founder of Python Togo & ETH Lome | Rekap",
+  subtitle: "Lead Backend · DevSecOps · Fintech & Mobile Money · Media & production",
   location: "📍 Lome, Togo",
   avatar: "/assets/profile2.png",
-  bio: "Backend and DevOps developer focused on architecture, deployment (Coolify, Docker), and monitoring. Main backend engineer for alonu.tech in Nest.js, with most web products built in Next.js + TypeScript. Human AI Ambassador for practical and sustainable AI in Africa. Co-founder of Python Togo and ETH Lome, production lead at Rekap, and author of the Coolify MCP Server.",
+  bio: "Lead Backend Engineer and DevSecOps. Lead backend at alonu group in Nest.js — I designed the alonu.shop API (a platform connecting people with verified local artisans across Togo and West Africa) and moved every group product onto a hardened self-hosted infrastructure (Coolify, Docker, CI/CD, WireGuard). Fintech is my main focus: I built the backend that orchestrates a microfinance core-banking system (SOAP PERFECTWS) and the BCEAO PI-SPI instant-payment rails, and I integrate mobile money (PayGate, FeexPay, FedaPay) into most of the products I ship. Human AI Ambassador, co-founder of Python Togo and ETH Lome, production lead at Rekap, author of the Coolify MCP Server.",
   aboutParagraphs: [
-    "I am a backend, full-stack, and DevOps developer based in Lome, Togo. I work primarily as a backend engineer and infrastructure architect.",
-    "My core work is building robust APIs, setting up production deployment with Coolify, Docker, and CI/CD, and shipping reliable backend systems with Nest.js and Node.js.",
+    "I am a Lead Backend Engineer and DevSecOps practitioner based in Lome, Togo, working mainly on backend systems and infrastructure.",
+    "As lead backend at alonu group, I designed the API and backend architecture for alonu.shop — a platform connecting people with verified local artisans across Togo and West Africa — and migrated every group product onto a new hardened self-hosted infrastructure (Coolify, Docker, CI/CD, private WireGuard mesh).",
+    "Fintech is my main focus. I built the backend that orchestrates a microfinance core-banking system (SOAP PERFECTWS) and the BCEAO PI-SPI instant-payment rails, and I integrate mobile money (PayGate, FeexPay, FedaPay) into most of the products I ship — the artisan platform, mobile apps, the chamber of trades, voting and ticketing platforms. Accounting and payroll modules ship in the BTP ERP and the ministry budget system.",
     "My scope also includes mobile development (React Native), web frontend delivery (mostly Next.js + TypeScript), and media production through Rekap, the media company I co-founded.",
     "On the community side, I co-founded Python Togo and ETH Lome. I also build open-source tooling, including the Coolify MCP Server.",
-    "I focus on connecting product needs, design expectations, and technical constraints to deliver software that is practical and durable.",
   ],
   bioShort:
-    "Backend · DevOps · Software Developer · Human AI Ambassador · Co-founder of Python Togo & ETH Lome.",
+    "Lead Backend · DevSecOps · Fintech & Mobile Money · Human AI Ambassador · Co-founder of Python Togo & ETH Lome.",
   available: true,
 };
 
@@ -139,45 +139,148 @@ export const projects: Project[] = [
     category: "web",
     badge: "entreprise",
   },
+  // IA / Agents
+  {
+    id: "18",
+    title: "Kekeli — Agent IA anti-hallucination (data africaine)",
+    description:
+      "Agent conversationnel (Google ADK + Gemini) répondant uniquement à partir de données officielles vérifiées, réponses ancrées par un RAG (corpus Vertex AI de 1 624 indicateurs sur 34 tables) : ~74 000 lignes, 80+ sources africaines (IMF, WHO, FAO, World Bank, UNICEF, NASA…) via pipeline Fivetran → BigQuery synchronisé toutes les 6h, 54 pays. Frontend Next.js (chat streaming SSE), Firebase Auth/Firestore, fallback Claude Opus via Vertex AI. Créé pour le Google Cloud Rapid Agent Hackathon (Fivetran Track).",
+    tags: ["IA", "Agent", "RAG", "Google ADK", "Gemini", "BigQuery", "Fivetran", "Next.js"],
+    liveUrl: "https://kekeli.alonu.shop",
+    category: "web",
+    badge: "hackathon",
+  },
+  // Fintech · Mobile Money · Comptabilité
+  {
+    id: "20",
+    title: "API Microfinance — orchestration core banking (PERFECTWS) ↔ PI-SPI (BCEAO)",
+    description:
+      "Backend Nest.js qui orchestre le core banking d'une microfinance (webservice SOAP PERFECTWS) et le paiement instantané PI-SPI de la BCEAO : un dépôt ou retrait déclenche l'opération PI-SPI puis l'écriture côté PERFECTWS, avec rapprochement. Wallet, transferts, gestion d'alias, OAuth2, 31 endpoints PI-SPI, webhooks entrants signés HMAC-SHA256. Sécurité et tests de bout en bout en sandbox.",
+    tags: ["Nest.js", "TypeScript", "Backend", "PI-SPI", "BCEAO", "PERFECTWS", "SOAP", "DevSecOps"],
+    category: "web",
+  },
+  {
+    id: "26",
+    title: "VotelyTG — Vote payant, billetterie & inscriptions",
+    description:
+      "Plateforme événementielle togolaise en production, plus de 7 000 utilisateurs : vote en ligne payant, billetterie et inscriptions pour concours et events. Dashboard organisateur, commissions configurables par événement, paiement mobile money via PayGate, FeexPay et FedaPay (Flooz, Mixx/T-Money, opérateurs UEMOA sans redirection) et reversements aux organisateurs. Next.js.",
+    tags: ["Next.js", "TypeScript", "PayGate", "FeexPay", "FedaPay", "Mobile Money", "Prisma"],
+    liveUrl: "https://votelytg.com",
+    category: "web",
+  },
+  {
+    id: "27",
+    title: "Génie des Pages — Plateforme de vote en ligne",
+    description:
+      "Plateforme de vote en ligne payant : candidats, jury, transactions de vote, dons, sponsors, tickets de support. Next.js + Supabase (auth, storage) + Prisma, paiement mobile money via PayGate / FeexPay / FedaPay, deployment Docker. En production.",
+    tags: ["Next.js", "Supabase", "Prisma", "Mobile Money", "PayGate", "FeexPay", "FedaPay", "Docker"],
+    liveUrl: "https://geniedespages.com/",
+    category: "web",
+  },
+  {
+    id: "11",
+    title: "Afrique Informatique — Facturation & Comptabilité (Laravel)",
+    description:
+      "Application de gestion développée en Laravel 12 pour afriqueinformatique.net : dashboard d'administration, facturation (devis, factures, workflow d'approbation), suivi comptable, bases clients/produits. Project en collaboration. En production sur facturel.afriqueinformatique.net.",
+    tags: ["Laravel", "PHP", "MySQL", "Facturation", "Comptabilité"],
+    liveUrl: "https://facturel.afriqueinformatique.net/",
+    category: "web",
+  },
   // Web / Backend
   {
     id: "14",
-    title: "alonu.tech — Backend",
+    title: "alonu.shop — Backend & Infrastructure (alonu group)",
     description:
-      "Backend complet de la plateforme alonu.tech réalisé en Nest.js : architecture, API, security et deployment.",
-    tags: ["Nest.js", "TypeScript", "Backend", "API", "DevOps"],
-    liveUrl: "https://alonu.tech",
+      "Backend et infrastructure de alonu, plateforme de mise en relation avec des artisans locaux vérifiés au Togo et en Afrique de l'Ouest : artisans, devis, commandes, produits, messagerie. Intégration du paiement mobile money (PayGate, FeexPay, FedaPay) pour l'achat et la livraison sur la plateforme, plus financement/microfinance et parrainage. Architecture Nest.js, conception de l'API, sécurité applicative (DevSecOps), migration/deployment de l'ensemble des produits du groupe sur une infrastructure self-hosted — Coolify, Docker, CI/CD, maillage réseau privé WireGuard. Monitoring et exploitation en production.",
+    tags: ["Nest.js", "TypeScript", "Backend", "API", "Mobile Money", "DevSecOps", "Coolify", "WireGuard"],
+    liveUrl: "https://alonu.shop",
     category: "web",
+  },
+  {
+    id: "21",
+    title: "Backend Chambre des Métiers (Togo)",
+    description:
+      "Backend Nest.js d'une plateforme de management pour une Chambre des Métiers : annuaire des artisans, cartes professionnelles, certificats, formations (CFA, apprentissage), cotisations, finances chambre/artisan, paiement mobile money, ventes au guichet, génération de PDF officiels, endpoints service-à-service avec alonu group. 25+ modules.",
+    tags: ["Nest.js", "TypeScript", "Backend", "PostgreSQL", "Mobile Money", "PDF"],
+    liveUrl: "https://crm.alonu.shop/",
+    category: "web",
+  },
+  {
+    id: "22",
+    title: "Système de Gestion Budgétaire — Ministère de l'Aménagement du Territoire (Togo)",
+    description:
+      "Plateforme full-stack (Nest.js + PostgreSQL/Prisma, front Next.js) pour le Ministère de l'Aménagement du Territoire, du Développement et de la Consolidation Constitutionnelle : soumission et suivi de projects par direction, lignes et sections budgétaires, décaissements, missions, génération de documents officiels PDF/Excel (en-tête République Togolaise), RBAC, module d'archivage physique (Direction/Salle/Rangée/Classeur/Fichier, audit logs, i18n FR/EN/ES) que j'ai migré de Laravel vers Nest.js, tâches de trésorerie type Kanban. En production.",
+    tags: ["Nest.js", "Next.js", "PostgreSQL", "Prisma", "RBAC", "Comptabilité"],
+    liveUrl: "https://budget-ministere.coolify.alonu.shop",
+    category: "web",
+  },
+  {
+    id: "23",
+    title: "Gestion BTP — ERP chantiers (comptabilité & paie)",
+    description:
+      "Application complète pour entreprise de BTP : chantiers, devis, factures, paie, pointages, stock, comptabilité et exports PDF/Excel, cartographie Leaflet. Next.js / React, PostgreSQL, Docker, tests Vitest & Playwright. v3, en production.",
+    tags: ["Next.js", "React", "PostgreSQL", "Comptabilité", "Paie", "Docker"],
+    liveUrl: "https://btp.coolify.sesachat.com",
+    category: "web",
+  },
+  {
+    id: "24",
+    title: "GoldenDays B2B — API",
+    description:
+      "Design and development puis deployment de l'API de la plateforme B2B GoldenDays : catalogue, comptes professionnels, commandes. Nest.js, Docker, Coolify.",
+    tags: ["Nest.js", "API", "Backend", "Docker", "Coolify"],
+    liveUrl: "https://goldendays-b2b.alonu.shop",
+    category: "web",
+  },
+  {
+    id: "25",
+    title: "Plateforme E-learning — API CMS & LMS",
+    description:
+      "API CMS et LMS pour une plateforme d'e-learning : cours, modules, progression, contenu éditorial. Nest.js + TypeScript. Frontend en cours.",
+    tags: ["Nest.js", "TypeScript", "API", "LMS", "CMS"],
+    liveUrl: "https://learning-api.coolify.alonu.shop",
+    category: "web",
+  },
+  {
+    id: "28",
+    title: "dbla — Plateforme de boutiques multi-tenant",
+    description:
+      "Plateforme multi-tenant : chaque commerçant dispose de sa boutique en ligne (URL par slug, sous-domaine), back-office d'administration centralisé, management produits et images, paiement mobile money via FedaPay (webhooks). Next.js + Prisma/PostgreSQL, Docker.",
+    tags: ["Next.js", "Prisma", "PostgreSQL", "Multi-tenant", "FedaPay", "Docker"],
+    liveUrl: "https://d-bla.com",
+    category: "web",
+  },
+  {
+    id: "33",
+    title: "WOOO — Réseau social de classement local",
+    description:
+      "Application mobile React Native / Expo (iOS & Android) : chaque utilisateur publie photos et vidéos, un algorithme classe les profils par ville, pays et zone selon l'engagement réel (likes, interactions, croissance). App + back-office d'administration, backend Supabase.",
+    tags: ["React Native", "Expo", "Supabase", "Mobile", "Social"],
+    category: "mobile",
   },
   {
     id: "13",
     title: "API Vente & Location de voitures",
     description:
-      "Design and development de l'API d'un project de vente et location de voitures. Release planned soon.",
-    tags: ["API", "Backend", "Nest.js"],
+      "Conception et développement de l'API d'un projet de vente et location de voitures, en production sur dealautotg.com, sur la stack VotelyTG : paiement mobile money via FedaPay.",
+    tags: ["API", "Backend", "Nest.js", "FedaPay", "VotelyTG"],
+    liveUrl: "https://dealautotg.com/",
     category: "web",
   },
   {
     id: "12",
     title: "Gnonel.com",
     description:
-      "Project web gnonel.com.",
-    tags: ["Web", "Projet"],
-    category: "web",
-  },
-  {
-    id: "11",
-    title: "Afrique Informatique — Dashboard",
-    description:
-      "Dashboard de management pour afriqueinformatique.net. Project en collaboration (novembre).",
-    tags: ["Dashboard", "Management", "Web"],
+      "Application web développée en Laravel 11, liée aux marchés publics.",
+    tags: ["Laravel", "PHP", "Marchés publics"],
+    liveUrl: "https://gnonel.com",
     category: "web",
   },
   {
     id: "10",
-    title: "SES & CGSP — Management applications",
+    title: "SES & CGSP — Application de gestion pour agences de sécurité",
     description:
-      "Management applications (SES, CGSP) : backend, security et DevOps. Deployment et monitoring (Coolify, Docker).",
+      "Application de gestion d'agence de sécurité et de nettoyage (clients, agents, lieux d'affectation, créneaux, pointage, notifications, administration), déployée pour plusieurs clients : SES (sesachat.com) et CGSP (cgsp.gestion.com). Backend, sécurité applicative et DevOps ; deployment et monitoring (Coolify, Docker).",
     tags: ["Backend", "DevOps", "Security", "Coolify", "Docker"],
     liveUrl: "https://sesachat.com/",
     category: "web",
@@ -201,12 +304,32 @@ export const projects: Project[] = [
     id: "9",
     title: "Cheffe Citronnelle — Mobile app",
     description:
-      "Mobile app React Native pour Cheffe Citronnelle, la maison des délices à Lome. orders, tracking, home delivery.",
-    tags: ["React Native", "Mobile", "Delivery", "Lome"],
+      "Mobile app React Native pour Cheffe Citronnelle, la maison des délices à Lome. orders, tracking, home delivery et paiement mobile money.",
+    tags: ["React Native", "Mobile", "Mobile Money", "Delivery", "Lome"],
     liveUrl: "https://cheffecitronnelle.com/",
     category: "mobile",
   },
   // Open Source
+  {
+    id: "30",
+    title: "biopass — Authentification faciale (alternative à Howdy)",
+    description:
+      "Contribution open source à biopass (TickLabVN) : authentification faciale pour Linux (PAM), détection anti-spoofing par capteur IR, calibrage des seuils. Alternative à Howdy.",
+    tags: ["Open Source", "Linux", "PAM", "Biométrie", "Anti-spoofing"],
+    githubUrl: "https://github.com/kof70/biopass",
+    category: "web",
+    badge: "opensource",
+  },
+  {
+    id: "31",
+    title: "Aidoku — Sources manga françaises",
+    description:
+      "Contribution aux sources françaises installables dans l'app Aidoku (fork) : correction du parsing MangasOrigines (détection du viewer, réglage viewer par défaut) et maintenance d'autres sources.",
+    tags: ["Open Source", "Aidoku", "Scraping", "Manga"],
+    githubUrl: "https://github.com/kof70/aidoku-french-sources",
+    category: "web",
+    badge: "opensource",
+  },
   {
     id: "8",
     title: "VoirDrama Stremio Addon",
@@ -262,6 +385,15 @@ export const projects: Project[] = [
   },
   // Network
   {
+    id: "32",
+    title: "MikroTik Manager — Plateforme de gestion réseau",
+    description:
+      "Plateforme self-hosted de management d'infrastructure MikroTik (routeurs, switches, points d'accès Wi-Fi) : dashboard, monitoring hardware et trafic (NetFlow), topologie réseau, firewall, VPN WireGuard (peers, clés, tunnels site-à-site), hotspot avec génération de vouchers PDF, 2FA, backups, panneau SaaS + marketplace. Plateforme conçue et développée par mes soins. Node.js/Express/TypeScript, InfluxDB, Redis, BullMQ, Docker.",
+    tags: ["Node.js", "TypeScript", "WireGuard", "InfluxDB", "Redis", "BullMQ", "Docker", "MikroTik"],
+    liveUrl: "https://mikrotic.coolify.alonu.shop",
+    category: "network",
+  },
+  {
     id: "3",
     title: "Network Infrastructure UL",
     description:
@@ -293,20 +425,20 @@ export const projects: Project[] = [
 // Du plus récent au plus ancien
 export const experiences: Experience[] = [
   {
+    id: "11",
+    title: "Lead Backend Engineer & DevSecOps",
+    company: "alonu group",
+    period: "Oct. 2025 - Present",
+    description:
+      "Oct.-Nov. : frontend mobile (app React Native Cheffe Citronnelle) et version web de la plateforme alonu.shop. Dès Dec. : lead backend & DevSecOps — conception de l'API, architecture back Nest.js, sécurité applicative, et migration/deployment de tous les produits du groupe sur une nouvelle infrastructure self-hosted (Coolify, Docker, CI/CD, maillage privé WireGuard). Backends fintech : core banking SOAP, PI-SPI de la BCEAO, mobile money (PayGate, FeexPay, FedaPay).",
+  },
+  {
     id: "12",
     title: "Tester freelance",
     company: "Testerworks & GitHub",
     period: "2024 - Present",
     description:
       "Tests logiciels en freelance sur Testerworks et via GitHub. Contrats réalisés : MI snap Dev App (vérification de passeports et cartes d'identité pour fiabilité et authenticité), et d'autres applications.",
-  },
-  {
-    id: "11",
-    title: "Developer Full-Stack → Backend & DevOps",
-    company: "alonu.tech",
-    period: "Oct. 2025 - Present",
-    description:
-      "Oct.-Nov. : frontend mobile (app React Native Cheffe Citronnelle) et version web du site alonu.tech. Dec. : migration vers le backend & DevOps — conception de l'API, architecture back, deployment de toutes les applications sur une nouvelle infrastructure (Coolify, Docker, Nest.js). Jan. terminé, nouveau project en cours.",
   },
   {
     id: "10",
@@ -413,6 +545,8 @@ export const skills: Skill[] = [
   { name: "TypeScript", icon: "typescript", level: 75, category: "frontend" },
   { name: "Tailwind CSS", icon: "tailwind", level: 85, category: "frontend" },
   // Backend
+  { name: "Laravel", icon: "apiIntegration", level: 85, category: "backend" },
+  { name: "Nest.js", icon: "nodejs", level: 85, category: "backend" },
   { name: "Node.js", icon: "nodejs", level: 80, category: "backend" },
   // Mobile
   { name: "React Native", icon: "reactNative", level: 80, category: "mobile" },
@@ -447,8 +581,8 @@ export const contactLinks: ContactLink[] = [
     id: "phone",
     icon: "whatsapp",
     label: "Phone",
-    value: "+228 79 28 83 24",
-    href: "tel:+22879288324",
+    value: "+228 70 29 83 24",
+    href: "tel:+22870298324",
     hoverColor: "hover:text-green-400",
   },
   {
@@ -704,7 +838,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
       projectId: "7",
     },
     {
-      title: "alonu.tech — Backend",
+      title: "alonu.shop — Backend",
       descriptionShort: "API Nest.js — intégration et tests.",
       projectId: "14",
     },
@@ -769,7 +903,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
       projectId: "8",
     },
     {
-      title: "alonu.tech — Backend",
+      title: "alonu.shop — Backend",
       descriptionShort: "API Nest.js — Node.js.",
       projectId: "14",
     },
@@ -840,7 +974,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
       projectId: "7",
     },
     {
-      title: "alonu.tech",
+      title: "alonu.shop",
       descriptionShort: "Infra et deployment — Docker.",
       projectId: "14",
     },
@@ -859,7 +993,7 @@ export const DOCK_TECH_PROJECTS: Record<DockTechId, DockTechProjectItem[]> = {
       projectId: "10",
     },
     {
-      title: "alonu.tech — Backend",
+      title: "alonu.shop — Backend",
       descriptionShort:
         "Architecture backend Nest.js et deployment en production sur l'infrastructure Coolify.",
       projectId: "14",

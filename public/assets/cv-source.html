@@ -12,6 +12,7 @@
     .header { border-bottom: 2px solid #111827; padding-bottom: 8px; margin-bottom: 8px; }
     .title { font-size: 11.4px; color: #374151; font-weight: 600; margin-bottom: 4px; }
     .meta { font-size: 9.9px; color: #4b5563; }
+    .small.link { display: inline-block; background: #f3f4f6; color: #374151; padding: 2px 7px; border-radius: 4px; margin-top: 2px; }
     .grid { display: grid; grid-template-columns: 1.65fr 1fr; gap: 10px; }
     h2 { font-size: 11.2px; text-transform: uppercase; letter-spacing: 0.5px; margin: 8px 0 5px; border-bottom: 1px solid #d1d5db; padding-bottom: 2px; }
     .item { margin-bottom: 5px; }
@@ -23,7 +24,7 @@
     ul { margin: 4px 0 0 14px; padding: 0; }
     li { margin-bottom: 2px; }
     .chips { display: flex; flex-wrap: wrap; gap: 3px; }
-    .chip { border: 1px solid #d1d5db; border-radius: 999px; padding: 2px 6px; font-size: 9.5px; background: #f9fafb; }
+    .chip { border: 1px solid #d1d5db; border-radius: 999px; padding: 2px 6px; font-size: 9.5px; background: #f9fafb; white-space: nowrap; }
     .section { break-inside: auto; page-break-inside: auto; }
     .projects li { margin-bottom: 3px; }
   </style>
@@ -31,23 +32,42 @@
 <body>
   <section class="header">
     <h1>DJAKPA Koffi Tepe Venougne</h1>
-    <div class="title">Backend Engineer · DevOps · NestJS / Node.js · Full-stack (Next.js / TypeScript)</div>
-    <div class="meta">Lomé, Togo · +228 70 29 83 24 · djakpakoffi7029@gmail.com · linkedin.com/in/djakpakoffi · github.com/kof70</div>
+    <div class="title">Lead Backend Engineer · DevSecOps · Laravel · NestJS / Node.js · Full-stack (Next.js / TypeScript)</div>
+    <div class="meta">Lomé, Togo · +228 70 29 83 24 · djakpakoffi7029@gmail.com · kof.coolify.sesachat.com · linkedin.com/in/djakpakoffi · github.com/kof70</div>
   </section>
 
   <section class="grid">
     <div>
       <div class="section">
         <h2>Profil</h2>
-        <p>Développeur backend et DevOps focalisé sur l'architecture, le déploiement et la fiabilité. Backend principal de alonu.tech en NestJS, mise en place d'infrastructures Coolify/Docker pour plusieurs entreprises, et développement de solutions mobiles métier avec backend Supabase.</p>
+        <p>Lead Backend Engineer et DevSecOps. Lead backend chez alonu group : conception de l'API de alonu.shop et migration de tous les produits du groupe vers une infrastructure self-hosted durcie — Coolify, Docker, CI/CD, WireGuard.</p>
+        <p>Spécialité fintech : j'ai conçu l'orchestration entre le core banking d'une microfinance (webservice SOAP PERFECTWS) et le paiement instantané PI-SPI de la BCEAO, et j'intègre le mobile money (PayGate, FeexPay, FedaPay) dans la plupart de mes produits — plateforme artisans, applications mobiles, chambre des métiers, vote, billetterie. Modules de comptabilité et de paie sur l'ERP BTP et le système budgétaire ministériel. Également concepteur d'agents IA (Kekeli, réponses fondées uniquement sur des données africaines officielles via BigQuery/Fivetran) et auteur du Coolify MCP Server.</p>
+      </div>
+
+      <div class="section">
+        <h2>Projets phares</h2>
+
+        <div class="item"><div class="item-head"><div class="item-title">API Microfinance — orchestration core banking (PERFECTWS) ↔ PI-SPI (BCEAO)</div></div><div>Backend NestJS qui orchestre le core banking d'une microfinance (webservice SOAP PERFECTWS) et le paiement instantané PI-SPI de la BCEAO : un dépôt ou retrait déclenche l'opération PI-SPI puis l'écriture côté PERFECTWS, avec rapprochement. Wallet, transferts, gestion d'alias, OAuth2, 31 endpoints PI-SPI, webhooks entrants signés HMAC-SHA256. Sécurité et tests de bout en bout en sandbox.</div></div>
+
+        <div class="item"><div class="item-head"><div class="item-title">Kekeli — Agent IA anti-hallucination sur data africaine</div></div><div>Agent conversationnel (Google ADK + Gemini) répondant uniquement à partir de données officielles vérifiées, réponses ancrées par un RAG (corpus Vertex AI de 1 624 indicateurs sur 34 tables) : ~74 000 lignes, 80+ sources africaines (IMF, WHO, FAO, World Bank, UNICEF, UNHCR, NASA...) via pipeline Fivetran → BigQuery synchronisé toutes les 6h, 54 pays. Frontend Next.js (chat streaming SSE), Firebase Auth, Firestore, fallback Claude Opus via Vertex AI. Créé pour le Google Cloud Rapid Agent Hackathon (Fivetran Track).</div><div class="small link">kekeli.alonu.shop</div></div>
+
+        <div class="item"><div class="item-head"><div class="item-title">Système de Gestion Budgétaire — Ministère de l'Aménagement du Territoire (Togo)</div></div><div>Plateforme full-stack (NestJS + PostgreSQL/Prisma en API, Next.js en front) pour le Ministère de l'Aménagement du Territoire, du Développement et de la Consolidation Constitutionnelle : soumission et suivi de projets par direction, lignes et sections budgétaires, décaissements, missions, génération de documents officiels PDF/Excel (en-tête République Togolaise), authentification RBAC, tâches de trésorerie façon Jira/Kanban. J'ai migré le module d'archivage physique (hiérarchie Direction/Salle/Rangée/Classeur/Fichier, audit logs, i18n FR/EN/ES) de Laravel vers NestJS. Déployée en production.</div><div class="small link">budget-ministere.coolify.alonu.shop</div></div>
+
+        <div class="item"><div class="item-head"><div class="item-title">MikroTik Manager — Plateforme réseau full-stack</div></div><div>Plateforme self-hosted de gestion d'infrastructure MikroTik (routeurs, switches, Wi-Fi) : dashboard, monitoring hardware/trafic (NetFlow), topologie réseau, firewall, VPN WireGuard (peers, tunnels site-à-site), hotspot avec vouchers PDF, 2FA, backups. Node.js/Express/TypeScript, InfluxDB, Redis, BullMQ, Docker. Conçue et développée par mes soins.</div><div class="small link">mikrotic.coolify.alonu.shop</div></div>
+
+        <div class="item"><div class="item-head"><div class="item-title">Coolify MCP Server — package npm publié</div></div><div>Serveur MCP open-source (coolify-mcp-server-kof70) permettant à Claude, Cursor et Kiro de piloter une infrastructure Coolify (apps, bases de données, déploiements) depuis un assistant IA. CI/CD, TypeScript, couverture API complète.</div><div class="small link">npmjs.com/package/coolify-mcp-server-kof70 · github.com/kof70/coolify-mcp-server</div></div>
+
+        <div class="item"><div class="item-head"><div class="item-title">Gestion BTP — ERP chantiers (v3.0.0, production)</div></div><div>Application complète pour entreprise de BTP : chantiers, devis, factures, paie, pointages, stock, comptabilité (exports PDF/Excel), cartographie (Leaflet). Next.js / React, PostgreSQL, Docker, tests Vitest & Playwright. 50+ itérations livrées.</div><div class="small link">btp.coolify.sesachat.com/login</div></div>
+
+        <div class="item"><div class="item-head"><div class="item-title">Afrique Informatique — Facturation & Comptabilité (Laravel)</div></div><div>Application de gestion développée en Laravel 12 pour afriqueinformatique.net : dashboard d'administration, facturation (devis, factures, workflow d'approbation), suivi comptable, bases clients/produits. MySQL. Projet en collaboration.</div><div class="small link">facturel.afriqueinformatique.net</div></div>
       </div>
 
       <div class="section">
         <h2>Expériences professionnelles</h2>
 
-        <div class="item"><div class="item-head"><div class="item-title">Tester freelance</div><div class="item-time">2024 - Présent</div></div><div class="item-sub">Testerworks & GitHub</div><div>Tests logiciels, validation qualité, vérification d'apps dont MI snap Dev App (passeports/cartes d'identité).</div></div>
+        <div class="item"><div class="item-head"><div class="item-title">Lead Backend Engineer & DevSecOps</div><div class="item-time">Oct. 2025 - Présent</div></div><div class="item-sub">alonu group</div><div>Lead backend NestJS : conception de l'API, architecture back, sécurité applicative, migration et déploiement de tous les produits sur une infrastructure self-hosted (Coolify, Docker, CI/CD, maillage privé WireGuard). Backends fintech : core banking SOAP, PI-SPI de la BCEAO, mobile money (PayGate, FeexPay, FedaPay).</div></div>
 
-        <div class="item"><div class="item-head"><div class="item-title">Développeur Full-Stack → Backend & DevOps</div><div class="item-time">Oct. 2025 - Présent</div></div><div class="item-sub">alonu.tech</div><div>Backend NestJS, architecture API, sécurité, migration infra et déploiement sur nouvelle stack Coolify/Docker.</div></div>
+        <div class="item"><div class="item-head"><div class="item-title">Tester freelance</div><div class="item-time">2024 - Présent</div></div><div class="item-sub">Testerworks & GitHub</div><div>Tests logiciels, validation qualité, vérification d'apps dont MI snap Dev App (passeports/cartes d'identité).</div></div>
 
         <div class="item"><div class="item-head"><div class="item-title">Développeur mobile</div><div class="item-time">Oct. - Nov. 2025</div></div><div class="item-sub">SES, Lomé</div><div>Création de l'application SES Mobile (backend Supabase): clients, agents, lieux, créneaux, pointage, notifications.</div></div>
 
@@ -73,14 +93,22 @@
           <li><strong>Rekap</strong> - Média dédié à la couverture audiovisuelle d'événements tech et culturels.</li>
           <li><strong>GoldenDays B2B - API</strong> - Développement et déploiement de l'API de la plateforme B2B GoldenDays (goldendays-b2b.alonu.shop).</li>
           <li><strong>Plateforme E-learning - API CMS & LMS</strong> - Développement de l'API CMS et LMS pour une plateforme d'e-learning (learning-api.coolify.alonu.shop) ; frontend en cours.</li>
-          <li><strong>alonu.tech - Backend</strong> - Backend complet en NestJS : API, sécurité, architecture et déploiement.</li>
-          <li><strong>API Vente & Location de voitures</strong> - Conception et développement d'une API backend NestJS.</li>
-          <li><strong>Gnonel.com</strong> - Projet web gnonel.com.</li>
-          <li><strong>Afrique Informatique - Dashboard</strong> - Dashboard de gestion en collaboration.</li>
-          <li><strong>SES & CGSP - Applications de gestion</strong> - Backend, sécurité et DevOps avec Coolify/Docker.</li>
+          <li><strong>API Microfinance - orchestration PERFECTWS ↔ PI-SPI (BCEAO)</strong> - Backend NestJS orchestrant le core banking SOAP (PERFECTWS) et le paiement instantané PI-SPI de la BCEAO : wallet, transferts, alias, OAuth2, 31 endpoints, webhooks signés HMAC.</li>
+          <li><strong>Backend Chambre des Métiers (Togo)</strong> (crm.alonu.shop) - Plateforme NestJS : annuaire artisans, cartes professionnelles, certificats, formations, cotisations, finances chambre/artisan, paiement mobile money, ventes au guichet, PDF officiels, endpoints service-à-service. 25+ modules.</li>
+          <li><strong>alonu.shop - Backend & Infrastructure (alonu group)</strong> - Plateforme de mise en relation avec des artisans locaux vérifiés (Togo, Afrique de l'Ouest) : artisans, devis, commandes, messagerie ; intégration du paiement mobile money (PayGate, FeexPay, FedaPay) pour l'achat et la livraison, financement/microfinance. Architecture NestJS, sécurité, déploiement de tous les produits (Coolify, Docker, CI/CD, WireGuard).</li>
+          <li><strong>API Vente & Location de voitures</strong> (dealautotg.com) - API backend NestJS sur la stack VotelyTG, en production : paiement mobile money via FedaPay.</li>
+          <li><strong>VotelyTG</strong> (votelytg.com) - Plateforme événementielle togolaise en production, 7 000+ utilisateurs : vote payant, billetterie et inscriptions ; dashboard organisateur, commissions configurables, paiement mobile money via PayGate, FeexPay et FedaPay. Next.js.</li>
+          <li><strong>Génie des Pages — Plateforme de vote en ligne</strong> (geniedespages.com) - Vote en ligne payant : candidats, jury, transactions, dons, sponsors. Next.js + Supabase + Prisma, paiement mobile money (PayGate / FeexPay / FedaPay).</li>
+          <li><strong>dbla</strong> (d-bla.com) - Plateforme de boutiques multi-tenant : boutique par commerçant (slug/sous-domaine), back-office centralisé, paiement FedaPay. Next.js + Prisma/PostgreSQL, Docker.</li>
+          <li><strong>Gnonel.com</strong> (gnonel.com) - Application web Laravel 11, liée aux marchés publics.</li>
+          <li><strong>Afrique Informatique - Facturation & Comptabilité</strong> (facturel.afriqueinformatique.net) - Application Laravel 12 : dashboard d'administration, facturation (devis, factures, approbation) et suivi comptable. Projet en collaboration.</li>
+          <li><strong>SES & CGSP - Application de gestion pour agences de sécurité</strong> - Gestion d'agence de sécurité/nettoyage (agents, affectations, pointage, notifications, administration), déployée pour SES (sesachat.com) et CGSP (cgsp.gestion.com). Backend, sécurité et DevOps (Coolify/Docker).</li>
           <li><strong>SES Mobile - Gestion opérationnelle (Supabase)</strong> - App mobile de gestion clients, agents, lieux, créneaux, pointage et notifications.</li>
-          <li><strong>Cheffe Citronnelle - Application mobile</strong> - Application React Native pour commandes, suivi et livraison.</li>
+          <li><strong>Cheffe Citronnelle - Application mobile</strong> - Application React Native pour commandes, suivi, livraison et paiement mobile money.</li>
+          <li><strong>WOOO - Application mobile</strong> - App sociale React Native / Expo (iOS & Android) : classement de profils par ville/pays/zone selon l'engagement réel, + back-office d'administration. Backend Supabase.</li>
           <li><strong>VoirDrama Stremio Addon</strong> - Addon Stremio Node.js (catalogue, métadonnées, streams).</li>
+          <li><strong>biopass</strong> - Contribution open source : authentification faciale pour Linux (PAM), anti-spoofing IR. Alternative à Howdy.</li>
+          <li><strong>Aidoku - Sources manga françaises</strong> - Contribution open source : sources françaises pour l'app Aidoku (correctifs parser MangasOrigines et maintenance).</li>
           <li><strong>Coolify MCP Server</strong> - Serveur MCP pour piloter Coolify via assistants IA.</li>
           <li><strong>Drive - Local Collaborative Workspace</strong> - Espace collaboratif local temps réel (WebSocket, multi-utilisateurs).</li>
           <li><strong>Gitpath</strong> - Outil de design de grille de contributions GitHub.</li>
@@ -96,13 +124,14 @@
       <div class="section">
         <h2>Compétences</h2>
         <div class="chips">
-          <span class="chip">NestJS</span><span class="chip">Node.js</span><span class="chip">TypeScript</span><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Supabase</span><span class="chip">Docker</span><span class="chip">Coolify</span><span class="chip">CI/CD</span><span class="chip">Git/GitHub</span><span class="chip">Réseaux</span>
+          <span class="chip">Laravel</span><span class="chip">PHP</span><span class="chip">NestJS</span><span class="chip">Node.js</span><span class="chip">TypeScript</span><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Supabase</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">Coolify</span><span class="chip">CI/CD</span><span class="chip">WireGuard</span><span class="chip">Git/GitHub</span><span class="chip">Réseaux</span><span class="chip">MCP</span><span class="chip">Prisma</span><span class="chip">Vitest</span><span class="chip">Playwright</span><span class="chip">InfluxDB</span><span class="chip">Redis/BullMQ</span><span class="chip">Claude Code</span><span class="chip">Cursor</span><span class="chip">Google ADK</span><span class="chip">Gemini</span><span class="chip">Vertex AI</span><span class="chip">BigQuery</span><span class="chip">Fivetran</span><span class="chip">Firebase</span>
         </div>
       </div>
 
       <div class="section">
         <h2>Formation & certifications</h2>
         <ul>
+          <li><strong>Attestation de reconnaissance - TIDD</strong>, Robotic for Good Youth Challenge.</li>
           <li><strong>Développeur Web & Mobile - D-clic OIF</strong> (certification).</li>
           <li><strong>ALX</strong> - formation développement logiciel.</li>
           <li><strong>Orange Digital School</strong> - formation complémentaire.</li>
