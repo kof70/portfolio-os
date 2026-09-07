@@ -100,6 +100,10 @@ const PROJECT_COPY: Record<string, LocalizedPair> = {
     fr: "Plateforme full-stack (Nest.js + PostgreSQL/Prisma, front Next.js) pour un ministère togolais : suivi budgétaire par direction, décaissements, documents officiels PDF/Excel, RBAC, module d'archivage physique migré de Laravel vers Nest.js. En production.",
     en: "Full-stack platform (Nest.js + PostgreSQL/Prisma, Next.js frontend) for a Togolese ministry: budget tracking per directorate, disbursements, official PDF/Excel documents, RBAC, physical archiving module migrated from Laravel to Nest.js. Live in production.",
   },
+  "34": {
+    fr: "Application full-stack Next.js (PostgreSQL, Prisma, NextAuth) pour le Ministère de l'Aménagement du Territoire : des accompagnateurs affectés par commune aident les usagers à monter leur dossier de déclaration d'association civile ; une gérante revoit et valide seule le dépôt physique. Synchronisation des communes (GeoData), invitations par email, audit.",
+    en: "Full-stack Next.js application (PostgreSQL, Prisma, NextAuth) for the Ministry of Territorial Planning: commune-assigned case workers help citizens build their civil-association declaration file; a manager reviews and is the sole approver of the physical filing. Commune sync (GeoData), email invitations, audit trail.",
+  },
   "23": {
     fr: "ERP complet pour une entreprise de BTP : chantiers, devis, factures, paie, pointages, stock, comptabilité et exports PDF/Excel, cartographie Leaflet. Next.js / React, PostgreSQL, Docker. v3, en production.",
     en: "Full ERP for a construction company: sites, quotes, invoices, payroll, timesheets, inventory, accounting and PDF/Excel exports, Leaflet mapping. Next.js / React, PostgreSQL, Docker. v3, in production.",

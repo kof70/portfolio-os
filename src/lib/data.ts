@@ -215,6 +215,14 @@ export const projects: Project[] = [
     category: "web",
   },
   {
+    id: "34",
+    title: "Accompagnement à la déclaration d'association civile - MAT (Togo)",
+    description:
+      "Application full-stack Next.js (PostgreSQL, Prisma, NextAuth) pour le Ministère de l'Aménagement du Territoire : les accompagnateurs affectés à une commune aident les usagers à monter leur dossier de déclaration d'association civile (pièces, uploads, suivi), une gérante revoit les dossiers et valide seule le dépôt physique. Synchronisation des communes (GeoData), invitations agents par email (SMTP), audit. Réutilise les modules d'archivage et de gestion de projet du système budgétaire ministériel.",
+    tags: ["Next.js", "PostgreSQL", "Prisma", "NextAuth", "Gov Togo", "Multi-mairie"],
+    category: "web",
+  },
+  {
     id: "23",
     title: "Gestion BTP - ERP chantiers (comptabilité & paie)",
     description:
