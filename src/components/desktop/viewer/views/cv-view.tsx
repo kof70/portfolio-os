@@ -226,7 +226,17 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
   }, [cvAsset.downloadName, cvAsset.url]);
 
   // Identifier les changements d'année pour placer des marqueurs
-  let lastYear = 0;
+  const yearMarkers = React.useMemo(() => {
+    const set = new Set<number>();
+    let seen = 0;
+    items.forEach((item, index) => {
+      if (item.year > 0 && item.year !== seen) {
+        set.add(index);
+        seen = item.year;
+      }
+    });
+    return set;
+  }, [items]);
 
   return (
     <div
@@ -296,7 +306,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
       {!showPdf && <div className="flex-1 min-h-0 overflow-auto">
         <div className={cn("mx-auto py-6", isSmUp ? "max-w-4xl px-4" : "px-2")}>
 
-          {/* Introduction — présentation avant la frise */}
+          {/* Introduction - présentation avant la frise */}
           <div className={cn("mb-8 text-center max-w-2xl mx-auto", isSmUp ? "px-4" : "px-2")}>
             <GlitchName
               fullName={personalInfo.name}
@@ -312,7 +322,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
               {language === "fr" ? (
                 <>
                   <p>
-                    Développeur backend, full-stack et DevOps basé à Lomé, Togo. Je me positionne d&apos;abord comme développeur backend et architecte d&apos;infrastructure.
+                    Lead Backend Engineer et DevSecOps basé à Lomé, Togo. Je travaille principalement sur les systèmes backend, la fintech (mobile money, orchestration PERFECTWS / PI-SPI) et l&apos;infrastructure.
                   </p>
                   <p>
                     Mon périmètre est plus large : mobile (React Native), frontend web et production audiovisuelle avec Rekap. Je relie produit, design et infrastructure technique pour livrer des produits solides.
@@ -324,7 +334,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
               ) : (
                 <>
                   <p>
-                    Backend, full-stack, and DevOps developer based in Lome, Togo. I primarily position myself as a backend developer and infrastructure architect.
+                    Lead Backend Engineer and DevSecOps based in Lome, Togo. I work mainly on backend systems, fintech (mobile money, PERFECTWS / PI-SPI orchestration), and infrastructure.
                   </p>
                   <p>
                     My scope is broader: mobile development (React Native), web frontend, and audiovisual production with Rekap. I bridge product, design, and technical infrastructure to deliver solid products.
@@ -344,8 +354,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
           {items.map((item, index) => {
             const color = COLORS[index % COLORS.length];
             const isLeft = index % 2 === 0;
-            const showYear = item.year !== lastYear && item.year > 0;
-            if (item.year > 0) lastYear = item.year;
+            const showYear = yearMarkers.has(index);
 
             return (
               <React.Fragment key={item.id}>

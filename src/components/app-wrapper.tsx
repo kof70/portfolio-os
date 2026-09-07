@@ -3,12 +3,14 @@ import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SplashScreen } from "./splash-screen";
 import { ReleaseNotification } from "./shared/release-notification";
+import { useAppHeight } from "@/hooks/use-app-height";
 
 interface AppWrapperProps {
   children: React.ReactNode;
 }
 
 export const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
+  useAppHeight();
   const [showSplash, setShowSplash] = React.useState(true);
   // const [showFullscreenPrompt, setShowFullscreenPrompt] = React.useState(true);
 

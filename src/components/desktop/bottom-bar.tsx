@@ -27,12 +27,12 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
   return (
     <>
       {isMobile ? (
-        <div className="w-full flex justify-center items-center fixed z-200 left-0 right-0 bottom-0 pb-safe pointer-events-none">
+        <div className="w-full flex justify-center items-center fixed z-200 left-0 right-0 bottom-0 pb-safe pointer-events-none transform-gpu">
           <motion.footer
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 30, delay: 0.2 }}
-            className="mx-auto mb-1 w-fit pointer-events-auto"
+            transition={{ type: "spring", stiffness: 320, damping: 34, delay: 0.2 }}
+            className="mx-auto mb-1 w-fit pointer-events-auto transform-gpu will-change-transform"
           >
             <CustomDock />
           </motion.footer>

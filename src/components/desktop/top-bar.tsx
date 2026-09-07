@@ -4,7 +4,7 @@ import { Icons } from "@/components/icons";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
-import { Signal, Wifi, Battery } from "lucide-react";
+import { Signal, Wifi } from "lucide-react";
 
 interface TopBarProps {
   className?: string;
@@ -102,19 +102,6 @@ export const TopBar: React.FC<TopBarProps> = () => {
 
           {/* WiFi */}
           <Wifi className="size-4 text-white" strokeWidth={2.5} />
-
-          {/* Battery */}
-          <div className="flex items-center gap-0.5">
-            <div className="relative w-6 h-3 rounded-[3px] border border-white/80 p-[1px]">
-              {/* Battery fill */}
-              <div
-                className="h-full bg-white rounded-[2px]"
-                style={{ width: "75%" }}
-              />
-              {/* Battery cap */}
-              <div className="absolute -right-[3px] top-1/2 -translate-y-1/2 w-[2px] h-1.5 bg-white/80 rounded-r-sm" />
-            </div>
-          </div>
         </div>
       </nav>
     );
@@ -140,10 +127,6 @@ export const TopBar: React.FC<TopBarProps> = () => {
           className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150"
         >
           <span className="text-xs font-semibold">{language.toUpperCase()}</span>
-        </button>
-        <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150">
-          <span className="text-xs font-semibold">75%</span>
-          <Icons.batteryHalf className="size-5 text-muted" />
         </button>
         <button className="flex items-center text-white gap-2 hover:bg-secondary/20 p-0.5 px-2 rounded-full transition-all ease-in-out duration-150">
           <Icons.search className="size-5 text-muted" />

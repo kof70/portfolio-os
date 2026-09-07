@@ -37,18 +37,39 @@ export default function Home() {
 
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(() =>
+    typeof window === "undefined"
+      ? 0
+      : window.visualViewport?.height ?? window.innerHeight,
+  );
   const { isMobile } = useIsMobile();
   const { language } = useLanguage();
   const { personalInfo } = usePortfolioContent();
-  const isShortMobile = isMobile && viewportHeight > 0 && viewportHeight < 760;
+  const isShortMobile = isMobile && viewportHeight > 0 && viewportHeight < 700;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const syncViewportHeight = () => setViewportHeight(window.innerHeight);
-    syncViewportHeight();
-    window.addEventListener("resize", syncViewportHeight);
-    return () => window.removeEventListener("resize", syncViewportHeight);
+    // Only react to *structural* viewport changes (rotation, split view…), not
+    // the iOS address-bar collapsing on scroll — otherwise the grid layout
+    // would recompute mid-scroll and the whole screen would jump.
+    const measure = () => window.visualViewport?.height ?? window.innerHeight;
+    let timer: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setViewportHeight((prev) => {
+          const next = measure();
+          return Math.abs(next - prev) > 120 ? next : prev;
+        });
+      }, 150);
+    };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
+    };
   }, []);
 
   // Handlers pour ouvrir les fenêtres
@@ -304,26 +325,27 @@ export default function Home() {
     [isLoaded, getItemPosition],
   );
 
-  // Positions par défaut - différentes pour mobile et desktop
+  // Positions par défaut. Sur mobile : grille 3×3 compacte (9 icônes, aucune
+  // rangée vide) — le bloc entier est ensuite centré verticalement plus bas.
   const defaultPositions = {
-    projects: { row: isMobile ? (isShortMobile ? 1 : 2) : 0, col: isMobile ? 0 : 0 },
-    about: { row: isMobile ? (isShortMobile ? 1 : 2) : 1, col: isMobile ? 1 : 0 },
-    contact: { row: isMobile ? (isShortMobile ? 1 : 2) : 2, col: isMobile ? 2 : 0 },
-    cv: { row: isMobile ? (isShortMobile ? 2 : 3) : 3, col: isMobile ? 0 : 0 },
-    recommendation: { row: isMobile ? (isShortMobile ? 2 : 3) : 0, col: isMobile ? 1 : 1 },
-    community: { row: isMobile ? (isShortMobile ? 2 : 3) : 1, col: isMobile ? 2 : 1 },
-    opensource: { row: isMobile ? (isShortMobile ? 3 : 4) : 2, col: isMobile ? 0 : 1 },
-    hackathon: { row: isMobile ? (isShortMobile ? 3 : 4) : 3, col: isMobile ? 1 : 1 },
-    entreprise: { row: isMobile ? (isShortMobile ? 3 : 4) : 1, col: isMobile ? 2 : 2 },
+    projects: { row: isMobile ? 0 : 0, col: isMobile ? 0 : 0 },
+    about: { row: isMobile ? 0 : 1, col: isMobile ? 1 : 0 },
+    contact: { row: isMobile ? 0 : 2, col: isMobile ? 2 : 0 },
+    cv: { row: isMobile ? 1 : 3, col: isMobile ? 0 : 0 },
+    recommendation: { row: isMobile ? 1 : 0, col: isMobile ? 1 : 1 },
+    community: { row: isMobile ? 1 : 1, col: isMobile ? 2 : 1 },
+    opensource: { row: isMobile ? 2 : 2, col: isMobile ? 0 : 1 },
+    hackathon: { row: isMobile ? 2 : 3, col: isMobile ? 1 : 1 },
+    entreprise: { row: isMobile ? 2 : 1, col: isMobile ? 2 : 2 },
   };
 
   // Grille config selon le device
   const gridConfig = {
-    rows: isMobile ? (isShortMobile ? 4 : 5) : 6,
+    rows: isMobile ? 3 : 6,
     cols: isMobile ? 3 : 6,
-    cellSize: isMobile ? (isShortMobile ? 60 : 66) : 110,
-    gap: isMobile ? (isShortMobile ? 8 : 12) : 8,
-    padding: isMobile ? 10 : 16,
+    cellSize: isMobile ? (isShortMobile ? 62 : 68) : 110,
+    gap: isMobile ? (isShortMobile ? 12 : 16) : 8,
+    padding: isMobile ? 8 : 16,
   };
 
   return (
@@ -353,18 +375,27 @@ export default function Home() {
         </div>
       )}
 
-      {/* Desktop Grid - À GAUCHE sur desktop, en bas sur mobile */}
+      {/* Desktop Grid - À GAUCHE sur desktop, en bas sur mobile.
+          Sur mobile : la grille d'icônes est centrée verticalement dans l'espace
+          laissé entre le bento (haut) et le dock (bas), calé sur la hauteur
+          visible réelle (--app-height) pour ne rien laisser flotter en bas. */}
       <div
-        className={cn(
+        className={cn(isMobile ? "flex-1 w-full" : "flex-1 h-full")}
+        style={
           isMobile
-            ? cn(
-                "flex-1 w-full",
-                isShortMobile
-                  ? "pt-[278px] pb-[calc(90px+var(--safe-area-inset-bottom))]"
-                  : "pt-[220px] pb-[calc(104px+var(--safe-area-inset-bottom))]",
-              )
-            : "flex-1 h-full",
-        )}
+            ? (() => {
+                const bentoClear = isShortMobile ? 250 : 262;
+                const dockClear = 104;
+                const gridBlock = isShortMobile ? 244 : 262;
+                return {
+                  paddingTop: `calc(${bentoClear}px + max(0px, (var(--app-height) - ${
+                    bentoClear + dockClear + gridBlock
+                  }px) / 2))`,
+                  paddingBottom: `calc(${dockClear}px + var(--safe-area-inset-bottom))`,
+                };
+              })()
+            : undefined
+        }
       >
         <DesktopGrid
           key={refreshKey}
@@ -374,7 +405,7 @@ export default function Home() {
           gap={gridConfig.gap}
           padding={gridConfig.padding}
           className={cn(
-            isMobile ? (isShortMobile ? "max-w-[212px] mx-auto" : "max-w-[242px] mx-auto") : "",
+            isMobile ? (isShortMobile ? "max-w-[226px] mx-auto" : "max-w-[252px] mx-auto") : "",
           )}
         >
           {/* Dossier Projects */}

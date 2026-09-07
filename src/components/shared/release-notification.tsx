@@ -68,7 +68,7 @@ export function ReleaseNotification() {
             damping: 18,
             mass: 0.6,
           }}
-          className="fixed top-4 left-1/2 z-[9000] flex w-[min(90vw,420px)] -translate-x-1/2 items-start gap-3 rounded-2xl border border-white/10 bg-black/75 px-4 py-3.5 shadow-xl shadow-black/20 backdrop-blur-md"
+          className="fixed left-1/2 z-[9000] hidden md:flex w-[min(92vw,420px)] -translate-x-1/2 items-start gap-3 rounded-2xl border border-white/10 bg-black/75 px-4 py-3.5 shadow-xl shadow-black/20 backdrop-blur-md top-4"
           role="status"
           aria-live="polite"
         >
@@ -82,7 +82,7 @@ export function ReleaseNotification() {
               variants={itemUp}
               className="text-sm font-semibold text-white"
             >
-              Coolify MCP Server v1.3.1 — nouvelle release disponible
+              Coolify MCP Server v1.3.1 : nouvelle release disponible
             </motion.p>
             <motion.p
               variants={itemUp}

@@ -30,35 +30,35 @@ const PERSONAL_COPY: {
   aboutParagraphs: { fr: string[]; en: string[] };
 } = {
   title: {
-    fr: "Backend · DevOps · Nest.js · Node.js | Human AI Ambassador | Co-fondateur de Python Togo & ETH Lome | Rekap",
-    en: "Backend · DevOps · Nest.js · Node.js | Human AI Ambassador | Co-founder of Python Togo & ETH Lome | Rekap",
+    fr: "Lead Backend Engineer · DevSecOps · Laravel · Nest.js · Node.js | Human AI Ambassador | Co-fondateur de Python Togo & ETH Lome | Rekap",
+    en: "Lead Backend Engineer · DevSecOps · Laravel · Nest.js · Node.js | Human AI Ambassador | Co-founder of Python Togo & ETH Lome | Rekap",
   },
   subtitle: {
-    fr: "Backend & Full-Stack · DevOps · Média & production",
-    en: "Backend & Full-Stack · DevOps · Media & production",
+    fr: "Lead Backend · DevSecOps · Fintech & Mobile Money · Média & production",
+    en: "Lead Backend · DevSecOps · Fintech & Mobile Money · Media & production",
   },
   bio: {
-    fr: "Développeur backend et DevOps orienté architecture, déploiement (Coolify, Docker) et fiabilité en production. Backend principal de alonu.tech, co-fondateur de Python Togo et ETH Lome, Human AI Ambassador, et auteur du Coolify MCP Server.",
-    en: "Backend and DevOps developer focused on architecture, deployment (Coolify, Docker), and production reliability. Main backend engineer for alonu.tech, co-founder of Python Togo and ETH Lome, Human AI Ambassador, and author of the Coolify MCP Server.",
+    fr: "Lead Backend Engineer et DevSecOps. Lead backend chez alonu group : j'ai conçu l'API de alonu.shop (mise en relation avec des artisans locaux vérifiés au Togo) et migré tous les produits du groupe vers une infrastructure self-hosted durcie (Coolify, Docker, CI/CD, WireGuard). Spécialité fintech : j'ai conçu l'orchestration entre le core banking d'une microfinance (SOAP PERFECTWS) et le paiement instantané PI-SPI de la BCEAO, et j'intègre le mobile money (PayGate, FeexPay ou FedaPay selon le produit) dans la plupart de mes produits. Human AI Ambassador, co-fondateur de Python Togo et ETH Lome, responsable production chez Rekap, auteur du Coolify MCP Server.",
+    en: "Lead Backend Engineer and DevSecOps. Lead backend at alonu group in Nest.js: I designed the alonu.shop API (a platform connecting people with verified local artisans in Togo) and moved every group product onto a hardened self-hosted infrastructure (Coolify, Docker, CI/CD, WireGuard). Fintech is my main focus: I built the backend that orchestrates a microfinance core-banking system (SOAP PERFECTWS) and the BCEAO PI-SPI instant-payment rails, and I integrate mobile money (PayGate, FeexPay or FedaPay depending on the product) into most of the products I ship. Human AI Ambassador, co-founder of Python Togo and ETH Lome, production lead at Rekap, author of the Coolify MCP Server.",
   },
   bioShort: {
-    fr: "Backend · DevOps · Développeur logiciel · Human AI Ambassador · Co-fondateur Python Togo & ETH Lome.",
-    en: "Backend · DevOps · Software Developer · Human AI Ambassador · Co-founder of Python Togo & ETH Lome.",
+    fr: "Lead Backend · DevSecOps · Fintech & Mobile Money · Human AI Ambassador · Co-fondateur Python Togo & ETH Lome.",
+    en: "Lead Backend · DevSecOps · Fintech & Mobile Money · Human AI Ambassador · Co-founder of Python Togo & ETH Lome.",
   },
   aboutParagraphs: {
     fr: [
-      "Je suis développeur backend, full-stack et DevOps basé à Lome, Togo. Je travaille principalement comme backend engineer et architecte d'infrastructure.",
-      "Mon coeur de métier est de concevoir des API robustes, d'orchestrer les déploiements (Coolify, Docker, CI/CD) et de livrer des systèmes fiables en Nest.js et Node.js.",
-      "J'interviens aussi sur le mobile (React Native), le frontend web (Next.js + TypeScript) et la production média avec Rekap.",
-      "Côté communauté, j'ai co-fondé Python Togo et ETH Lome. Je contribue aussi à l'open source avec le Coolify MCP Server.",
-      "J'aime relier produit, design et contraintes techniques pour livrer des solutions durables et utiles.",
+      "Je suis Lead Backend Engineer et DevSecOps, basé à Lome, Togo. Je travaille principalement sur les systèmes backend et l'infrastructure.",
+      "Comme lead backend chez alonu group, j'ai conçu l'API et l'architecture back de alonu.shop (mise en relation avec des artisans locaux vérifiés au Togo) et migré tous les produits du groupe vers une nouvelle infrastructure self-hosted durcie (Coolify, Docker, CI/CD, maillage privé WireGuard).",
+      "La fintech est mon coeur de métier. J'ai conçu l'orchestration entre le core banking d'une microfinance (SOAP PERFECTWS) et le paiement instantané PI-SPI de la BCEAO, et j'intègre le mobile money (PayGate, FeexPay ou FedaPay selon le produit) dans la plupart de mes produits : plateforme artisans, applications mobiles, chambre des métiers, vote et billetterie. Des modules de comptabilité et de paie équipent l'ERP BTP et le système budgétaire ministériel.",
+      "Mon périmètre couvre aussi le mobile (React Native), le frontend web (surtout Next.js + TypeScript) et la production média avec Rekap, la société que j'ai co-fondée.",
+      "Côté communauté, j'ai co-fondé Python Togo et ETH Lome. Je maintiens aussi des outils open source, dont le Coolify MCP Server.",
     ],
     en: [
-      "I am a backend, full-stack, and DevOps developer based in Lome, Togo. I work primarily as a backend engineer and infrastructure architect.",
-      "My core focus is building robust APIs, orchestrating deployments (Coolify, Docker, CI/CD), and shipping reliable systems in Nest.js and Node.js.",
-      "I also work on mobile (React Native), web frontend (Next.js + TypeScript), and media production with Rekap.",
-      "On the community side, I co-founded Python Togo and ETH Lome. I also contribute to open source with the Coolify MCP Server.",
-      "I like connecting product, design, and technical constraints to deliver practical and durable solutions.",
+      "I am a Lead Backend Engineer and DevSecOps practitioner based in Lome, Togo, working mainly on backend systems and infrastructure.",
+      "As lead backend at alonu group, I designed the API and backend architecture for alonu.shop (a platform connecting people with verified local artisans in Togo) and migrated every group product onto a new hardened self-hosted infrastructure (Coolify, Docker, CI/CD, private WireGuard mesh).",
+      "Fintech is my main focus. I built the backend that orchestrates a microfinance core-banking system (SOAP PERFECTWS) and the BCEAO PI-SPI instant-payment rails, and I integrate mobile money (PayGate, FeexPay or FedaPay depending on the product) into most of the products I ship: the artisan platform, mobile apps, the chamber of trades, voting and ticketing platforms. Accounting and payroll modules ship in the BTP ERP and the ministry budget system.",
+      "My scope also includes mobile development (React Native), web frontend delivery (mostly Next.js + TypeScript), and media production through Rekap, the media company I co-founded.",
+      "On the community side, I co-founded Python Togo and ETH Lome. I also build open-source tooling, including the Coolify MCP Server.",
     ],
   },
 };
@@ -76,22 +76,81 @@ const PROJECT_COPY: Record<string, LocalizedPair> = {
     fr: "Média dédié à la couverture audiovisuelle d'événements tech et culturels au Togo et au Bénin.",
     en: "Media initiative focused on audiovisual coverage of tech and cultural events across Togo and Benin.",
   },
+  "18": {
+    fr: "Agent conversationnel (Google ADK + Gemini) qui répond uniquement à partir de données officielles vérifiées, ancrées par un RAG (corpus Vertex AI de 1 624 indicateurs sur 34 tables, 80+ sources africaines via Fivetran → BigQuery). Frontend Next.js. Créé pour le Google Cloud Rapid Agent Hackathon.",
+    en: "Conversational agent (Google ADK + Gemini) answering only from verified official data, grounded by a RAG layer (Vertex AI corpus of 1,624 indicators across 34 tables, 80+ African sources via Fivetran → BigQuery). Next.js frontend. Built for the Google Cloud Rapid Agent Hackathon.",
+  },
+  "20": {
+    fr: "Backend Nest.js qui orchestre le core banking d'une microfinance (SOAP PERFECTWS) et le paiement instantané PI-SPI de la BCEAO : wallet, transferts, alias, OAuth2, 31 endpoints PI-SPI, webhooks signés HMAC-SHA256.",
+    en: "Nest.js backend orchestrating a microfinance core-banking system (SOAP PERFECTWS) and the BCEAO PI-SPI instant-payment rails: wallet, transfers, aliases, OAuth2, 31 PI-SPI endpoints, HMAC-SHA256 signed webhooks.",
+  },
+  "26": {
+    fr: "Plateforme événementielle togolaise en production, 7 000+ utilisateurs : vote payant, billetterie et inscriptions, dashboard organisateur, mobile money via FeexPay et FedaPay. Next.js.",
+    en: "Togolese event platform, live with 7,000+ users: paid voting, ticketing and registrations, organizer dashboard, mobile money via FeexPay and FedaPay. Next.js.",
+  },
+  "27": {
+    fr: "Plateforme de vote en ligne payant : candidats, jury, transactions, dons, sponsors. Next.js + Supabase + Prisma, mobile money via FedaPay. En production.",
+    en: "Paid online voting platform: candidates, jury, transactions, donations, sponsors. Next.js + Supabase + Prisma, mobile money via FedaPay. Live in production.",
+  },
+  "21": {
+    fr: "Backend Nest.js d'une plateforme pour une Chambre des Métiers : annuaire artisans, cartes professionnelles, certificats, formations, cotisations, finances, mobile money, PDF officiels, endpoints service-à-service. 25+ modules.",
+    en: "Nest.js backend for a Chamber of Trades platform: artisan directory, professional cards, certificates, training, dues, finances, mobile money, official PDFs, service-to-service endpoints. 25+ modules.",
+  },
+  "22": {
+    fr: "Plateforme full-stack (Nest.js + PostgreSQL/Prisma, front Next.js) pour un ministère togolais : suivi budgétaire par direction, décaissements, documents officiels PDF/Excel, RBAC, module d'archivage physique migré de Laravel vers Nest.js. En production.",
+    en: "Full-stack platform (Nest.js + PostgreSQL/Prisma, Next.js frontend) for a Togolese ministry: budget tracking per directorate, disbursements, official PDF/Excel documents, RBAC, physical archiving module migrated from Laravel to Nest.js. Live in production.",
+  },
+  "23": {
+    fr: "ERP complet pour une entreprise de BTP : chantiers, devis, factures, paie, pointages, stock, comptabilité et exports PDF/Excel, cartographie Leaflet. Next.js / React, PostgreSQL, Docker. v3, en production.",
+    en: "Full ERP for a construction company: sites, quotes, invoices, payroll, timesheets, inventory, accounting and PDF/Excel exports, Leaflet mapping. Next.js / React, PostgreSQL, Docker. v3, in production.",
+  },
+  "24": {
+    fr: "Conception, développement et déploiement de l'API de la plateforme B2B GoldenDays : catalogue, comptes professionnels, commandes. Nest.js, Docker, Coolify.",
+    en: "Design, development and deployment of the GoldenDays B2B platform API: catalog, professional accounts, orders. Nest.js, Docker, Coolify.",
+  },
+  "25": {
+    fr: "API CMS et LMS pour une plateforme d'e-learning : cours, modules, progression, contenu éditorial. Nest.js + TypeScript. Frontend en cours.",
+    en: "CMS and LMS API for an e-learning platform: courses, modules, progress tracking, editorial content. Nest.js + TypeScript. Frontend in progress.",
+  },
+  "28": {
+    fr: "Plateforme multi-tenant : chaque commerçant a sa boutique en ligne (slug, sous-domaine), back-office centralisé, gestion produits, paiement mobile money via FedaPay. Next.js + Prisma/PostgreSQL, Docker.",
+    en: "Multi-tenant platform: each merchant gets an online storefront (slug, subdomain), central back-office, product management, mobile money via FedaPay. Next.js + Prisma/PostgreSQL, Docker.",
+  },
+  "33": {
+    fr: "Application mobile React Native / Expo (iOS & Android) : publication photo/vidéo et classement des profils par ville, pays et zone selon l'engagement réel. App + back-office, backend Supabase.",
+    en: "React Native / Expo mobile app (iOS & Android): photo/video posting and profile ranking by city, country and area based on real engagement. App + back-office, Supabase backend.",
+  },
+  "30": {
+    fr: "Contribution open source à biopass (TickLabVN) : authentification faciale pour Linux (PAM), anti-spoofing par capteur IR, calibrage des seuils. Alternative à Howdy.",
+    en: "Open-source contribution to biopass (TickLabVN): facial authentication for Linux (PAM), IR-sensor anti-spoofing, threshold calibration. A Howdy alternative.",
+  },
+  "31": {
+    fr: "Contribution aux sources françaises de l'app Aidoku (fork) : correction du parsing MangasOrigines et maintenance d'autres sources.",
+    en: "Contribution to the French sources for the Aidoku app (fork): fixed MangasOrigines parsing and maintained other sources.",
+  },
+  "32": {
+    fr: "Plateforme self-hosted de gestion d'infrastructure MikroTik : dashboard, monitoring, topologie, firewall, VPN WireGuard, hotspot avec vouchers. Node.js/TypeScript, InfluxDB, Redis, Docker. Conçue et développée par mes soins.",
+    en: "Self-hosted MikroTik infrastructure management platform: dashboard, monitoring, topology, firewall, WireGuard VPN, hotspot with vouchers. Node.js/TypeScript, InfluxDB, Redis, Docker. Designed and built by me.",
+  },
   "14": {
-    fr: "Backend complet de alonu.tech en Nest.js: architecture, API, sécurité et déploiement.",
-    en: "Complete backend for alonu.tech in Nest.js: architecture, APIs, security, and deployment.",
+    fr: "Backend et infrastructure de alonu.shop (mise en relation avec des artisans locaux vérifiés) : architecture Nest.js, conception de l'API, sécurité (DevSecOps), mobile money, et migration de tous les produits du groupe sur une infrastructure self-hosted (Coolify, Docker, CI/CD, WireGuard).",
+    en: "Backend and infrastructure for alonu.shop (connecting people with verified local artisans): Nest.js architecture, API design, security (DevSecOps), mobile money, and migration of every group product onto a self-hosted infrastructure (Coolify, Docker, CI/CD, WireGuard).",
   },
   "13": {
-    fr: "API backend pour un projet de vente et location de voitures.",
-    en: "Backend API for a car sales and rental platform.",
+    fr: "Conception et développement de l'API d'un projet de vente et location de voitures, en production sur dealautotg.com (stack VotelyTG), paiement mobile money via FedaPay.",
+    en: "Design and development of the API for a car sales and rental project, live on dealautotg.com (VotelyTG stack), mobile money payments via FedaPay.",
   },
-  "12": { fr: "Projet web pour gnonel.com.", en: "Web project for gnonel.com." },
+  "12": {
+    fr: "Application web développée en Laravel 11, liée aux marchés publics.",
+    en: "Laravel 11 web application related to public procurement.",
+  },
   "11": {
-    fr: "Dashboard de gestion pour afriqueinformatique.net.",
-    en: "Management dashboard for afriqueinformatique.net.",
+    fr: "Application Laravel 12 pour afriqueinformatique.net : dashboard d'administration, facturation (devis, factures, approbation) et suivi comptable. En production sur facturel.afriqueinformatique.net.",
+    en: "Laravel 12 application for afriqueinformatique.net: admin dashboard, invoicing (quotes, invoices, approval) and accounting tracking. Live on facturel.afriqueinformatique.net.",
   },
   "10": {
-    fr: "Applications de gestion SES/CGSP: backend, sécurité, DevOps, déploiement et supervision.",
-    en: "SES/CGSP management apps: backend, security, DevOps, deployment, and monitoring.",
+    fr: "Application de gestion d'agence de sécurité et de nettoyage (agents, affectations, pointage, notifications, administration), déployée pour SES (sesachat.com) et CGSP (cgsp.gestion.com). Backend, sécurité et DevOps (Coolify, Docker).",
+    en: "Security and cleaning agency management app (agents, assignments, attendance, notifications, admin), deployed for SES (sesachat.com) and CGSP (cgsp.gestion.com). Backend, security and DevOps (Coolify, Docker).",
   },
   "9": {
     fr: "Application mobile React Native pour commandes, suivi et livraison.",
@@ -141,11 +200,11 @@ const EXPERIENCE_COPY: Record<string, { title: LocalizedPair; description: Local
     },
   },
   "11": {
-    title: { fr: "Développeur Full-Stack -> Backend & DevOps", en: "Full-Stack Developer -> Backend & DevOps" },
+    title: { fr: "Lead Backend Engineer & DevSecOps", en: "Lead Backend Engineer & DevSecOps" },
     period: { fr: "Oct. 2025 - Présent", en: "Oct. 2025 - Present" },
     description: {
-      fr: "Transition vers la responsabilité backend & DevOps: API, architecture et déploiement multi-applications.",
-      en: "Moved into backend and DevOps ownership: APIs, architecture, and multi-application deployment.",
+      fr: "Lead backend chez alonu group : conception de l'API, architecture Nest.js, sécurité applicative, et migration de tous les produits du groupe vers une infrastructure self-hosted (Coolify, Docker, CI/CD, maillage privé WireGuard). Backends fintech : core banking SOAP PERFECTWS, PI-SPI de la BCEAO, mobile money (PayGate, FeexPay ou FedaPay selon le produit).",
+      en: "Lead backend at alonu group: API design, Nest.js architecture, application security, and migration of every group product onto a self-hosted infrastructure (Coolify, Docker, CI/CD, private WireGuard mesh). Fintech backends: SOAP PERFECTWS core banking, BCEAO PI-SPI, mobile money (PayGate, FeexPay or FedaPay depending on the product).",
     },
   },
   "10": {
@@ -201,17 +260,17 @@ const EXPERIENCE_COPY: Record<string, { title: LocalizedPair; description: Local
 
 const EVENT_COPY: Record<string, { title: LocalizedPair; date?: LocalizedPair; description: LocalizedPair }> = {
   "10": {
-    title: { fr: "Hackathon Digital Ocean — Agents IA", en: "Digital Ocean Hackathon — AI Agents" },
+    title: { fr: "Hackathon Digital Ocean - Agents IA", en: "Digital Ocean Hackathon - AI Agents" },
     date: { fr: "Janv. 2026 - En cours", en: "Jan. 2026 - Ongoing" },
     description: { fr: "Participation au hackathon Digital Ocean sur les agents IA.", en: "Participating in the Digital Ocean hackathon focused on AI agents." },
   },
   "5": {
-    title: { fr: "Speaker & Organisateur Git/GitHub", en: "Speaker & Organizer — Git/GitHub" },
+    title: { fr: "Speaker & Organisateur Git/GitHub", en: "Speaker & Organizer - Git/GitHub" },
     date: { fr: "Déc. 2024", en: "Dec. 2024" },
     description: { fr: "Intervention technique sur Git et GitHub à Lome.", en: "Technical talk on Git and GitHub fundamentals in Lome." },
   },
   "12": {
-    title: { fr: "Speaker — Product / Project Manager (TCC)", en: "Speaker — Product / Project Manager (TCC)" },
+    title: { fr: "Speaker - Product / Project Manager (TCC)", en: "Speaker - Product / Project Manager (TCC)" },
     date: { fr: "Fév. 2025", en: "Feb. 2025" },
     description: { fr: "Intervention sur les compétences et opportunités du rôle PM.", en: "Talk about PM skills, challenges, and opportunities." },
   },
@@ -240,17 +299,17 @@ const EVENT_COPY: Record<string, { title: LocalizedPair; date?: LocalizedPair; d
     description: { fr: "Participation avec un projet open source.", en: "Participation with an open-source project." },
   },
   "9": {
-    title: { fr: "Finaliste — Programme entrepreneurial OIF/CUBE", en: "Finalist — OIF/CUBE Entrepreneurship Program" },
+    title: { fr: "Finaliste - Programme entrepreneurial OIF/CUBE", en: "Finalist - OIF/CUBE Entrepreneurship Program" },
     date: { fr: "Avril 2025", en: "Apr. 2025" },
     description: { fr: "Finaliste du programme avec le projet Mayele (ensuite Rekap).", en: "Finalist with the Mayele project (later restructured into Rekap)." },
   },
   "13": {
-    title: { fr: "Teknolime — Réseaux informatiques (Tsévié)", en: "Teknolime — Computer Networks (Tsevie)" },
+    title: { fr: "Teknolime - Réseaux informatiques (Tsévié)", en: "Teknolime - Computer Networks (Tsevie)" },
     date: { fr: "23-25 avril 2025", en: "Apr. 23-25, 2025" },
     description: { fr: "Session réseaux pour collégiennes/lycéennes: routeur, SSID, IP, sécurité Wi-Fi.", en: "Networks session for girls: router, SSID, IP, and Wi-Fi security basics." },
   },
   "15": {
-    title: { fr: "Staff — 1ère Compétition Nationale de Robotique (Togo)", en: "Staff — 1st National Robotics Competition (Togo)" },
+    title: { fr: "Staff - 1ère Compétition Nationale de Robotique (Togo)", en: "Staff - 1st National Robotics Competition (Togo)" },
     description: { fr: "Membre du staff et coordination logistique de l'événement.", en: "Staff member supporting event logistics and coordination." },
   },
   "1": {

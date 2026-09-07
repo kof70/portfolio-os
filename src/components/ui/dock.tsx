@@ -152,15 +152,20 @@ const DockIcon = ({
   );
 
   const scaleSize = useSpring(sizeTransform, {
-    mass: 0.1,
-    stiffness: 300,
-    damping: 20,
+    mass: 0.4,
+    stiffness: 220,
+    damping: 28,
   });
 
   return (
     <motion.div
       ref={ref}
-      style={{ width: scaleSize, height: scaleSize, padding }}
+      style={{
+        width: scaleSize,
+        height: scaleSize,
+        padding,
+        willChange: disableMagnification ? "auto" : "width, height",
+      }}
       className={cn(
         "flex aspect-square cursor-pointer items-center justify-center rounded-full",
         disableMagnification && "hover:bg-muted-foreground transition-colors",
