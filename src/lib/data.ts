@@ -340,12 +340,12 @@ export const projects: Project[] = [
   },
   {
     id: "31",
-    title: "Aidoku - Sources manga françaises",
+    title: "MangasOrigines - Extensions de lecture (Aidoku, Paperback, Kotatsu)",
     description:
-      "Contribution aux sources françaises installables dans l'app Aidoku (fork) : correction du parsing MangasOrigines (détection du viewer, réglage viewer par défaut) et maintenance d'autres sources.",
-    tags: ["Open Source", "Aidoku", "Scraping", "Manga"],
-    githubUrl: "https://github.com/kof70/aidoku-french-sources",
-    liveUrl: "https://kof70.github.io/aidoku-french-sources/",
+      "Pack d'extensions open source pour lire mangas-origines.fr depuis Aidoku, Paperback et Kotatsu : parsing du catalogue et du lecteur (détection du viewer, viewer par défaut), page d'installation par application, publication automatique sur GitHub Pages.",
+    tags: ["Open Source", "Aidoku", "Paperback", "Kotatsu", "Scraping", "Manga"],
+    githubUrl: "https://github.com/kof70/mangasorigines-sources",
+    liveUrl: "https://kof70.github.io/mangasorigines-sources/",
     category: "web",
     badge: "opensource",
   },

@@ -129,8 +129,8 @@ const PROJECT_COPY: Record<string, LocalizedPair> = {
     en: "Open-source contribution to biopass (TickLabVN): facial authentication for Linux (PAM), IR-sensor anti-spoofing, threshold calibration. A Howdy alternative.",
   },
   "31": {
-    fr: "Contribution aux sources françaises de l'app Aidoku (fork) : correction du parsing MangasOrigines et maintenance d'autres sources.",
-    en: "Contribution to the French sources for the Aidoku app (fork): fixed MangasOrigines parsing and maintained other sources.",
+    fr: "Extensions open source pour lire mangas-origines.fr depuis Aidoku, Paperback et Kotatsu : parsing du catalogue et du lecteur, page d'installation par application, publication sur GitHub Pages.",
+    en: "Open-source reader extensions for mangas-origines.fr on Aidoku, Paperback and Kotatsu: catalog and reader parsing, per-app install page, published to GitHub Pages.",
   },
   "32": {
     fr: "Plateforme self-hosted de gestion d'infrastructure MikroTik : dashboard, monitoring, topologie, firewall, VPN WireGuard, hotspot avec vouchers. Node.js/TypeScript, InfluxDB, Redis, Docker. Conçue et développée par mes soins.",
