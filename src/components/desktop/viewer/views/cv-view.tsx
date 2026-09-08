@@ -17,6 +17,7 @@ import { Icons } from "@/components/icons";
 import { GlitchName } from "@/components/shared/glitch-name";
 import { Eye, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from "@/lib/i18n";
 
 const CV_BY_LANGUAGE: Record<"fr" | "en", { url: string; downloadName: string }> =
@@ -199,6 +200,7 @@ const TimelineCard: React.FC<{
 
 const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
   const { isSmUp } = useWindowViewport();
+  const { isMobile } = useIsMobile();
   const { language } = useLanguage();
   const { personalInfo, experiences, education, events } = usePortfolioContent();
   const items = React.useMemo(
@@ -216,14 +218,33 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
   const [showPdf, setShowPdf] = React.useState(false);
   const cvAsset = CV_BY_LANGUAGE[language];
 
+  // iOS/Chrome mobile can't scroll a PDF embedded in an <iframe> (it renders the
+  // first page only), so on mobile we open the PDF in a real browser tab where
+  // the native viewer handles it; the inline iframe stays a desktop affordance.
+  const openPdfTab = React.useCallback(() => {
+    window.open(cvAsset.url, "_blank", "noopener,noreferrer");
+  }, [cvAsset.url]);
+
+  const handleViewCv = React.useCallback(() => {
+    if (isMobile) {
+      openPdfTab();
+      return;
+    }
+    setShowPdf((v) => !v);
+  }, [isMobile, openPdfTab]);
+
   const handleDownload = React.useCallback(() => {
+    if (isMobile) {
+      openPdfTab();
+      return;
+    }
     const link = document.createElement("a");
     link.href = cvAsset.url;
     link.download = cvAsset.downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, [cvAsset.downloadName, cvAsset.url]);
+  }, [isMobile, openPdfTab, cvAsset.downloadName, cvAsset.url]);
 
   // Identifier les changements d'année pour placer des marqueurs
   const yearMarkers = React.useMemo(() => {
@@ -257,17 +278,12 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
         </h2>
         <div className="flex items-center gap-2">
           <Button
-            onClick={() => setShowPdf((v) => !v)}
+            onClick={handleViewCv}
             variant="default"
             size={isSmUp ? "default" : "sm"}
-            className={cn(
-              "shrink-0 gap-2",
-              showPdf
-                ? "bg-white/10 text-white hover:bg-white/20 border border-white/20"
-                : "bg-white/10 text-white hover:bg-white/20 border border-white/20",
-            )}
+            className="shrink-0 gap-2 bg-white/10 text-white hover:bg-white/20 border border-white/20"
           >
-            {showPdf ? (
+            {showPdf && !isMobile ? (
               <>
                 <ArrowLeft className="size-4" />
                 {t(language, "timeline")}
@@ -291,8 +307,8 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
         </div>
       </div>
 
-      {/* Vue PDF */}
-      {showPdf && (
+      {/* Vue PDF - desktop uniquement (iframe non scrollable sur iOS) */}
+      {showPdf && !isMobile && (
         <div className="flex-1 min-h-0 p-2">
           <iframe
             src={`${cvAsset.url}#toolbar=1&navpanes=1`}
@@ -303,7 +319,9 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
       )}
 
       {/* Frise chronologique */}
-      {!showPdf && <div className="flex-1 min-h-0 overflow-auto">
+      {(!showPdf || isMobile) && <div
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain [-webkit-overflow-scrolling:touch]"
+      >
         <div className={cn("mx-auto py-6", isSmUp ? "max-w-4xl px-4" : "px-2")}>
 
           {/* Introduction - présentation avant la frise */}

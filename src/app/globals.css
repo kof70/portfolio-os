@@ -69,19 +69,15 @@
     }
 }
 
-/* App shell fills the *visible* viewport exactly — accounts for the mobile
-   browser chrome so nothing is left stranded at the bottom, and the fixed
-   dock stays put while the iOS address bar animates. */
-html.h-full,
-body.h-full {
-    height: var(--app-height);
-}
-
-/* Prevent iOS bounce scrolling on main container */
+/* Prevent iOS bounce scrolling on main container.
+   Keep height:100% here (resolves against the iOS layout viewport) so the
+   black body always covers the full screen — the *visible* height is exposed
+   separately as --app-height (see useAppHeight) for layout math only. */
 @supports (-webkit-touch-callout: none) {
     body {
         position: fixed;
         width: 100%;
+        height: 100%;
     }
 }
 
