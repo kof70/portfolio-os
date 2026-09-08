@@ -14,8 +14,21 @@ interface BottomBarProps {
 export const BottomBar: React.FC<BottomBarProps> = () => {
   const { windows } = useWindows();
   const { isMobile } = useIsMobile();
-  const { wallpaper, setWallpaper, isWallpaperPickerOpen, closeWallpaperPicker } = useDesktopStorage();
+  const {
+    wallpaper,
+    wallpaperMobile,
+    setWallpaper,
+    setWallpaperMobile,
+    isWallpaperPickerOpen,
+    closeWallpaperPicker,
+  } = useDesktopStorage();
   const [isHovered, setIsHovered] = React.useState(false);
+
+  // Le fond mobile et le fond desktop sont stockés séparément et
+  // DynamicBackground affiche wallpaperMobile sur mobile — router le picker
+  // vers le bon setter selon l'appareil.
+  const activeWallpaper = isMobile ? wallpaperMobile : wallpaper;
+  const applyWallpaper = isMobile ? setWallpaperMobile : setWallpaper;
 
   const hasActiveWindow = React.useMemo(
     () => windows.some((w) => !w.isMinimized),
@@ -65,8 +78,8 @@ export const BottomBar: React.FC<BottomBarProps> = () => {
       <WallpaperPicker
         isOpen={isWallpaperPickerOpen}
         onClose={closeWallpaperPicker}
-        currentWallpaper={wallpaper}
-        onSelect={setWallpaper}
+        currentWallpaper={activeWallpaper}
+        onSelect={applyWallpaper}
       />
     </>
   );
