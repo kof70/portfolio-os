@@ -17,7 +17,6 @@ import { Icons } from "@/components/icons";
 import { GlitchName } from "@/components/shared/glitch-name";
 import { Eye, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from "@/lib/i18n";
 
 const CV_BY_LANGUAGE: Record<"fr" | "en", { url: string; downloadName: string }> =
@@ -198,9 +197,20 @@ const TimelineCard: React.FC<{
 // Main component
 // ---------------------------------------------------------------------------
 
+function detectIOS(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  // iPhone/iPod/iPad, plus iPadOS 13+ which reports as "MacIntel" + touch
+  return (
+    /iP(hone|od|ad)/.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
 const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
   const { isSmUp } = useWindowViewport();
-  const { isMobile } = useIsMobile();
+  const [isIOS, setIsIOS] = React.useState(false);
+  React.useEffect(() => setIsIOS(detectIOS()), []);
   const { language } = useLanguage();
   const { personalInfo, experiences, education, events } = usePortfolioContent();
   const items = React.useMemo(
@@ -218,23 +228,23 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
   const [showPdf, setShowPdf] = React.useState(false);
   const cvAsset = CV_BY_LANGUAGE[language];
 
-  // iOS/Chrome mobile can't scroll a PDF embedded in an <iframe> (it renders the
-  // first page only), so on mobile we open the PDF in a real browser tab where
-  // the native viewer handles it; the inline iframe stays a desktop affordance.
+  // iOS (Safari/Chrome/Firefox all WebKit) can't scroll a PDF embedded in an
+  // <iframe> — it renders the first page only. There, open the PDF in a real
+  // browser tab. Android and desktop keep the inline iframe, which works.
   const openPdfTab = React.useCallback(() => {
     window.open(cvAsset.url, "_blank", "noopener,noreferrer");
   }, [cvAsset.url]);
 
   const handleViewCv = React.useCallback(() => {
-    if (isMobile) {
+    if (isIOS) {
       openPdfTab();
       return;
     }
     setShowPdf((v) => !v);
-  }, [isMobile, openPdfTab]);
+  }, [isIOS, openPdfTab]);
 
   const handleDownload = React.useCallback(() => {
-    if (isMobile) {
+    if (isIOS) {
       openPdfTab();
       return;
     }
@@ -244,7 +254,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, [isMobile, openPdfTab, cvAsset.downloadName, cvAsset.url]);
+  }, [isIOS, openPdfTab, cvAsset.downloadName, cvAsset.url]);
 
   // Identifier les changements d'année pour placer des marqueurs
   const yearMarkers = React.useMemo(() => {
@@ -283,7 +293,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
             size={isSmUp ? "default" : "sm"}
             className="shrink-0 gap-2 bg-white/10 text-white hover:bg-white/20 border border-white/20"
           >
-            {showPdf && !isMobile ? (
+            {showPdf && !isIOS ? (
               <>
                 <ArrowLeft className="size-4" />
                 {t(language, "timeline")}
@@ -308,7 +318,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
       </div>
 
       {/* Vue PDF - desktop uniquement (iframe non scrollable sur iOS) */}
-      {showPdf && !isMobile && (
+      {showPdf && !isIOS && (
         <div className="flex-1 min-h-0 p-2">
           <iframe
             src={`${cvAsset.url}#toolbar=1&navpanes=1`}
@@ -319,7 +329,7 @@ const CVTimelineContent: React.FC<{ className?: string }> = ({ className }) => {
       )}
 
       {/* Frise chronologique */}
-      {(!showPdf || isMobile) && <div
+      {(!showPdf || isIOS) && <div
         className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain [-webkit-overflow-scrolling:touch]"
       >
         <div className={cn("mx-auto py-6", isSmUp ? "max-w-4xl px-4" : "px-2")}>
