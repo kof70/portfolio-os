@@ -181,16 +181,16 @@ const PROJECT_COPY: Record<string, LocalizedPair> = {
     en: "Open-source platform connecting startups and investors.",
   },
   "3": {
-    fr: "Conception et déploiement d'une infrastructure réseau campus haute densité.",
-    en: "Design and rollout of a high-density campus network infrastructure.",
+    fr: "Réseau campus de l'Université de Lomé (UL) : Wi-Fi haute densité pour les amphithéâtres et bibliothèques, load balancing, QoS.",
+    en: "University of Lomé (UL) campus network: high-density Wi-Fi for lecture halls and libraries, load balancing, QoS.",
   },
   "2": {
-    fr: "Installation et sécurisation d'un réseau hospitalier avec redondance.",
-    en: "Hospital network installation and hardening with redundancy.",
+    fr: "Réseau du CHU de Kégué (Lomé) : redondance des liens et sécurisation des données médicales (VLAN, routage, firewall).",
+    en: "CHU de Kégué hospital network (Lomé): link redundancy and medical-data hardening (VLAN, routing, firewall).",
   },
   "1": {
-    fr: "Déploiement complet réseau et Wi-Fi pour un établissement hospitalier.",
-    en: "Complete network and Wi-Fi deployment for a hospital environment.",
+    fr: "Réseau du CHU Sylvanus Olympio (Tokoin, Lomé) : câblage structuré Cat6 et couverture Wi-Fi de l'ensemble des services.",
+    en: "CHU Sylvanus Olympio network (Tokoin, Lomé): structured Cat6 cabling and full-site Wi-Fi coverage.",
   },
 };
 

@@ -197,6 +197,15 @@ export const projects: Project[] = [
     category: "web",
   },
   {
+    id: "32",
+    title: "MikroTik Manager - Plateforme de gestion réseau",
+    description:
+      "Plateforme self-hosted de management d'infrastructure MikroTik (routeurs, switches, points d'accès Wi-Fi) : dashboard, monitoring hardware et trafic (NetFlow), topologie réseau, firewall, VPN WireGuard (peers, clés, tunnels site-à-site), hotspot avec génération de vouchers PDF, 2FA, backups, panneau SaaS + marketplace. Plateforme conçue et développée par mes soins. Node.js/Express/TypeScript, InfluxDB, Redis, BullMQ, Docker.",
+    tags: ["Node.js", "TypeScript", "WireGuard", "InfluxDB", "Redis", "BullMQ", "Docker", "MikroTik"],
+    liveUrl: "https://techzone.africa/",
+    category: "network",
+  },
+  {
     id: "21",
     title: "Backend Chambre des Métiers (Togo)",
     description:
@@ -220,6 +229,7 @@ export const projects: Project[] = [
     description:
       "Application full-stack Next.js (PostgreSQL, Prisma, NextAuth) pour le Ministère de l'Aménagement du Territoire : les accompagnateurs affectés à une commune aident les usagers à monter leur dossier de déclaration d'association civile (pièces, uploads, suivi), une gérante revoit les dossiers et valide seule le dépôt physique. Synchronisation des communes (GeoData), invitations agents par email (SMTP), audit. Réutilise les modules d'archivage et de gestion de projet du système budgétaire ministériel.",
     tags: ["Next.js", "PostgreSQL", "Prisma", "NextAuth", "Gov Togo", "Multi-mairie"],
+    liveUrl: "https://association.coolify.alonu.shop",
     category: "web",
   },
   {
@@ -335,6 +345,7 @@ export const projects: Project[] = [
       "Contribution aux sources françaises installables dans l'app Aidoku (fork) : correction du parsing MangasOrigines (détection du viewer, réglage viewer par défaut) et maintenance d'autres sources.",
     tags: ["Open Source", "Aidoku", "Scraping", "Manga"],
     githubUrl: "https://github.com/kof70/aidoku-french-sources",
+    liveUrl: "https://kof70.github.io/aidoku-french-sources/",
     category: "web",
     badge: "opensource",
   },
@@ -393,37 +404,28 @@ export const projects: Project[] = [
   },
   // Network
   {
-    id: "32",
-    title: "MikroTik Manager - Plateforme de gestion réseau",
-    description:
-      "Plateforme self-hosted de management d'infrastructure MikroTik (routeurs, switches, points d'accès Wi-Fi) : dashboard, monitoring hardware et trafic (NetFlow), topologie réseau, firewall, VPN WireGuard (peers, clés, tunnels site-à-site), hotspot avec génération de vouchers PDF, 2FA, backups, panneau SaaS + marketplace. Plateforme conçue et développée par mes soins. Node.js/Express/TypeScript, InfluxDB, Redis, BullMQ, Docker.",
-    tags: ["Node.js", "TypeScript", "WireGuard", "InfluxDB", "Redis", "BullMQ", "Docker", "MikroTik"],
-    liveUrl: "https://techzone.africa/",
-    category: "network",
-  },
-  {
     id: "3",
-    title: "Network Infrastructure UL",
+    title: "Infrastructure réseau - Université de Lomé (UL)",
     description:
-      "Design and implementation du réseau campus avec deployment de points d'accès haute densité pour les amphithéâtres et bibliothèques.",
+      "Conception et déploiement du réseau campus de l'Université de Lomé (UL) : points d'accès Wi-Fi haute densité pour les amphithéâtres et les bibliothèques, load balancing et QoS.",
     image: "/assets/CHUul.jpg",
     tags: ["Haute Densité", "Load Balancing", "QoS"],
     category: "network",
   },
   {
     id: "2",
-    title: "Network Infrastructure CHU Kégué",
+    title: "Infrastructure réseau - CHU de Kégué (Lomé)",
     description:
-      "Installation et configuration du réseau hospitalier incluant la mise en place d'un système de redondance et la sécurisation des données médicales.",
+      "Installation et configuration du réseau du Centre Hospitalier Universitaire (CHU) de Kégué à Lomé : redondance des liens et sécurisation des données médicales (VLAN, routage, firewall).",
     image: "/assets/kegueulrich.jpg",
     tags: ["Routing", "VLAN", "Security"],
     category: "network",
   },
   {
     id: "1",
-    title: "Network Infrastructure CHU Tokoin",
+    title: "Infrastructure réseau - CHU Sylvanus Olympio (Tokoin, Lomé)",
     description:
-      "Deployment complet du réseau avec câblage structuré et configuration des points d'accès Wi-Fi pour une couverture optimale de l'établissement hospitalier.",
+      "Déploiement du réseau du Centre Hospitalier Universitaire (CHU) Sylvanus Olympio, quartier Tokoin à Lomé : câblage structuré Cat6 et points d'accès Wi-Fi pour couvrir l'ensemble des services.",
     image: "/assets/tokoin.jpg",
     tags: ["Cisco", "Cat6 cabling", "Wi-Fi 6"],
     category: "network",
